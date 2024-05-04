@@ -19,7 +19,5 @@ jobs:
           script: |
             cd /var/www/vtt-cabs-nextapp
             git pull origin main
-            pm2 stop vtt-client
             npm install
             npm run build
-            pm2 start vtt-client

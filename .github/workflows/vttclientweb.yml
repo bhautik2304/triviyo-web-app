@@ -27,5 +27,8 @@ jobs:
           script: |
             cd /var/www/vtt-cabs-nextapp
             git pull origin main
-            bash ./deploy.sh
-            echo "Run Build Script"
+            npm i
+            pm2 stop vtt-client
+            npm run build
+            pm2 start vtt-client
+            echo "Build Completed"

@@ -1,19 +1,13 @@
 #!/bin/bash
 
-# Navigate to the project directory
-cd /var/www/vtt-cabs-nextapp
-
-# Pull latest changes from your repository
-git pull origin main
-
-# Restart PM2 process
-pm2 stop vtt-client
+# Stop PM2 process
+cd /var/www/vtt-cabs-nextapp && pm2 stop 0
 
 # Install dependencies
-npm install
+cd /var/www/vtt-cabs-nextapp && npm install
 
 # Build the Next.js app
-npm run build
+cd /var/www/vtt-cabs-nextapp && npm run build
 
 # Restart PM2 process
-pm2 start vtt-client
+cd /var/www/vtt-cabs-nextapp && pm2 start vtt-client

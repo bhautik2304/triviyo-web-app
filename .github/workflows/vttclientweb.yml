@@ -1,0 +1,25 @@
+name: Vtt-cabs Website
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/vtt-cabs-nextapp
+            git pull origin main
+            pm2 stop vtt-client
+            npm install
+            npm run build
+            pm2 start vtt-client

@@ -10,12 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
@@ -25,5 +19,5 @@ jobs:
           script: |
             cd /var/www/vtt-cabs-nextapp
             git pull origin main
-            npm install
-            npm run build
+            sudo npm install
+            sudo npm run build

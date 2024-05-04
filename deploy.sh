@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /var/www/vtt-cabs-nextapp && echo npm -v
+
 # Stop PM2 process
 cd /var/www/vtt-cabs-nextapp && pm2 stop 0
 

@@ -7,7 +7,7 @@ export default function Home() {
           <div class="row">
             {/* <!-- Title --> */}
             <div class="col-md-6 mx-auto text-center pt-7 pb-9">
-              <h1 class="text-white">Motels, Not Cabs New Cabs & tour experience</h1>
+              <h1 class="text-white">Hotels, Cabs & tour experience</h1>
               <p class="lead text-white mb-0">Get the best prices on 2,000,000+ properties, worldwide</p>
             </div>
           </div>

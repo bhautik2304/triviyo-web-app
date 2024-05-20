@@ -1,11 +1,8 @@
 {
-	"folders": [
-		{
-			"path": "../../../vtt-cabs-api"
-		},
-		{
-			"path": "../.."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "../../../vtt-cabs-api"
+    }
+  ],
+  "settings": {}
 }

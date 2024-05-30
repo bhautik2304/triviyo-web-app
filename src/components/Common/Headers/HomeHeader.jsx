@@ -1,7 +1,22 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { authtication } from "@/lib/auth";
+import Link from "next/link";
+import { appRoutes } from "@/constant";
 
 function HomeHeader() {
+  const [auth, setAuth] = useState();
+
+  const authStatus = async () => {
+    const status = await authtication();
+    setAuth(status);
+    console.log(status);
+  };
+
+  useEffect(() => {
+    authStatus();
+  }, []);
+
   return (
     <>
       {/* <!-- Header START --> */}
@@ -10,7 +25,7 @@ function HomeHeader() {
         <nav className="navbar navbar-expand-xl">
           <div className="container">
             {/* <!-- Logo START --> */}
-            <a className="navbar-brand" href="index.html">
+            <a className="navbar-brand" href={appRoutes.home}>
               <img
                 className="light-mode-item navbar-brand-item"
                 src="assets/images/logo.svg"
@@ -47,11 +62,21 @@ function HomeHeader() {
                 </div>
               </li>
               {/* <!-- Login button START --> */}
-              <li className="nav-item ms-3">
-                <a href="sign-up.html" className="btn btn-sm btn-primary mb-0">
-                  <i className="fa-solid fa-right-to-bracket me-2"></i>Sign up
-                </a>
-              </li>
+              {auth ? (
+                <>Login User</>
+              ) : (
+                <>
+                  <li className="nav-item ms-3">
+                    <Link
+                      href={appRoutes.login}
+                      className="btn btn-sm btn-primary mb-0"
+                    >
+                      <i className="fa-solid fa-right-to-bracket me-2"></i>Sign
+                      up
+                    </Link>
+                  </li>
+                </>
+              )}
               <li className="nav-item ms-3">
                 <div className="nav-item dropdown">
                   <button

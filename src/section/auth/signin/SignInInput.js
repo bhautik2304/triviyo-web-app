@@ -1,29 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
 import { PhoneInputContry } from '@/components';
+import { loginWithType } from './constants'
 
-const loginWithType = {
-    num: 'Whatsapp',
-    email: 'email'
-}
 
-function SignInInput() {
-    const [value, setValue] = useState()
-    const [loader, setLoader] = useState(false)
-    const [loginWith, setLoginWith] = useState(loginWithType.num);
+function SignInInput({ value, loader, loginWith, submit }) {
 
-    const submit = () => {
-        api.authApi.login({
-            number: value,
-            channel: loginWith
-        }, () => {
-            setLoader(true)
-        }, () => {
-            setLoader(false)
-        }, () => {
-            setLoader(false)
-        })
-    }
     return (
         <>
             {/* <!-- Email --> */}

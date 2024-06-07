@@ -28,13 +28,18 @@ function HomeHeader() {
             <a className="navbar-brand" href={appRoutes.home}>
               <img
                 className="light-mode-item navbar-brand-item"
-                src="assets/images/logo.svg"
+                src="/img/logo-light.svg"
                 alt="logo"
+                // width={50}
+                height={50}
+                style={{ height: 60 }}
               />
               <img
                 className="dark-mode-item navbar-brand-item"
-                src="assets/images/logo-light.svg"
+                src="/img/logo-dark.svg"
                 alt="logo"
+                height={50}
+                style={{ height: 60 }}
               />
             </a>
             {/* <!-- Logo END --> */}

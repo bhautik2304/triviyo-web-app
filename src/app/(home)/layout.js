@@ -1,4 +1,5 @@
 import { HomeFooter, HomeHeader, NotificationAlert } from "@/components";
+import { Favicon } from "@/layout";
 import HomeLayout from "@/layout/HomeLayout";
 import { Providers } from "@/redux/Provider";
 import Script from "next/script";
@@ -18,7 +19,7 @@ export default function RootLayout({ children }) {
         <meta name="author" content="vttcabs.com" />
 
         {/* <!-- Favicon --> */}
-        <link rel="shortcut icon" href="assets/images/favicon.ico" />
+        <Favicon />
         {/* <!-- Google Font --> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />

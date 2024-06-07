@@ -6,7 +6,19 @@ function Logo({ classHeight, imgClass, ...props }) {
     return (
         <>
             <Link href={appRoutes.home}>
-                <img class={`h-${classHeight || '50'}px ${imgClass}`} src="assets/images/logo-icon.svg" alt="logo" />
+                <img
+                    className="light-mode-item navbar-brand-item"
+                    src="/img/logo-light.svg"
+                    alt="logo"
+                    // width={50}
+                    height={50}
+                />
+                <img
+                    className="dark-mode-item navbar-brand-item"
+                    src="/img/logo-dark.svg"
+                    alt="logo"
+                    height={50}
+                />
             </Link>
         </>
     )

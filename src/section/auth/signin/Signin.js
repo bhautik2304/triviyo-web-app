@@ -1,6 +1,6 @@
 "use client"
 import { api } from '@/lib/api'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import SignInInput from './SignInInput'
 import Otp from './Otp'
 import { loginWithType, authState } from './constants'
@@ -12,6 +12,26 @@ function Signin() {
     const [loginWith, setLoginWith] = useState(loginWithType.num);
 
     const [otp, setOtp] = useState()
+    const [timeLeft, setTimeLeft] = useState(60);
+    const [isTimerActive, setIsTimerActive] = useState(false);
+
+    useEffect(() => {
+        let intervalId;
+        if (isTimerActive) {
+            intervalId = setInterval(() => {
+                setTimeLeft((prevTime) => {
+                    if (prevTime <= 1) {
+                        clearInterval(intervalId);
+                        setIsTimerActive(false);
+                        return 0;
+                    }
+                    return prevTime - 1;
+                });
+            }, 1000);
+        }
+
+        return () => clearInterval(intervalId);
+    }, [isTimerActive]);
 
     const submit = () => {
         api.authApi.login({
@@ -28,6 +48,16 @@ function Signin() {
     const otpSubmit = () => {
         console.log(otp);
     }
+
+    const startTimer = () => {
+        setTimeLeft(60);
+        setIsTimerActive(true);
+    };
+
+    const formatTime = (seconds) => {
+        const duration = moment.duration(seconds, 'seconds');
+        return moment.utc(duration.asMilliseconds()).format('mm:ss');
+    };
 
     return (
         <>

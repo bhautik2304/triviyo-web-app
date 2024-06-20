@@ -1,21 +1,40 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { authtication } from "@/lib/auth";
+import { authtication, checkSession } from "@/lib/auth";
 import Link from "next/link";
-import { appRoutes } from "@/constant";
-
+import { appRoutes, cookiesKey } from "@/constant";
+import { getCookie, setCookie } from "cookies-next";
+import NavAccount from "./components/NavAccount";
+import { deviceRegister } from "@/lib/config";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAuthUser } from "@/redux/thunk/user";
 function HomeHeader() {
   const [auth, setAuth] = useState();
+  const [authsUser, setAuthUser] = useState();
+
+  const dispatch = useDispatch();
 
   const authStatus = async () => {
-    const status = await authtication();
-    setAuth(status);
-    console.log(status);
+    const status = await checkSession();
+    if (status.token) {
+      setAuth(status.token);
+      setAuthUser(status.user);
+    } else {
+      setAuth(false);
+    }
   };
 
   useEffect(() => {
-    authStatus();
+    deviceRegister();
   }, []);
+
+  useEffect(() => {
+    authStatus().then(() => {
+      dispatch(fetchAuthUser());
+    });
+  }, []);
+  const { authUser } = useSelector((state) => state.user);
+  // console.log(authUser);
 
   return (
     <>
@@ -68,7 +87,7 @@ function HomeHeader() {
               </li>
               {/* <!-- Login button START --> */}
               {auth ? (
-                <>Login User</>
+                <NavAccount />
               ) : (
                 <>
                   <li className="nav-item ms-3">

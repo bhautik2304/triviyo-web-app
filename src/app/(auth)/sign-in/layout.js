@@ -1,6 +1,11 @@
 import Script from "next/script";
 
-export default function RootLayout({ children }) {
+export const metadata = {
+  title: "VTT Cabs - Sign in",
+  description: "Join VTT Cabs today and start enjoying our exclusive services. Sign up now to create your account and stay connected.",
+};
+
+export default function signinLayout({ children }) {
   return (
     <html lang="en">
       <head>

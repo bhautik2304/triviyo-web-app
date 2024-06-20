@@ -1,8 +1,9 @@
-import React from 'react'
-
 function page() {
+
     return (
-        <div>Users</div>
+        <>
+            <h1>reviews Page</h1>
+        </>
     )
 }
 

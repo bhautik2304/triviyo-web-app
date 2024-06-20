@@ -15,7 +15,7 @@ function CabBooking() {
                         <h5 class="mb-3 mb-sm-0"><i class="fa-solid fa-car fa-fw me-2"></i>Cab Booking</h5>
 
                         {/* <!-- Tabs --> */}
-                        <ul class="nav nav-pills nav-pills-dark" id="pills-tab-2" role="tablist">
+                        <ul class="nav nav-pills nav-responsive nav-pills-dark" id="pills-tab-2" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link mb-0 rounded-start rounded-0 active" id="pills-one-way-2-tab" data-bs-toggle="pill" data-bs-target="#pills-one-way-2" type="button" role="tab" aria-selected="true">One Way</button>
                             </li>

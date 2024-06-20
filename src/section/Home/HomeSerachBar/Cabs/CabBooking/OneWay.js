@@ -9,7 +9,7 @@ function OneWay() {
     const [pickup, setPickup] = useState(null);
     const [drop, setDrop] = useState(null);
 
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
 
 
@@ -72,9 +72,9 @@ function OneWay() {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="text-center pt-0">
-                <button onClick={serachTrip} class="btn btn-lg btn-primary mb-n7" >Search Cabs <i class="bi bi-arrow-right ps-3"></i></button>
+                <div class="text-center pt-0">
+                    <button onClick={serachTrip} class="btn btn-lg btn-primary mb-n7" >Search Cabs <i class="bi bi-arrow-right ps-3"></i></button>
+                </div>
             </div>
         </>
     )

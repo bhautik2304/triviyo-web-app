@@ -36,8 +36,8 @@ export default function RootLayout({ children }) {
         <script src="assets/js/sitethememood.js"></script>
       </head>
       <body>
-        <NotificationAlert />
         <Providers>
+          <NotificationAlert />
           <HomeLayout heder={true} footer={true} >
             {children}
           </HomeLayout>

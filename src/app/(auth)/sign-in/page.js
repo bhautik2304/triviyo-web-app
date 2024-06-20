@@ -1,14 +1,19 @@
+"use client"
 import React from 'react'
 import dynamic from "next/dynamic";
 const Signin = dynamic(() => import('@/section/auth/signin/Signin'), { ssr: false })
 import { Logo } from '@/components'
-
-export const metadata = {
-    title: "VTT Cabs - Sign in",
-    description: "Join VTT Cabs today and start enjoying our exclusive services. Sign up now to create your account and stay connected.",
-};
+import { getCookie } from 'cookies-next';
+import { appRoutes, cookiesKey } from '@/constant';
+import { redirect } from 'next/navigation';
 
 function page() {
+    const session = getCookie(cookiesKey.authToken)
+    if (session) {
+        console.log("session", session);
+        redirect(appRoutes.home)
+    }
+
     return (
         <>
             <main>
@@ -31,10 +36,16 @@ function page() {
                                         <div class="col-lg-6 order-1">
                                             <div class="p-4 p-sm-6">
                                                 {/* <!-- Logo --> */}
-                                                <Logo />
+                                                <div className='container-fluid my-2' >
+                                                    <center>
+                                                        <Logo />
+                                                    </center>
+                                                </div>
                                                 {/* <!-- Title --> */}
                                                 {/* <!-- Form START --> */}
-                                                <Signin />
+                                                <div className='container-fluid my-2' >
+                                                    <Signin />
+                                                </div>
                                                 {/* <!-- Form END --> */}
                                             </div>
                                         </div>

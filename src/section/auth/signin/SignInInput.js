@@ -4,7 +4,7 @@ import { PhoneInputContry } from '@/components';
 import { loginWithType } from './constants'
 
 
-function SignInInput({ value, loader, loginWith, submit }) {
+function SignInInput({ value, setValue, setLoginWith, loader, loginWith, submit, onChange }) {
 
     return (
         <>
@@ -13,7 +13,7 @@ function SignInInput({ value, loader, loginWith, submit }) {
                 {
                     loginWith == loginWithType.num ? (
                         <>
-                            <PhoneInputContry value={value} onChange={(e) => setValue(e)} />
+                            <PhoneInputContry value={value} onChange={(e) => onChange(e)} />
                         </>
                     ) : (
                         <>
@@ -31,7 +31,7 @@ function SignInInput({ value, loader, loginWith, submit }) {
             </div>
             {/* <!-- Button --> */}
             <div>
-                <button disabled={loader} onClick={submit} class="btn btn-primary w-100 mb-0">
+                <button disabled={loader} onClick={() => submit()} class="btn btn-primary w-100 mb-0">
                     {loader ? <CircularProgress size={15} color='inherit' /> : "contiinue"}
                 </button>
             </div>

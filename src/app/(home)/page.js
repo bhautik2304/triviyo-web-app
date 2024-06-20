@@ -1,5 +1,3 @@
-import { GmapPlaceSearch } from "@/components";
-import HomeLayout from "@/layout/HomeLayout";
 import SearchTab from "@/section/Home/SearchTab";
 
 export default function Home() {

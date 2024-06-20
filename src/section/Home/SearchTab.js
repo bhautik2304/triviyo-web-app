@@ -5,7 +5,7 @@ import CabBooking from './HomeSerachBar/Cabs/CabBooking'
 function SearchTab() {
     return (
         <>{/* <!-- Search START --> */}
-            <div class="container mt-n8">
+            <div class="container container-sm-fluid mt-n8">
                 <div class="row">
                     {/* <!-- Tabs START --> */}
                     <div class="col-11 col-lg-8 col-xl-6 mx-auto">
@@ -23,7 +23,7 @@ function SearchTab() {
                     {/* <!-- Tab content START --> */}
                     <div class="col-12">
                         {/* <!-- Search END --> */}
-                        < div class="card-body p-4 pt-0" >
+                        < div class="card-body pt-0" >
 
                             <div class="tab-content" id="nav-tabContent">
                                 {/* <!-- Tab content item START --> */}

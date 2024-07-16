@@ -2,7 +2,13 @@
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 
-const PhoneInputContry = ({ value, onChange, focus = true }) => {
+const PhoneInputContry = ({
+  error,
+  value,
+  onChange,
+  focus = true,
+  disabled,
+}) => {
   return (
     <>
       <label class="form-label">
@@ -15,7 +21,9 @@ const PhoneInputContry = ({ value, onChange, focus = true }) => {
           required: true,
           autoFocus: focus,
         }}
-        containerClass="form-control"
+        disabled={disabled}
+        containerClass={`form-control ${error && "has-error"}`}
+        // containerClass={classnames({ : error })}
         inputStyle={{
           width: "100%",
           // height: '100%',
@@ -36,7 +44,7 @@ const PhoneInputContry = ({ value, onChange, focus = true }) => {
           margin: 0,
           paddingLeft: 0.1,
         }}
-        inputClass="form-control"
+        inputClass="form-control was-validated"
         // placeholder='Enter Whatsapp Number'
         value={value}
         onChange={(phone) => onChange(phone)}

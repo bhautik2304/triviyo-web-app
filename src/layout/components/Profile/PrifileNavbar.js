@@ -14,7 +14,7 @@ function PrifileNavbar() {
           <div class="container">
             {/* <!-- Logo START --> */}
             <div class="navbar-brand">
-              <Logo />
+              <Logo width={100} />
             </div>
             {/* <!-- Logo END --> */}
 

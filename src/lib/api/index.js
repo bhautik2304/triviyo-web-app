@@ -9,16 +9,10 @@ export const api = {
       axios
         .post(apiRoutes.auth.signupLogin, data)
         .then((e) => {
-          console.log(e.data);
-          if (e.data.code == statusCode.createRes.code) {
-            console.log(e.data);
-            success(e.data);
-          } else {
-            error();
-          }
+          success(e.data);
         })
-        .catch(() => {
-          error();
+        .catch((err) => {
+          error(err);
         });
     },
     otpCheck: (data, pending, success, error) => {
@@ -26,16 +20,10 @@ export const api = {
       axios
         .post(apiRoutes.auth.optCheck, data)
         .then((e) => {
-          console.log(e.data);
-          if (e.data.code == statusCode.createRes.code) {
-            console.log(e.data);
-            success(e.data);
-          } else {
-            error();
-          }
+          success(e.data);
         })
-        .catch(() => {
-          error();
+        .catch((error) => {
+          error(error);
         });
     },
     newUserRegister: (data, pending, success, error) => {
@@ -43,9 +31,7 @@ export const api = {
       axios
         .post(apiRoutes.auth.userRegister, data)
         .then((e) => {
-          console.log(e.data);
           if (e.data.code == statusCode.createRes.code) {
-            console.log(e.data);
             success(e.data);
           } else {
             error();
@@ -60,9 +46,7 @@ export const api = {
       axios
         .post(apiRoutes.auth.checkpassword, data)
         .then((e) => {
-          console.log(e.data);
           if (e.data.code == statusCode.createRes.code) {
-            console.log(e.data);
             success(e.data);
           } else {
             error();
@@ -88,6 +72,39 @@ export const api = {
         .catch((err) => {
           console.log(err);
           error();
+        });
+    },
+    contactinfogenotp: (data, pending, success, error) => {
+      pending();
+      axios
+        .post(apiRoutes.user.contactinfogenotp, data)
+        .then((e) => {
+          success(e.data);
+        })
+        .catch((err) => {
+          error(err);
+        });
+    },
+    contactinfogenotpverify: (data, pending, success, error) => {
+      pending();
+      axios
+        .post(apiRoutes.user.contactinfogenotpverify, data)
+        .then((e) => {
+          success(e.data);
+        })
+        .catch((err) => {
+          error(err);
+        });
+    },
+    changepassword: (data, pending, success, error) => {
+      pending();
+      axios
+        .post(apiRoutes.user.changepassword, data)
+        .then((e) => {
+          success(e.data);
+        })
+        .catch((err) => {
+          error(err);
         });
     },
   },

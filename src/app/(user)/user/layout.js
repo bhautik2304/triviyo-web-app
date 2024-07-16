@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
           <div className="back-top"></div>
 
           {/* <!-- Bootstrap JS --> */}
-          <Script src="/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></Script>
+          <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
 
           {/* <!-- Vendors --> */}
           <Script src="assets/vendor/aos/aos.js"></Script>
@@ -87,7 +87,7 @@ export default function RootLayout({ children }) {
           <Script src="/assets/vendor/flatpickr/js/flatpickr.min.js"></Script>
 
           {/* <!-- ThemeFunctions --> */}
-          <Script src="/assets/js/functions.js"></Script>
+          <Script src="http://localhost:3000/assets/js/functions.js"></Script>
         </body>
       </html>
     </>

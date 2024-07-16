@@ -1,8 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ['192.168.29.208', 'api.vttcabs.com',],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'api.vttcabs.com',
+                pathname: '**',
+            },
+            {
+                protocol: 'http',
+                hostname: '192.168.29.208',
+                pathname: '**',
+            },
+            {
+                protocol: 'http',
+                hostname: 'localhost',
+                pathname: '**',
+            },
+        ]
     },
 };
 
 export default nextConfig;
+// ['192.168.29.208', 'api.vttcabs.com',]

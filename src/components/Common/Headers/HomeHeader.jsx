@@ -5,11 +5,14 @@ import Link from "next/link";
 import { appRoutes, cookiesKey } from "@/constant";
 import { getCookie, setCookie } from "cookies-next";
 import NavAccount from "./components/NavAccount";
-import { deviceRegister } from "@/lib/config";
+import { deviceRegister, themeMood } from "@/lib/config";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthUser } from "@/redux/thunk/user";
+import { requestPermission } from "@/lib/firebase/firebase";
+
 function HomeHeader() {
   const [auth, setAuth] = useState();
+  const [theme, setTheme] = useState();
   const [authsUser, setAuthUser] = useState();
 
   const dispatch = useDispatch();
@@ -25,7 +28,8 @@ function HomeHeader() {
   };
 
   useEffect(() => {
-    deviceRegister();
+    requestPermission();
+    setTheme(localStorage.getItem("theme"));
   }, []);
 
   useEffect(() => {
@@ -35,6 +39,15 @@ function HomeHeader() {
   }, []);
   const { authUser } = useSelector((state) => state.user);
   // console.log(authUser);
+
+  useEffect(() => {
+    document.body.setAttribute("data-bs-theme", theme);
+  }, [theme]);
+
+  const toggleTheme = (newtheme) => {
+    localStorage.setItem("theme", newtheme);
+    setTheme(newtheme);
+  };
 
   return (
     <>
@@ -131,8 +144,11 @@ function HomeHeader() {
                     <li className="mb-1">
                       <button
                         type="button"
-                        className="dropdown-item d-flex align-items-center"
+                        className={`dropdown-item d-flex align-items-center ${
+                          themeMood("light") ? "active" : ""
+                        }`}
                         data-bs-theme-value="light"
+                        onClick={() => toggleTheme("light")}
                       >
                         <svg
                           width="16"
@@ -150,8 +166,11 @@ function HomeHeader() {
                     <li className="mb-1">
                       <button
                         type="button"
-                        className="dropdown-item d-flex align-items-center"
+                        className={`dropdown-item d-flex align-items-center ${
+                          themeMood("dark") ? "active" : ""
+                        }`}
                         data-bs-theme-value="dark"
+                        onClick={() => toggleTheme("dark")}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +190,10 @@ function HomeHeader() {
                     <li>
                       <button
                         type="button"
-                        className="dropdown-item d-flex align-items-center active"
+                        onClick={() => toggleTheme("auto")}
+                        className={`dropdown-item d-flex align-items-center ${
+                          themeMood("auto") ? "active" : ""
+                        }`}
                         data-bs-theme-value="auto"
                       >
                         <svg

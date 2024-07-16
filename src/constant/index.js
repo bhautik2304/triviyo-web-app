@@ -2,6 +2,9 @@ const userProfilePrefix = "/user";
 
 export const appRoutes = {
   home: "/",
+  app: {
+    cabs: "cabs",
+  },
   login: "sign-in",
   register: "sign-up",
   profile: {
@@ -36,6 +39,9 @@ export const apiRoutes = {
   user: {
     profileUpload: apiUrl("customer/profile"),
     customer: (id = null) => apiUrl(`customer${id ? "/" + id : ""}`),
+    contactinfogenotp: apiUrl("customer/contactinfogenotp"),
+    contactinfogenotpverify: apiUrl("customer/contactinfogenotpverify"),
+    changepassword: apiUrl("customer/changepassword"),
   },
 };
 
@@ -75,4 +81,5 @@ export const localStorageKey = {
   otpToken: "otp_id",
   deviceId: "c4JBSx73Ch0julmbispVeClxmesMFqk6",
   accessKey: "33z44;mCii6wOaV7y/Z6xom>/1n4s",
+  fcmTokken: "fcm_token",
 };

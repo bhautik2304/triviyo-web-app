@@ -97,7 +97,13 @@ function OneWay() {
           </div>
         </div>
         <div class="text-center pt-0">
-          <Link href={appRoutes.app.cabs} class="btn btn-lg btn-primary mb-n7">
+          <Link
+            href={`${appRoutes.app.cabs}?qry=${JSON.stringify({
+              to: "vadodora",
+              from: "Amereka",
+            })}`}
+            class="btn btn-lg btn-primary mb-n7"
+          >
             Search Cabs <i class="bi bi-arrow-right ps-3"></i>
           </Link>
         </div>

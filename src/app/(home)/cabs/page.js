@@ -1,6 +1,12 @@
+"use client";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 function page() {
+  const qry = useSearchParams();
+  const qry_params = qry.get("qry");
+
+  console.log(JSON.parse(qry_params).to);
   return (
     <>
       <section class="bg-primary">

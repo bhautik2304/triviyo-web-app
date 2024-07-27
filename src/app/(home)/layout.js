@@ -10,7 +10,7 @@ export const metadata = {
     "Welcome to VTT Cabs, your trusted partner for hassle-free cab and hotel bookings. With our extensive network of reliable drivers and accommodation providers, we ensure seamless travel experiences for every journey. Whether you need a comfortable ride to your destination or a cozy stay at your favorite hotel, VTT Cabs has got you covered. Book your next trip with us and enjoy convenience, safety, and affordability.",
 };
 
-export default function RootLayout({ children }) {
+export default function PrivacyPolicyLayout({ children }) {
   return (
     <html lang="en">
       <head>

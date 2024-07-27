@@ -8,7 +8,7 @@ import ProfileLayout from "@/layout/ProfileLayout";
 import Script from "next/script";
 import { Providers } from "@/redux/Provider";
 
-export default function RootLayout({ children }) {
+export default function UserLayout({ children }) {
   useEffect(() => {
     const session = getCookie(cookiesKey.authToken);
     if (!session) {

@@ -2,16 +2,20 @@ import Script from "next/script";
 
 export const metadata = {
   title: "VTT Cabs - Sign in",
-  description: "Join VTT Cabs today and start enjoying our exclusive services. Sign up now to create your account and stay connected.",
+  description:
+    "Join VTT Cabs today and start enjoying our exclusive services. Sign up now to create your account and stay connected.",
 };
 
-export default function signinLayout({ children }) {
+export default function SigninLayout({ children }) {
   return (
     <html lang="en">
       <head>
         {/* <!-- Meta Tags --> */}
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
         <meta name="author" content="vttcabs.com" />
 
         {/* <!-- Favicon --> */}
@@ -20,11 +24,22 @@ export default function signinLayout({ children }) {
         {/* <!-- Google Font --> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@400;500;700&display=swap"
+        />
 
         {/* <!-- Plugins CSS --> */}
-        <link rel="stylesheet" type="text/css" href="assets/vendor/font-awesome/css/all.min.css" />
-        <link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap-icons/bootstrap-icons.css" />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="assets/vendor/font-awesome/css/all.min.css"
+        />
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+        />
 
         {/* <!-- Theme CSS --> */}
         <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
@@ -32,7 +47,6 @@ export default function signinLayout({ children }) {
       </head>
 
       <body>
-
         {/* <!-- **************** MAIN CONTENT START **************** --> */}
         {children}
         {/* <!-- Bootstrap JS --> */}
@@ -49,6 +63,6 @@ export default function signinLayout({ children }) {
         {/* <!-- ThemeFunctions --> */}
         <Script src="assets/js/functions.js"></Script>
       </body>
-    </html >
+    </html>
   );
 }

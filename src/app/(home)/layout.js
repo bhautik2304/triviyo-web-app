@@ -3,6 +3,8 @@ import { Favicon } from "@/layout";
 import HomeLayout from "@/layout/HomeLayout";
 import { Providers } from "@/redux/Provider";
 import Script from "next/script";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 export const metadata = {
   title: "VTT Cabs - Reliable Cab and Hotel Booking Services",

@@ -1,12 +1,22 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { GmapPlaceSearch } from "@/components";
 
 function page() {
-  const qry = useSearchParams();
-  const qry_params = qry.get("qry");
+  const [km, setKm] = useState(0);
+  const [origin, setorigin] = useState({});
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  console.log(JSON.parse(qry_params).to);
+  const qry = useSearchParams();
+
+  useEffect(() => {
+    const qry_params = qry.get("qry");
+    setData(JSON.parse(qry_params));
+  }, []);
+
+  console.log(data);
   return (
     <>
       <section class="bg-primary">
@@ -85,16 +95,13 @@ function page() {
                           <div class="col-md-6 col-xl-4">
                             <div class="form-size-lg">
                               <label class="form-label">Pickup</label>
-                              <select
-                                class="form-select js-choice"
-                                data-search-enabled="true"
-                                aria-label=".form-select-sm"
-                              >
-                                <option value="">Select location</option>
-                                <option selected>San Jacinto, USA</option>
-                                <option>North Dakota, Canada</option>
-                                <option>West Virginia, Paris</option>
-                              </select>
+                              <GmapPlaceSearch
+                                placeholder="Selct Pickup Location"
+                                onSelectPlace={(place) => {
+                                  console.log(place);
+                                }}
+                                defaultValue={data?.origin?.name}
+                              />
                             </div>
                           </div>
 
@@ -102,16 +109,13 @@ function page() {
                           <div class="col-md-6 col-xl-4">
                             <div class="form-size-lg">
                               <label class="form-label">Drop</label>
-                              <select
-                                class="form-select js-choice"
-                                data-search-enabled="true"
-                                aria-label=".form-select-sm"
-                              >
-                                <option value="">Select location</option>
-                                <option>San Jacinto, USA</option>
-                                <option selected>North Dakota, Canada</option>
-                                <option>West Virginia, Paris</option>
-                              </select>
+                              <GmapPlaceSearch
+                                placeholder="Selct Pickup Location"
+                                onSelectPlace={(place) => {
+                                  console.log(place);
+                                }}
+                                defaultValue={data?.destination?.name}
+                              />
                             </div>
                           </div>
 

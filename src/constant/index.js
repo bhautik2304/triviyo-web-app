@@ -83,3 +83,15 @@ export const localStorageKey = {
   accessKey: "33z44;mCii6wOaV7y/Z6xom>/1n4s",
   fcmTokken: "fcm_token",
 };
+
+export const cabSearchSchima = {
+  tripType: "",
+  origin: {},
+  originLatLong: {},
+  destination: {},
+  destinationLatLong: {},
+  location: [],
+  locationData: [],
+  pickupDate: "",
+  pickupTime: "",
+};

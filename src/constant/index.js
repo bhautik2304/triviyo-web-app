@@ -43,6 +43,9 @@ export const apiRoutes = {
     contactinfogenotpverify: apiUrl("customer/contactinfogenotpverify"),
     changepassword: apiUrl("customer/changepassword"),
   },
+  cabList: {
+    list: apiUrl("cab/list"),
+  },
 };
 
 export const statusCode = {

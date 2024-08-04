@@ -1,9 +1,10 @@
-'use client'
-import { configureStore } from '@reduxjs/toolkit'
-import { userReducer } from './slice'
+"use client";
+import { configureStore } from "@reduxjs/toolkit";
+import { cabBookingReducer, userReducer } from "./slice";
 
 export const store = configureStore({
-    reducer: {
-        user: userReducer
-    },
-})
+  reducer: {
+    user: userReducer,
+    cab: cabBookingReducer,
+  },
+});

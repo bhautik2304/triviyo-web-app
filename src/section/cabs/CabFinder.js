@@ -1,0 +1,266 @@
+import React, { useEffect, useState } from "react";
+import { GmapPlaceSearch } from "@/components";
+import { useSearchParams } from "next/navigation";
+
+function CabFinder() {
+  const [km, setKm] = useState(0);
+  const [origin, setorigin] = useState({});
+  const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const qry = useSearchParams();
+
+  useEffect(() => {
+    const qry_params = qry.get("qry");
+    setData(JSON.parse(qry_params));
+  }, []);
+
+  console.log(data);
+  return (
+    <>
+      <section class="bg-primary">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              {/* <!-- Booking from START --> */}
+              <div class="form-control-bg-light bg-mode border p-4 rounded-3">
+                <div class="row g-4">
+                  {/* <!-- Nav tabs START --> */}
+                  <div class="col-lg-6">
+                    <div
+                      class="nav nav-pills mb-3"
+                      id="pills-tab"
+                      role="tablist"
+                    >
+                      <div
+                        class="form-check form-check-inline active"
+                        id="cab-one-way-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#cab-one-way"
+                        role="tab"
+                        aria-controls="cab-one-way"
+                        aria-selected="true"
+                      >
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadiocab1"
+                          value="option1"
+                          checked
+                        />
+                        <label class="form-check-label" for="inlineRadiocab1">
+                          One Way
+                        </label>
+                      </div>
+                      <div
+                        class="form-check form-check-inline"
+                        id="cab-round-way-tab"
+                        data-bs-toggle="pill"
+                        data-bs-target="#cab-round-way"
+                        role="tab"
+                        aria-controls="cab-round-way"
+                        aria-selected="false"
+                      >
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="inlineRadioOptions"
+                          id="inlineRadiocab2"
+                          value="option2"
+                        />
+                        <label class="form-check-label" for="inlineRadiocab2">
+                          Round Trip
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <!-- Nav tabs END --> */}
+                </div>
+
+                {/* <!-- Tab content START --> */}
+                <div class="tab-content mt-0" id="pills-tabContent">
+                  {/* <!-- One way tab START --> */}
+                  <div
+                    class="tab-pane fade show active"
+                    id="cab-one-way"
+                    role="tabpanel"
+                    aria-labelledby="cab-one-way-tab"
+                  >
+                    <form class="row g-4 align-items-center">
+                      <div class="col-xl-10">
+                        <div class="row g-4">
+                          {/* <!-- Pickup --> */}
+                          <div class="col-md-6 col-xl-4">
+                            <div class="form-size-lg">
+                              <label class="form-label">Pickup</label>
+                              <GmapPlaceSearch
+                                placeholder="Selct Pickup Location"
+                                onSelectPlace={(place) => {
+                                  console.log(place);
+                                }}
+                                defaultValue={data?.origin?.name}
+                              />
+                            </div>
+                          </div>
+
+                          {/* <!-- Drop --> */}
+                          <div class="col-md-6 col-xl-4">
+                            <div class="form-size-lg">
+                              <label class="form-label">Drop</label>
+                              <GmapPlaceSearch
+                                placeholder="Selct Pickup Location"
+                                onSelectPlace={(place) => {
+                                  console.log(place);
+                                }}
+                                defaultValue={data?.destination?.name}
+                              />
+                            </div>
+                          </div>
+
+                          {/* <!-- Date --> */}
+                          <div class="col-md-6 col-xl-2">
+                            <label class="form-label">Pickup Date</label>
+                            <input
+                              type="text"
+                              class="form-control form-control-lg flatpickr"
+                              value="20 Nov"
+                              placeholder="Select date"
+                            />
+                          </div>
+
+                          {/* <!-- Time --> */}
+                          <div class="col-md-6 col-xl-2">
+                            <label class="form-label">Pickup time</label>
+                            <input
+                              type="text"
+                              class="form-control form-control-lg flatpickr"
+                              value="2:50 PM"
+                              data-enableTime="true"
+                              data-noCalendar="true"
+                              placeholder="Select time"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-2 d-grid mt-xl-auto">
+                        <a class="btn btn-lg btn-primary mb-0" href="#">
+                          Update
+                        </a>
+                      </div>
+                    </form>
+                  </div>
+                  {/* <!-- One way tab END --> */}
+
+                  {/* <!-- Round way tab END --> */}
+                  <div
+                    class="tab-pane fade"
+                    id="cab-round-way"
+                    role="tabpanel"
+                    aria-labelledby="cab-round-way-tab"
+                  >
+                    <form class="row g-4 align-items-center">
+                      <div class="col-xl-12">
+                        <div class="row g-4">
+                          {/* <!-- Leaving From --> */}
+                          <div class="col-md-6 col-xl-6">
+                            <div class="form-size-lg">
+                              <label class="form-label">Pickup</label>
+                              <select
+                                class="form-select js-choice"
+                                data-search-enabled="true"
+                                aria-label=".form-select-sm"
+                              >
+                                <option value="">Select location</option>
+                                <option>New York</option>
+                                <option>Canada</option>
+                                <option>Paris</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          {/* <!-- Going To --> */}
+                          <div class="col-md-6 col-xl-6">
+                            <div class="form-size-lg">
+                              <label class="form-label">Drop</label>
+                              <select
+                                class="form-select js-choice"
+                                data-search-enabled="true"
+                                aria-label=".form-select-sm"
+                              >
+                                <option value="">Select location</option>
+                                <option>Canada</option>
+                                <option>New York</option>
+                                <option>Paris</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          {/* <!-- Date --> */}
+                          <div class="col-md-6 col-xl-3">
+                            <label class="form-label">Pickup Date</label>
+                            <input
+                              type="text"
+                              class="form-control form-control-lg flatpickr"
+                              placeholder="Select date"
+                            />
+                          </div>
+
+                          {/* <!-- Time --> */}
+                          <div class="col-md-6 col-xl-3">
+                            <label class="form-label">Pickup time</label>
+                            <input
+                              type="text"
+                              class="form-control form-control-lg flatpickr"
+                              data-enableTime="true"
+                              data-noCalendar="true"
+                              placeholder="Select time"
+                            />
+                          </div>
+
+                          {/* <!-- Date --> */}
+                          <div class="col-md-6 col-xl-3">
+                            <label class="form-label">Return Date</label>
+                            <input
+                              type="text"
+                              class="form-control form-control-lg flatpickr"
+                              placeholder="Select date"
+                            />
+                          </div>
+
+                          {/* <!-- Time --> */}
+                          <div class="col-md-6 col-xl-3">
+                            <label class="form-label">Return time</label>
+                            <input
+                              type="text"
+                              class="form-control form-control-lg flatpickr"
+                              data-enableTime="true"
+                              data-noCalendar="true"
+                              placeholder="Select time"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-xl-2">
+                        <a class="btn btn-lg btn-primary w-100 mb-0" href="#">
+                          Update
+                        </a>
+                      </div>
+                    </form>
+                  </div>
+                  {/* <!-- Round way tab END --> */}
+                </div>
+                {/* <!-- Tab content END --> */}
+              </div>
+              {/* <!-- Booking from END --> */}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default CabFinder;

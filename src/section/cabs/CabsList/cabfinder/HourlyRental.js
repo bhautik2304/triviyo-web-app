@@ -19,7 +19,7 @@ import {
   addSerach,
   addStopOver,
   changeTripData,
-} from "@/redux/slice/cabBookingSlice";
+} from "@/redux/slice/CabBookingSlice";
 import moment from "moment";
 import { TimeClock } from "@mui/x-date-pickers";
 import { LockClockTwoTone } from "@mui/icons-material";

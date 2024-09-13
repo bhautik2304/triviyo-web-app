@@ -8,7 +8,7 @@ import {
   addStopOver,
   changeTripData,
   emptyCabList,
-} from "@/redux/slice/cabBookingSlice";
+} from "@/redux/slice/CabBookingSlice";
 import { Radio, FormControlLabel } from "@mui/material";
 import { fetchCabs } from "@/redux/thunk/cab";
 

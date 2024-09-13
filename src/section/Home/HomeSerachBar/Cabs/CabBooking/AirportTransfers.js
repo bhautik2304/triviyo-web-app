@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import Flatpickr from "react-flatpickr";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
-import { addStopOver, changeTripData } from "@/redux/slice/cabBookingSlice";
+import { addStopOver, changeTripData } from "@/redux/slice/CabBookingSlice";
 import moment from "moment";
 
 const tripOption = {

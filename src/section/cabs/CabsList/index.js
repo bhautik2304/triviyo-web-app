@@ -7,7 +7,7 @@ import CabList from "./CabList";
 import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { fetchCabs } from "@/redux/thunk/cab";
-import { changeTripData } from "@/redux/slice/cabBookingSlice";
+import { changeTripData } from "@/redux/slice/CabBookingSlice";
 
 function Cabs() {
   const [data, setData] = useState();

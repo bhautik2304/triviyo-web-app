@@ -2,7 +2,7 @@ import { serverUrl } from "@/util/server";
 import React from "react";
 import { Skeleton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addSerach } from "@/redux/slice/cabBookingSlice";
+import { addSerach } from "@/redux/slice/CabBookingSlice";
 import { useRouter } from "next/navigation";
 import { appRoutes } from "@/constant";
 

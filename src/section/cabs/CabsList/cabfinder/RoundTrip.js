@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import moment from "moment";
 import { fetchCabs } from "@/redux/thunk/cab";
 import { useDispatch } from "react-redux";
-import { changeTripData } from "@/redux/slice/cabBookingSlice";
+import { changeTripData } from "@/redux/slice/CabBookingSlice";
 import { appRoutes } from "@/constant";
 
 const defaultAddress = {

@@ -5,6 +5,7 @@ import { Providers } from "@/redux/Provider";
 import Script from "next/script";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import { siteUrl } from "@/util/server";
 
 export const metadata = {
   title: "VTT Cabs - Reliable Cab and Hotel Booking Services",
@@ -42,27 +43,31 @@ export default function PrivacyPolicyLayout({ children }) {
         <link
           rel="stylesheet"
           type="text/css"
-          href="assets/vendor/font-awesome/css/all.min.css"
+          href={siteUrl("/assets/vendor/font-awesome/css/all.min.css")}
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+          href={siteUrl("/assets/vendor/bootstrap-icons/bootstrap-icons.css")}
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="assets/vendor/choices/css/choices.min.css"
+          href={siteUrl("/assets/vendor/choices/css/choices.min.css")}
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="assets/vendor/flatpickr/css/flatpickr.min.css"
+          href={siteUrl("/assets/vendor/flatpickr/css/flatpickr.min.css")}
         />
 
         {/* <!-- Theme CSS --> */}
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
-        <Script src="/assets/js/sitethememood.js"></Script>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href={siteUrl("/assets/css/style.css")}
+        />
+        <Script src={siteUrl("/assets/js/sitethememood.js")}></Script>
       </head>
       <body data-bs-theme="dark">
         <Providers>
@@ -78,11 +83,17 @@ export default function PrivacyPolicyLayout({ children }) {
         <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
 
         {/* <!-- Vendors --> */}
-        <Script src="assets/vendor/choices/js/choices.min.js"></Script>
+
+        <Script
+          src={siteUrl("/assets/vendor/sticky-js/sticky.min.js")}
+        ></Script>
+        <Script
+          src={siteUrl("/assets/vendor/choices/js/choices.min.js")}
+        ></Script>
         <Script src="https://cdn.jsdelivr.net/npm/flatpickr"></Script>
 
         {/* <!-- ThemeFunctions --> */}
-        <Script src="/assets/js/functions.js"></Script>
+        <Script src={siteUrl("/assets/js/functions.js")}></Script>
       </body>
     </html>
   );

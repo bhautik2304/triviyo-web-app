@@ -7,25 +7,29 @@ import CabList from "./CabList";
 import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { fetchCabs } from "@/redux/thunk/cab";
+import { changeTripData } from "@/redux/slice/cabBookingSlice";
 
 function Cabs() {
   const [data, setData] = useState();
   const dispatch = useDispatch();
   const qry = useSearchParams();
+  const qry_params = JSON.parse(qry.get("qry"));
 
   useEffect(() => {
-    const qry_params = JSON.parse(qry.get("qry"));
     setData(qry_params);
     console.log(qry_params);
     const params = {
-      location: qry_params.location, // Example locations
-      trip: "One Way",
+      location: qry_params?.stopOvers, // Example locations
+      trip: qry_params?.tripType,
       cabsType: "all",
     };
     dispatch(fetchCabs(params));
+    dispatch(changeTripData(qry_params));
   }, []);
 
-  const { cabs, totaleKm, loading } = useSelector((state) => state.cab);
+  const { cabs, totaleKm, loading, cabsSearch } = useSelector(
+    (state) => state.cab
+  );
 
   return (
     <>
@@ -42,12 +46,15 @@ function Cabs() {
                   {/* <!-- Divider --> */}
                   <ul class="nav nav-divider h6 mb-0">
                     <li class="nav-item">
-                      {totaleKm ? `${data?.tripType} trip` : "---"}
+                      {loading ? `${cabsSearch?.tripType} trip` : "---"}
                     </li>
                     <li class="nav-item">
-                      {loading ? `${totaleKm} kms` : "---"}
+                      {loading
+                        ? cabsSearch?.tripType == "Hourly Rentals"
+                          ? cabsSearch?.pkg
+                          : `${totaleKm} kms`
+                        : "---"}
                     </li>
-                    <li class="nav-item"></li>
                   </ul>
                 </div>
 

@@ -13,7 +13,7 @@ import { setSession } from "@/lib/auth";
 import { isLocalStorageAvailable } from "@/lib/config";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 
-function Signin() {
+function Signin({ onlyrefresh = false, noCredite }) {
   const [authProcessState, setAuthProcessState] = useState(
     authState.mobileOrEmail
   );
@@ -213,36 +213,39 @@ function Signin() {
           setAuthProcessState(authState.createAccount);
           setCustomer(e.customer);
         } else {
-          if (e.code === 404) {
-            setError({ ...error, password: e.msg });
-            setLoader(false);
-            return 0;
-          }
           const session = await setSession(e.token, e.customer);
           if (session) {
             localStorage.removeItem("otp_id");
             setLoader(false);
-
-            router.push(appRoutes.home);
+            if (onlyrefresh) {
+              window.location.reload();
+            } else {
+              router.push(appRoutes.home);
+            }
           }
         }
       },
       () => {
         setLoader(false);
+      },
+      (e) => {
+        if (e.code === 404) {
+          setError({ ...error, password: e.msg });
+          setLoader(false);
+          return 0;
+        }
       }
     );
   };
 
   const errorMessage = (key) => error[key] || error?.error;
 
-  console.log();
-
   return (
     <>
       <div class="mt-4 text-start">
         {authProcessState == authState.mobileOrEmail && (
           <>
-            <h1 class="mb-2 h5">Sign up / Login now to</h1>
+            <h1 class="mb-2 h5">Sign up or Login now </h1>
             {error && (
               <div className="alert alert-danger w-100 my-2">
                 <span className="text-danger">{`${errorMessage("signInput")} ${
@@ -337,14 +340,16 @@ function Signin() {
           </>
         )}
         {/* <!-- Copyright --> */}
-        <div class="text-primary-hover text-body mt-3 text-center">
-          {" "}
-          © All rights reserved. by{" "}
-          <a href="https://www.vttcabs.com/" class="text-body">
-            VTT Cabs private limited
-          </a>
-          .{" "}
-        </div>
+        {!noCredite && (
+          <div class="text-primary-hover text-body mt-3 text-center">
+            {" "}
+            © All rights reserved. by{" "}
+            <a href="https://www.vttcabs.com/" class="text-body">
+              VTT Cabs private limited
+            </a>
+            .{" "}
+          </div>
+        )}
       </div>
     </>
   );

@@ -1,14 +1,16 @@
 const userProfilePrefix = "/user";
+const cabsSectionPrefix = "/cabs";
 
 export const appRoutes = {
   home: "/",
   app: {
-    cabs: "cabs",
+    cabs: cabsSectionPrefix,
+    cabsDetails: `${cabsSectionPrefix}/vtt-cabs-trip-review`,
   },
-  login: "sign-in",
-  register: "sign-up",
+  login: "/sign-in",
+  register: "/sign-up",
   profile: {
-    home: "/user",
+    home: userProfilePrefix,
     booking: `${userProfilePrefix}/mybooking`,
     traveller: `${userProfilePrefix}/travelers`,
     money: `${userProfilePrefix}/vttmoney`,
@@ -45,6 +47,12 @@ export const apiRoutes = {
   },
   cabList: {
     list: apiUrl("cab/list"),
+  },
+  fare: {
+    getFare: apiUrl("cab/get-cab-fare"),
+  },
+  payment: {
+    createOrder: apiUrl("create-order"),
   },
 };
 

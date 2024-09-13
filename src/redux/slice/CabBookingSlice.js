@@ -1,6 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchCabs } from "../thunk/cab";
 
+const oneWay = {
+  tripType: "One Way",
+  fromCity: {},
+  toCity: {},
+  stopOvers: [],
+  pickupDate: "",
+  pickupTime: "",
+  intlFlow: false,
+  returnDate: "",
+  dropTime: "",
+};
+
+const roundTrip = {
+  tripType: "Round Trip",
+  fromCity: {},
+  toCity: {},
+  stopOvers: [],
+  pickupDate: "",
+  pickupTime: "",
+  intlFlow: false,
+  returnDate: "",
+  dropTime: "",
+};
+
+const airportTransfer = {
+  tripType: "Airport Trip",
+  airport: {},
+  toDestination: {},
+  stopOvers: [],
+  pickupDate: "",
+  pickupTime: "",
+};
+
+const hourlyRentals = {
+  tripType: "Hourly Rentals",
+  fromCity: {},
+  package_id: null,
+  pickupDate: "",
+  pickupTime: "",
+};
+
 const initialState = {
   cabs: [],
   cabsSearch: {},
@@ -13,30 +54,36 @@ const CabBookingSlice = createSlice({
   name: "Cabs",
   initialState,
   reducers: {
-    addSerach: (state, payload) => {
-      state.cabsSearch = payload.payload;
+    addSerach: (state, action) => {
+      state.cabsSearch[action.payload.key] = action.payload.value;
+    },
+    changeTripData: (state, action) => {
+      state.cabsSearch = action.payload;
+    },
+    emptyCabList: (state, action) => {
+      state.cabs = [];
+      state.totaleKm = 0;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCabs.fulfilled, (state, action) => {
       state.cabs = action.payload.cabs_list;
-      state.authStatus = true;
       state.loading = true;
       state.totaleKm = Math.round(action.payload.km);
     });
     builder.addCase(fetchCabs.pending, (state, action) => {
-      state.authStatus = false;
-      state.loading = true;
+      state.loading = false;
       state.progress = 40;
     });
     builder.addCase(fetchCabs.rejected, (state, action) => {
-      state.authStatus = false;
       state.loading = true;
+      state.error = true;
       state.progress = 100;
     });
   },
 });
 
-export const { addSerach } = CabBookingSlice.actions;
+export const { addSerach, changeTripData, emptyCabList } =
+  CabBookingSlice.actions;
 
 export default CabBookingSlice.reducer;

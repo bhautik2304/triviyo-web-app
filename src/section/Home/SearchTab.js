@@ -1,46 +1,48 @@
-"use client"
-import React from 'react'
-import CabBooking from './HomeSerachBar/Cabs/CabBooking'
+"use client";
+import React from "react";
+import CabBooking from "./HomeSerachBar/Cabs/CabBooking";
 
 function SearchTab() {
-    return (
-        <>{/* <!-- Search START --> */}
-            <div class="container container-sm-fluid mt-n8">
-                <div class="row">
-                    {/* <!-- Tabs START --> */}
-                    <div class="col-11 col-lg-8 col-xl-6 mx-auto">
-                        <ul class="nav nav-tabs nav-bottom-line nav-justified nav-responsive bg-mode rounded-top z-index-9 position-relative pt-2 pb-0 px-4">
-                            <li class="nav-item">
-                                <a class="nav-link mb-0 active" data-bs-toggle="tab" href="#cab"><i class="fa-solid fa-car fa-fw me-2"></i>Cabs</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link mb-0s" data-bs-toggle="tab" href="#hotel"><i class="fa-solid fa-hotel fa-fw me-2"></i>Hotel</a>
-                            </li>
-                        </ul>
-                    </div>
-                    {/* <!-- Tabs END --> */}
+  return (
+    <>
+      {/* <!-- Search START --> */}
+      <div class="container container-sm-fluid mt-n8">
+        <div class="row">
+          {/* <!-- Tabs START --> */}
+          <div class="col-11 col-lg-8 col-xl-6 mx-auto">
+            <ul class="nav nav-tabs nav-bottom-line nav-justified nav-responsive bg-mode rounded-top z-index-9 position-relative pt-2 pb-0 px-4">
+              <li class="nav-item">
+                <a
+                  class="nav-link mb-0 active"
+                  data-bs-toggle="tab"
+                  href="#cab"
+                >
+                  <i class="fa-solid fa-car fa-fw me-2"></i>Cabs
+                </a>
+              </li>
+            </ul>
+          </div>
+          {/* <!-- Tabs END --> */}
 
-                    {/* <!-- Tab content START --> */}
-                    <div class="col-12">
-                        {/* <!-- Search END --> */}
-                        < div class="card-body pt-0" >
-
-                            <div class="tab-content" id="nav-tabContent">
-                                {/* <!-- Tab content item START --> */}
-                                <CabBooking />
-                                {/* <!-- Tab content item END --> */}
-                            </div>
-                            {/* <!-- Tab content END --> */}
-                        </div>
-                    </div>
-                </div>
-
+          {/* <!-- Tab content START --> */}
+          <div class="col-12">
+            {/* <!-- Search END --> */}
+            <div class="card-body pt-0">
+              <div class="tab-content" id="nav-tabContent">
+                {/* <!-- Tab content item START --> */}
+                <CabBooking />
+                {/* <!-- Tab content item END --> */}
+              </div>
+              {/* <!-- Tab content END --> */}
             </div>
-        </>
-    )
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default SearchTab
+export default SearchTab;
 
 //     < div class="card-body p-4 pt-0" >
 //         {/* <!-- Tab content START --> */ }

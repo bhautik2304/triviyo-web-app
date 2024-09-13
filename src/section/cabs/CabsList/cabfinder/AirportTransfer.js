@@ -6,17 +6,18 @@ import {
   GmapPlaceSearch,
   TimeInput,
 } from "@/components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "react-google-autocomplete";
 import Link from "next/link";
 import { appRoutes, cabSearchSchima } from "@/constant";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Flatpickr from "react-flatpickr";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
 import { addStopOver, changeTripData } from "@/redux/slice/cabBookingSlice";
 import moment from "moment";
+import { fetchCabs } from "@/redux/thunk/cab";
 
 const tripOption = {
   pickupToAirport: "Pickup To Airport",
@@ -25,9 +26,9 @@ const tripOption = {
 
 const airportTransfer = {
   tripType: "Airport Transfers",
-  airport: false,
-  toCity: false,
-  fromCity: false,
+  airport: null,
+  toDestination: false,
+  toPickup: false,
   trip: tripOption.pickupToAirport,
   stopOvers: [],
   pickupDate: "",
@@ -41,18 +42,58 @@ const errorMessage = {
   times: false,
 };
 
-function AirportTransfers() {
+const defaultAddress = {
+  label: "Surat, Gujarat, India",
+  id: "ChIJYxUdQVlO4DsRQrA4CSlYRf4",
+  name: "Surat, Gujarat, India",
+  placeId: "ChIJYxUdQVlO4DsRQrA4CSlYRf4",
+  lat: 21.1702401,
+  lng: 72.83106070000001,
+};
+
+function AirportTransfer({ data }) {
   const [origin, setOrigin] = useState(false);
-  const [data, setData] = useState(airportTransfer);
+  const [date, setDate] = useState();
+  const [time, setTime] = useState();
+  const [datas, setData] = useState();
   const [error, setError] = useState(errorMessage);
+
   const dispatch = useDispatch();
   const routes = useRouter();
+  const qry = useSearchParams();
+
+  const qry_params = JSON.parse(qry.get("qry"));
+  const { cabsSearch } = useSelector((state) => state.cab);
+  useEffect(() => {
+    setData({
+      ...data,
+      toDestination: null,
+    });
+    const datesss = moment(qry_params.pickupDate, "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    const combinedDateTimeString = `${datesss}T${qry_params.pickupTime}`;
+
+    // Parse the combined date and time using moment
+    const formattedDateTime = moment(combinedDateTimeString).format(
+      "YYYY-MM-DDTHH:mm"
+    );
+    console.log("64 bdcsdfsg", combinedDateTimeString);
+    const pickupDate = cabsSearch?.pickupDate
+      ? setDate(moment(cabsSearch.pickupDate))
+      : null;
+    const pickupTime = cabsSearch?.pickupTime
+      ? setTime(moment(formattedDateTime))
+      : null;
+  }, []);
+
+  console.log(datas);
 
   const searchTrip = async () => {
     let hasError = false;
 
-    if (!data.pickupTime) {
-      // console.log("Now first problem data.pickupTime");
+    if (!datas.pickupTime) {
+      // console.log("Now first problem datas.pickupTime");
       // return 0;
       setError((prevError) => ({
         ...prevError,
@@ -61,8 +102,8 @@ function AirportTransfers() {
       hasError = true;
     }
 
-    if (!data.pickupDate) {
-      // console.log("Now first problem data.pickupDate", data);
+    if (!datas.pickupDate) {
+      // console.log("Now first problem datas.pickupDate", datas);
       // return 0;
       setError((prevError) => ({
         ...prevError,
@@ -71,15 +112,15 @@ function AirportTransfers() {
       hasError = true;
     }
 
-    if (data.trip == tripOption.pickupToAirport) {
-      if (!data.airport) {
+    if (datas.trip == tripOption.pickupToAirport) {
+      if (!datas.airport) {
         setError((prevError) => ({
           ...prevError,
           origin: "Please Select Pickup Airport",
         }));
         hasError = true;
       }
-      if (!data.toCity) {
+      if (!datas.toCity) {
         setError((prevError) => ({
           ...prevError,
           destination: "Please Select Drop Location",
@@ -88,8 +129,8 @@ function AirportTransfers() {
       }
     } else {
       console.log("run this", tripOption.pickupToAirport);
-      if (!data.fromCity) {
-        // console.log("Now first problem data.toPickup");
+      if (!datas.cc) {
+        // console.log("Now first problem datas.toPickup");
         // return 0;
         setError((prevError) => ({
           ...prevError,
@@ -97,8 +138,8 @@ function AirportTransfers() {
         }));
         hasError = true;
       }
-      if (!data.airport) {
-        // console.log("Now first problem data.airport");
+      if (!datas.airport) {
+        // console.log("Now first problem datas.airport");
         // return 0;
         setError((prevError) => ({
           ...prevError,
@@ -117,97 +158,105 @@ function AirportTransfers() {
 
     try {
       let newOneWay;
-      if (data.trip == tripOption.pickupToAirport) {
+      if (datas.trip == tripOption.pickupToAirport) {
         newOneWay = {
-          ...data,
-          stopOvers: [data.airport, data.toCity],
+          ...datas,
+          stopOvers: [datas.airport, datas.toDestination],
         };
       } else {
         newOneWay = {
-          ...data,
-          stopOvers: [data.fromCity, data.airport],
+          ...datas,
+          stopOvers: [datas.toPickup, datas.airport],
         };
       }
       console.log(newOneWay);
 
       dispatch(changeTripData(newOneWay));
-      // Ensure pathname and query are set correctly
+      const params = {
+        location: newOneWay?.stopOvers, // Example locations
+        trip: newOneWay?.tripType,
+        cabsType: "all",
+      };
+      dispatch(fetchCabs(params));
       routes.push(`${appRoutes.app.cabs}?qry=${JSON.stringify(newOneWay)}`);
+      // Ensure pathname and query are set correctly
     } catch (error) {
       console.error("Error navigating:", error);
     }
   };
   return (
-    <div
-      div
-      class="tab-pane fade"
-      id="pills-Airport-Transfers-2"
-      role="tabpanel"
-      aria-labelledby="pills-Airport-Transfers-2-tab"
-    >
-      <div class="col-lg-6">
-        <div class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-          <div
-            class="form-check form-check-inline active"
-            id="cab-one-way-tab"
-            data-bs-toggle="pill"
-            data-bs-target="#cab-one-way"
-            role="tab"
-            aria-controls="cab-one-way"
-            aria-selected="true"
-            onClick={() => {
-              setError(errorMessage);
-              setData({ ...data, trip: tripOption.pickupToAirport });
-            }}
-          >
-            <input
-              class="form-check-input "
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadiocab1"
-              value={data.trip}
-              checked={data.trip == tripOption.pickupToAirport}
-            />
-            <label class="form-check-label" for="inlineRadiocab1">
-              {tripOption.pickupToAirport}
-            </label>
-          </div>
-          <div
-            class="form-check form-check-inline"
-            id="cab-round-way-tab"
-            data-bs-toggle="pill"
-            data-bs-target="#cab-round-way"
-            role="tab"
-            aria-controls="cab-round-way"
-            aria-selected="false"
-            onClick={() => {
-              setData({ ...data, trip: tripOption.dropToAirport });
-              setError(errorMessage);
-            }}
-          >
-            <input
-              class="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadiocab2"
-              value={data.trip}
-              checked={data.trip == tripOption.dropToAirport}
-            />
-            <label class="form-check-label" for="inlineRadiocab2">
-              {tripOption.dropToAirport}
-            </label>
+    <>
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-6 mb-4">
+          <div class="nav nav-pills" id="pills-tab" role="tablist">
+            <div
+              class={`form-check form-check-inline ${
+                datas?.trip == tripOption.pickupToAirport && "active"
+              }`}
+              id="cab-one-way-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#cab-one-way"
+              role="tab"
+              aria-controls="cab-one-way"
+              aria-selected={datas?.trip == tripOption.pickupToAirport}
+              onClick={() => {
+                setError(errorMessage);
+                setData({ ...datas, trip: tripOption.pickupToAirport });
+              }}
+            >
+              <input
+                class="form-check-input "
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadiocab5"
+                onChange={() => {}}
+                value={datas?.trip}
+                checked={datas?.trip == tripOption.pickupToAirport}
+              />
+              <label class="form-check-label" for="inlineRadiocab5">
+                {tripOption.pickupToAirport}
+              </label>
+            </div>
+            <div
+              class={`form-check form-check-inline ${
+                datas?.trip == tripOption.pickupToAirport && "active"
+              }`}
+              id="cab-round-way-tab"
+              data-bs-toggle="pill"
+              data-bs-target="#cab-round-way"
+              role="tab"
+              aria-controls="cab-round-way"
+              aria-selected={datas?.trip == tripOption.pickupToAirport}
+              onClick={() => {
+                setData({ ...datas, trip: tripOption.dropToAirport });
+                setError(errorMessage);
+              }}
+            >
+              <input
+                class="form-check-input"
+                type="radio"
+                name="inlineRadioOptions"
+                id="inlineRadiocab6"
+                onChange={() => {}}
+                value={data?.trip}
+                checked={data?.trip == tripOption.dropToAirport}
+              />
+              <label class="form-check-label" for="inlineRadiocab6">
+                {tripOption.dropToAirport}
+              </label>
+            </div>
           </div>
         </div>
       </div>
       <div class="row g-4">
         {/* <!-- Pickup --> */}
-        <div class="col-md-6 position-relative">
+        <div class="col-md-3 position-relative">
           <div class="form-icon-input form-size-lg form-fs-lg">
-            {data.trip == tripOption.pickupToAirport ? (
+            {datas?.trip == tripOption.pickupToAirport ? (
               <>
                 <AirportGmapPlace
                   error={error.origin}
-                  label="Selct Pickup Location"
+                  label="Select Pickup Airport"
                   onSelectAirport={(place) => {
                     console.log(place);
                     setError((prevError) => ({
@@ -222,9 +271,10 @@ function AirportTransfers() {
                       lat: place.latitude,
                       lng: place.longitude,
                     };
-                    setData({ ...data, airport: newLocationData });
+                    setData({ ...datas, airport: newLocationData });
                     // Update the state immutably
                   }}
+                  defaultValue={datas?.airport}
                 />
               </>
             ) : (
@@ -232,6 +282,7 @@ function AirportTransfers() {
                 <GmapPlaceSearch
                   error={error.origin}
                   label="Select Pickup Location"
+                  value={data?.toPickup}
                   onSelectPlace={(place) => {
                     console.log(place);
                     setError((prevError) => ({
@@ -250,7 +301,7 @@ function AirportTransfers() {
                       lat: place.geometry.location.lat,
                       lng: place.geometry.location.lng,
                     };
-                    setData({ ...data, fromCity: newLocationData });
+                    setData({ ...datas, toPickup: newLocationData });
                     // Update the state immutably
                   }}
                 />
@@ -266,12 +317,12 @@ function AirportTransfers() {
           </div>
         </div>
         {/* <!-- Drop --> */}
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="form-icon-input form-size-lg form-fs-lg">
-            {data.trip == tripOption.pickupToAirport ? (
+            {datas?.trip == tripOption.pickupToAirport ? (
               <>
                 <GmapPlaceSearch
-                  label="Selct Drop Location"
+                  label="Select Drop Location"
                   error={error.destination}
                   onSelectPlace={(place) => {
                     setError((prevError) => ({
@@ -293,8 +344,9 @@ function AirportTransfers() {
                     };
 
                     // Update the state immutably
-                    setData({ ...data, toCity: newLocationData });
+                    setData({ ...datas, toCity: newLocationData });
                   }}
+                  value={datas?.toCity || null}
                 />
               </>
             ) : (
@@ -302,6 +354,7 @@ function AirportTransfers() {
                 <AirportGmapPlace
                   label="Select Drop Airport"
                   error={error.destination}
+                  defaultValue={datas?.airport}
                   onSelectAirport={(place) => {
                     console.log(place);
                     setError((prevError) => ({
@@ -316,7 +369,7 @@ function AirportTransfers() {
                       lat: place.latitude,
                       lng: place.longitude,
                     };
-                    setData({ ...data, airport: newLocationData });
+                    setData({ ...datas, airport: newLocationData });
                     // Update the state immutably
                   }}
                 />
@@ -326,7 +379,7 @@ function AirportTransfers() {
           </div>
         </div>
         {/* <!-- Pickup date --> */}
-        <div class="col-md-6">
+        <div class="col-md-2">
           <div class="form-icon-input form-fs-lg">
             <DateInput
               error={error.date}
@@ -337,16 +390,17 @@ function AirportTransfers() {
                   date: false,
                 }));
                 setData({
-                  ...data,
+                  ...datas,
                   pickupDate: moment(data).format("YYYY-MM-DD"),
                 });
               }}
+              value={date}
             />
             <span className="text-danger">{error?.date}</span>
           </div>
         </div>
         {/* <!-- Pickup time --> */}
-        <div class="col-md-6">
+        <div class="col-md-2">
           <div class="form-icon-input form-fs-lg">
             <TimeInput
               error={error.times}
@@ -357,22 +411,26 @@ function AirportTransfers() {
                   times: false,
                 }));
                 setData({
-                  ...data,
+                  ...datas,
                   pickupTime: moment(date).format("HH:mm:ss"),
                 });
               }}
+              value={time}
             />
             <span className="text-danger">{error?.times}</span>
           </div>
         </div>
+        <div class="col-xl-2">
+          <button
+            onClick={searchTrip}
+            class="btn btn-lg btn-primary w-100 mb-0"
+          >
+            Update
+          </button>
+        </div>
       </div>
-      <div class="text-center pt-0">
-        <button onClick={searchTrip} class="btn btn-lg btn-primary mb-n7">
-          Search Cabs <i class="bi bi-arrow-right ps-3"></i>
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 
-export default AirportTransfers;
+export default AirportTransfer;

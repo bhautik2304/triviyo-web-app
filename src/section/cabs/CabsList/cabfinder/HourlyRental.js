@@ -6,17 +6,23 @@ import {
   DateInput,
   TimeInput,
 } from "@/components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "react-google-autocomplete";
 import Link from "next/link";
 import { appRoutes, cabSearchSchima } from "@/constant";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Flatpickr from "react-flatpickr";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
-import { addStopOver, changeTripData } from "@/redux/slice/cabBookingSlice";
+import {
+  addSerach,
+  addStopOver,
+  changeTripData,
+} from "@/redux/slice/cabBookingSlice";
 import moment from "moment";
+import { TimeClock } from "@mui/x-date-pickers";
+import { LockClockTwoTone } from "@mui/icons-material";
 
 const oneWay = {
   tripType: "Hourly Rentals",
@@ -43,13 +49,10 @@ const hourlyOption = [
   "12 hrs",
 ];
 
-function HourlyRentals() {
-  const [origin, setOrigin] = useState(false);
-  const [originLatLong, setOriginLatLong] = useState(false);
-  const [pkg, setPkg] = useState(false);
-  const [destinationLatLong, setDestinationLatLong] = useState(false);
-  const [date, setDate] = useState(false);
-  const [times, setTime] = useState(false);
+function HourlyRental({ data }) {
+  const [datas, setData] = useState();
+  const [date, setDate] = useState(null);
+  const [times, setTime] = useState(null);
   const [error, setError] = useState({
     origin: false,
     destination: false,
@@ -58,11 +61,36 @@ function HourlyRentals() {
   });
   const dispatch = useDispatch();
   const routes = useRouter();
+  const qry = useSearchParams();
+
+  const qry_params = JSON.parse(qry.get("qry"));
+  const { cabsSearch } = useSelector((state) => state.cab);
+  useEffect(() => {
+    setData({
+      ...data,
+    });
+    const datesss = moment(qry_params.pickupDate, "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    const combinedDateTimeString = `${datesss}T${qry_params.pickupTime}`;
+
+    // Parse the combined date and time using moment
+    const formattedDateTime = moment(combinedDateTimeString).format(
+      "YYYY-MM-DDTHH:mm"
+    );
+    console.log("64 bdcsdfsg", combinedDateTimeString);
+    const pickupDate = cabsSearch?.pickupDate
+      ? setDate(moment(cabsSearch.pickupDate))
+      : null;
+    const pickupTime = cabsSearch?.pickupTime
+      ? setTime(moment(formattedDateTime))
+      : null;
+  }, []);
 
   const searchTrip = async () => {
     let hasError = false;
 
-    if (!times) {
+    if (!datas?.pickupDate) {
       setError((prevError) => ({
         ...prevError,
         times: "Please Select Pickup Time",
@@ -70,7 +98,7 @@ function HourlyRentals() {
       hasError = true;
     }
 
-    if (!date) {
+    if (!datas?.pickupTime) {
       setError((prevError) => ({
         ...prevError,
         date: "Please Select Pickup Date",
@@ -78,7 +106,7 @@ function HourlyRentals() {
       hasError = true;
     }
 
-    if (!origin) {
+    if (!datas?.fromCity) {
       setError((prevError) => ({
         ...prevError,
         origin: "Please Select Pickup Location",
@@ -86,7 +114,7 @@ function HourlyRentals() {
       hasError = true;
     }
 
-    if (!pkg) {
+    if (!datas?.pkg) {
       setError((prevError) => ({
         ...prevError,
         destination: "Please Select Drop Location",
@@ -100,14 +128,7 @@ function HourlyRentals() {
     }
 
     try {
-      const newOneWay = {
-        ...oneWay,
-        fromCity: origin,
-        pkg: pkg,
-        pickupDate: date,
-        pickupTime: times,
-      };
-      dispatch(changeTripData(newOneWay));
+      dispatch(changeTripData(datas));
       // Ensure pathname and query are set correctly
       console.log(newOneWay);
 
@@ -116,20 +137,17 @@ function HourlyRentals() {
       console.error("Error navigating:", error);
     }
   };
+
   return (
-    <div
-      class="tab-pane fade"
-      id="pills-Hourly-Rentals-2"
-      role="tabpanel"
-      aria-labelledby="pills-Hourly-Rentals-2-tab"
-    >
+    <>
       <div class="row g-4">
         {/* <!-- Pickup --> */}
-        <div class="col-md-6 position-relative">
+        <div class="col-md-3 position-relative">
           <div class="form-icon-input form-size-lg form-fs-lg">
             <GmapPlaceSearch
               error={error.origin}
               label="Selct Pickup Location"
+              value={qry_params?.fromCity}
               onSelectPlace={(place) => {
                 console.log(place);
                 setError((prevError) => ({
@@ -144,7 +162,7 @@ function HourlyRentals() {
                   lat: place.geometry.location.lat,
                   lng: place.geometry.location.lng,
                 };
-                setOrigin(newLocationData);
+                setData({ ...datas, fromCity: newLocationData });
                 // Update the state immutably
               }}
             />
@@ -158,18 +176,21 @@ function HourlyRentals() {
           </div>
         </div>
         {/* <!-- Drop --> */}
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="form-icon-input form-size-lg form-fs-lg">
             <select
               label="Select Pkg"
               placeholder="Select Pkg"
-              value={pkg}
-              onChange={(e) => setPkg(e.target.value)}
-              className=""
+              value={datas?.pkg}
+              onChange={(e) => {
+                setData({ ...datas, pkg: e.target.value });
+                dispatch(addSerach({ key: "pkg", value: e.target.value }));
+              }}
               style={{
                 width: "100%",
                 height: 55,
                 borderRadius: 15,
+                borderColor: "#c5c5c7",
                 paddingLeft: 40,
                 fontFamily: ["Roboto", "Helvetica", "Arial", "sans-serif"],
                 backgroundColor: "#f5f5f5",
@@ -177,7 +198,7 @@ function HourlyRentals() {
             >
               <option>Selct Your Pakage</option>
               {hourlyOption.map((data) => (
-                <option value={data}>{data}</option>
+                <option value={data}> {data}</option>
               ))}
             </select>
             <span class="form-icon">
@@ -189,9 +210,10 @@ function HourlyRentals() {
           </span>
         </div>
         {/* <!-- Pickup date --> */}
-        <div class="col-md-6">
+        <div class="col-md-2">
           <div class="form-icon-input form-fs-lg">
             <DateInput
+              label="Pickup Date"
               error={error.date}
               onChange={(data) => {
                 // const date = new Date(data);
@@ -199,37 +221,50 @@ function HourlyRentals() {
                   ...prevError,
                   date: false,
                 }));
-                setDate(moment(data).format("YYYY-MM-DD"));
+                // setDate(moment(data).format("YYYY-MM-DD"));
+                setData({
+                  ...datas,
+                  pickupDate: moment(data).format("YYYY-MM-DD"),
+                });
               }}
+              value={date}
             />
             <span className="text-danger">{error.date && error.date}</span>
           </div>
         </div>
         {/* <!-- Pickup time --> */}
-        <div class="col-md-6">
+        <div class="col-md-2">
           <div class="form-icon-input form-fs-lg">
             <TimeInput
+              label="Pickup Time"
               error={error.times}
+              value={times}
               onChange={(data) => {
                 // const date = new Date(data);
                 setError((prevError) => ({
                   ...prevError,
                   times: false,
                 }));
-                setTime(moment(data).format("HH:mm:ss"));
+                setData({
+                  ...datas,
+                  pickupDate: moment(data).format("HH:mm:ss"),
+                });
               }}
             />
             <span className="text-danger">{error.times && error.times}</span>
           </div>
         </div>
+        <div class="col-xl-2">
+          <button
+            onClick={searchTrip}
+            class="btn btn-lg btn-primary w-100 mb-0"
+          >
+            Update
+          </button>
+        </div>
       </div>
-      <div class="text-center pt-0">
-        <button onClick={searchTrip} class="btn btn-lg btn-primary mb-n7">
-          Search Cabs <i class="bi bi-arrow-right ps-3"></i>
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 
-export default HourlyRentals;
+export default HourlyRental;

@@ -1,6 +1,6 @@
 import { apiRoutes, statusCode } from "@/constant";
 // import axios from "axios"
-import { appAxios, appAxios as axios } from "../axios";
+import { appAxios as axios } from "../axios";
 
 export const api = {
   authApi: {
@@ -41,7 +41,7 @@ export const api = {
           error();
         });
     },
-    passwordCheck: (data, pending, success, error) => {
+    passwordCheck: (data, pending, success, error, authFail) => {
       pending();
       axios
         .post(apiRoutes.auth.checkpassword, data)
@@ -49,7 +49,7 @@ export const api = {
           if (e.data.code == statusCode.createRes.code) {
             success(e.data);
           } else {
-            error();
+            authFail(e.data);
           }
         })
         .catch(() => {
@@ -100,6 +100,19 @@ export const api = {
       pending();
       axios
         .post(apiRoutes.user.changepassword, data)
+        .then((e) => {
+          success(e.data);
+        })
+        .catch((err) => {
+          error(err);
+        });
+    },
+  },
+  cabs: {
+    getCabFare: (data, success, pending, error) => {
+      pending();
+      return axios
+        .post(apiRoutes.fare.getFare, data)
         .then((e) => {
           success(e.data);
         })

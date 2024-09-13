@@ -1,3 +1,4 @@
+import { siteUrl } from "@/util/server";
 import Script from "next/script";
 
 export const metadata = {
@@ -19,7 +20,7 @@ export default function SigninLayout({ children }) {
         <meta name="author" content="vttcabs.com" />
 
         {/* <!-- Favicon --> */}
-        <link rel="shortcut icon" href="assets/images/favicon.ico" />
+        <link rel="shortcut icon" href={siteUrl("/img/favicon-32x32.png")} />
 
         {/* <!-- Google Font --> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -55,13 +56,22 @@ export default function SigninLayout({ children }) {
         {/* <!-- **************** MAIN CONTENT END **************** --> */}
 
         {/* <!-- Back to top --> */}
-        <div class="back-top"></div>
+        <div className="back-top"></div>
 
         {/* <!-- Bootstrap JS --> */}
-        <Script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></Script>
+        <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
 
+        {/* <!-- Vendors --> */}
+
+        <Script
+          src={siteUrl("/assets/vendor/sticky-js/sticky.min.js")}
+        ></Script>
+        <Script
+          src={siteUrl("/assets/vendor/choices/js/choices.min.js")}
+        ></Script>
+        <Script src="https://cdn.jsdelivr.net/npm/flatpickr"></Script>
         {/* <!-- ThemeFunctions --> */}
-        <Script src="assets/js/functions.js"></Script>
+        <Script src={siteUrl("/assets/js/functions.js")}></Script>
       </body>
     </html>
   );

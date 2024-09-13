@@ -3575,19 +3575,19 @@ textarea.form-control-lg {
 
 .btn-primary {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #5143d9;
-  --bs-btn-border-color: #5143d9;
+  --bs-btn-bg: #bb4333;
+  --bs-btn-border-color: #bb4333;
   --bs-btn-hover-color: #fff;
-  --bs-btn-hover-bg: #4539b8;
-  --bs-btn-hover-border-color: #4136ae;
+  --bs-btn-hover-bg: #9e2f20;
+  --bs-btn-hover-border-color: #f07c6d;
   --bs-btn-focus-shadow-rgb: 107, 95, 223;
   --bs-btn-active-color: #fff;
-  --bs-btn-active-bg: #4136ae;
-  --bs-btn-active-border-color: #3d32a3;
+  --bs-btn-active-bg: #bb4333;
+  --bs-btn-active-border-color: #bb4333;
   --bs-btn-active-shadow: none;
   --bs-btn-disabled-color: #fff;
-  --bs-btn-disabled-bg: #5143d9;
-  --bs-btn-disabled-border-color: #5143d9;
+  --bs-btn-disabled-bg: #bb4333;
+  --bs-btn-disabled-border-color: #bb4333;
 }
 
 .btn-white {
@@ -22338,3 +22338,14 @@ html[dir=rtl] .choices__input {
 
 /*User CSS*/
 /*# sourceMappingURL=style.css.map */
+
+.MuiFormControl-root {
+  width: 100%;
+}
+
+select { 
+  /* for Firefox */ 
+  -moz-appearance: none; 
+  /* for Safari, Chrome, Opera */ 
+  -webkit-appearance: none; 
+} 

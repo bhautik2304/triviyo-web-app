@@ -50,7 +50,7 @@ const initialState = {
   error: false,
 };
 
-const CabBookingSlice = createSlice({
+const cabBookingSlice = createSlice({
   name: "Cabs",
   initialState,
   reducers: {

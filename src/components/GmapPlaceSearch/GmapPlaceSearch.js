@@ -46,16 +46,13 @@ function GmapPlaceSearch({
     debounce((query) => {
       setLoading(true);
       axios
-        .get(
-          "http://localhost:8080/https://maps.googleapis.com/maps/api/place/autocomplete/json",
-          {
-            params: {
-              input: query,
-              components: "country:IN",
-              key: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
-            },
-          }
-        )
+        .get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
+          params: {
+            input: query,
+            components: "country:IN",
+            key: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
+          },
+        })
         .then((response) => {
           const filterData =
             response?.data?.predictions?.map((data, key) => ({

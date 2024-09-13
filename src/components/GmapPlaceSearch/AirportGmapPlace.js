@@ -38,18 +38,15 @@ export default function AirportGmapPlace({
     debounce((query) => {
       setLoading(true);
       axios
-        .get(
-          "http://localhost:8080/https://maps.googleapis.com/maps/api/place/textsearch/json",
-          {
-            params: {
-              query: query,
-              type: "airport",
-              location: location,
-              radius: radius,
-              key: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
-            },
-          }
-        )
+        .get("https://maps.googleapis.com/maps/api/place/textsearch/json", {
+          params: {
+            query: query,
+            type: "airport",
+            location: location,
+            radius: radius,
+            key: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
+          },
+        })
         .then((res) => {
           console.log();
 

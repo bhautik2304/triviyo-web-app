@@ -59,9 +59,11 @@ function CabsDetail() {
                   {/* <!-- Title --> */}
                   <ul class="nav nav-divider align-items-center mb-0">
                     <li class="nav-item h6 ">
-                      {`${getCityFromAddress(
-                        qry_params?.fromCity?.name
-                      )} to ${getCityFromAddress(qry_params?.toCity?.name)}`}
+                      {`${getCityFromAddress(qry_params?.fromCity?.name)} ${
+                        qry_params?.tripType != "Hourly Rentals"
+                          ? `to ${getCityFromAddress(qry_params?.toCity?.name)}`
+                          : ""
+                      }`}
                     </li>
                     <li class="nav-item h6 ">{qry_params?.tripType}</li>
                     <li class="nav-item h6 ">
@@ -150,7 +152,10 @@ function CabsDetail() {
                     faredata={datas}
                     loading={loading}
                   />
-                  <CabTermsAndCondition />
+                  <CabTermsAndCondition
+                    terms={datas?.terms}
+                    cab={qry_params?.cabDetaild}
+                  />
                 </div>
               </div>
               <aside class="col-xl-4">

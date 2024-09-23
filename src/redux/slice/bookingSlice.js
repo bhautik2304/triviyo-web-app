@@ -1,21 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  fromCity: {},
-  toCity: {},
-  pickupLocationGio: {},
-  dropLocationGio: {},
+  pickupAddress: {},
+  dropAddress: {},
   cabDetaild: {},
-  pickupTime: {},
-  pickupDate: {},
+  pickupTime: null,
+  pickupDate: null,
+  returnPickupTime: null,
+  returnPickupDate: null,
   stopOver: [],
   stop: [],
   totleKm: 0,
   extraluggage: false,
   extraluggagePrice: 0,
   travellerInfo: {},
-  pickupAddress: {},
-  dropAddress: {},
   userId: null,
   travellerDetaild: null,
   bookingState: {

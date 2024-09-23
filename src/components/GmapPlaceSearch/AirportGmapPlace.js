@@ -38,15 +38,7 @@ export default function AirportGmapPlace({
     debounce((query) => {
       setLoading(true);
       axios
-        .get("https://maps.googleapis.com/maps/api/place/textsearch/json", {
-          params: {
-            query: query,
-            type: "airport",
-            location: location,
-            radius: radius,
-            key: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
-          },
-        })
+        .get(`https://api.vttcabs.com/api/search-airports?query=${query}`)
         .then((res) => {
           console.log();
 

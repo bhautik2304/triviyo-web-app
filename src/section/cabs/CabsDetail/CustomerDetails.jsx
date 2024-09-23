@@ -13,7 +13,7 @@ function CustomerDetails() {
     const [pickupOpen, setPickupOpen] = useState(false)
     const [dropOpen, setDropOpen] = useState(false)
 
-    const { authUser } = useSelector(state => state.user)
+    const { user: { authUser }, booking: { pickupAddress, dropAddress } } = useSelector(state => state)
 
     useEffect(() => {
         setUserData(
@@ -42,7 +42,7 @@ function CustomerDetails() {
                         <div class="col-md-6">
                             <div class="form-control-bg-light">
                                 <label class="form-label">Pickup Address</label>
-                                <input type="text" onClick={() => setPickupOpen(!pickupOpen)} class="form-control form-control-lg" placeholder="Enter exact pick up address" value="" />
+                                <input type="text" onClick={() => setPickupOpen(!pickupOpen)} class="form-control form-control-lg" placeholder="Enter exact pick up address" value={pickupAddress?.address} />
                                 <div class="form-text">This will help our cab driver reach you on time.</div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@ function CustomerDetails() {
                         <div class="col-md-6">
                             <div class="form-control-bg-light">
                                 <label class="form-label">Drop Address</label>
-                                <input type="text" onClick={() => setDropOpen(!dropOpen)} class="form-control form-control-lg" placeholder="Enter drop address" value="" />
+                                <input type="text" onClick={() => setDropOpen(!dropOpen)} class="form-control form-control-lg" placeholder="Enter drop address" value={dropAddress?.address} />
                             </div>
                         </div>
                         <h5 class="mb-0 mt-4">Traveler Information</h5>

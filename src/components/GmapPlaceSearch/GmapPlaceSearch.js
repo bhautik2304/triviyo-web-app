@@ -46,13 +46,9 @@ function GmapPlaceSearch({
     debounce((query) => {
       setLoading(true);
       axios
-        .get("https://maps.googleapis.com/maps/api/place/autocomplete/json", {
-          params: {
-            input: query,
-            components: "country:IN",
-            key: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
-          },
-        })
+        .get(
+          `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/search-cities?query=${query}`
+        )
         .then((response) => {
           const filterData =
             response?.data?.predictions?.map((data, key) => ({

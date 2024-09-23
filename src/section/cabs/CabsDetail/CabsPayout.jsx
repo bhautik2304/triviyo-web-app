@@ -46,18 +46,27 @@ function CabsPayout({ fareData, loading }) {
             description: "Test Transaction",
             handler: async function (response) {
                 // After payment, verify the payment via backend API
-                // const verifyRes = await axios.post(`${apiRoutes.payment.createOrder}`'http://your-laravel-api-url/api/payment/verify', {
-                //     razorpay_payment_id: response.razorpay_payment_id,
-                //     razorpay_order_id: response.razorpay_order_id,
-                //     razorpay_signature: response.razorpay_signature,
-                // });
+                const verifyRes = await axios.post(`${apiRoutes.payment.veryfyPayment}`, {
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_signature: response.razorpay_signature,
+                });
 
-                // if (verifyRes.data.status === "Payment Verified") {
-                //     alert("Payment successful");
-                // } else {
-                //     alert("Payment verification failed");
-                // }
-                console.log(response);
+                if (verifyRes.data.status === "success") {
+                    console.log("Payment successful");
+                    console.log(response);
+                } else {
+                    console.log("Payment verification failed");
+                }
+            },
+            modal: {
+                ondismiss: async function () {
+                    // User canceled the payment, now update your database
+                    // await axios.post('http://your-laravel-api-url/api/payment/cancel', {
+                    //     order_id: data.order_id
+                    // });
+                    alert("Payment cancelled. Order ID: " + data.order_id);
+                }
             },
             prefill: {
                 name: authUser?.name,

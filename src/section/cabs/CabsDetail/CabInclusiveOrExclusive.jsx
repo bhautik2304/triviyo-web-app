@@ -17,12 +17,13 @@ function CabInclusiveOrExclusive({ data, faredata, loading }) {
                         <div class="col-sm-6">
                             <h5>Included in your price</h5>
                             <ul class="list-group list-group-borderless mb-0">
-                                <li class="list-group-item mb-0 pb-0"><i class="fa-solid fa-check text-success me-1"></i>
-                                    Only one pickup and drop
-                                </li>
-                                <li class="list-group-item mb-0 pb-0"><i class="fa-solid fa-check text-success me-1"></i>
-                                    Driver Allowance
-                                </li>
+                                {
+                                    faredata?.included_charges?.map((data) => (
+                                        <li class="list-group-item mb-0 pb-0"><i class="fa-solid fa-check text-success me-1"></i>
+                                            {data?.name}
+                                        </li>
+                                    ))
+                                }
                             </ul>
                         </div>
 
@@ -30,18 +31,13 @@ function CabInclusiveOrExclusive({ data, faredata, loading }) {
                         <div class="col-sm-6">
                             <h5>Extra charge</h5>
                             <ul class="list-group list-group-borderless mb-0">
-                                <li class="list-group-item mb-0 pb-0"><i class="bi bi-x-lg text-danger me-1"></i>
-                                    Fare beyond {!loading ? faredata?.km : 0}kms
-                                </li>
-                                <li class="list-group-item mb-0 pb-0"><i class="bi bi-x-lg text-danger me-1"></i>
-                                    Airport entry charge
-                                </li>
-                                <li class="list-group-item mb-0 pb-0"><i class="bi bi-x-lg text-danger me-1"></i>
-                                    Toll charge
-                                </li>
-                                <li class="list-group-item mb-0 pb-0"><i class="bi bi-x-lg text-danger me-1"></i>
-                                    State tax
-                                </li>
+                                {
+                                    faredata?.extra_charges?.map((data) => (
+                                        <li class="list-group-item mb-0 pb-0"><i class="fa-solid fa-x text-danger me-1"></i>
+                                            {data?.name}
+                                        </li>
+                                    ))
+                                }
                             </ul>
                         </div>
                     </div>

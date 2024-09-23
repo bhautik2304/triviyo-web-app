@@ -22,12 +22,13 @@ function CabCard({ data }) {
         cabName: data?.name,
         cabCategory: data?.category?.name,
         ac: data?.ac,
-        fule: cabfare?.fule,
+        fule: cabfare?.fule || cabfare?.pkg?.fules,
         img: data?.img,
-        fareId: cabfare.fuleID,
+        fareId: cabfare.fuleID || cabfare?.pkg?.id,
       },
     };
     console.log(cabDetaildParams);
+    // return;
     router.push(
       `${appRoutes.app.cabsDetails}?qry=${JSON.stringify(cabDetaildParams)}`
     );

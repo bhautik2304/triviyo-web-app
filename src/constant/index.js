@@ -53,6 +53,7 @@ export const apiRoutes = {
   },
   payment: {
     createOrder: apiUrl("create-order"),
+    veryfyPayment: apiUrl("payment/verify"),
   },
 };
 

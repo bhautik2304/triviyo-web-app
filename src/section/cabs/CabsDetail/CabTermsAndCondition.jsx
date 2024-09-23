@@ -1,6 +1,9 @@
 import React from 'react'
 
-function CabTermsAndCondition() {
+function CabTermsAndCondition({ terms = [], cab }) {
+    console.log(cab?.cabCategory);
+    console.log(terms.filter(data => data?.filter_option === "Global Guideleine"));
+
     return (
         <div class="card bg-transparent">
             {/* <!-- Card header --> */}
@@ -10,25 +13,31 @@ function CabTermsAndCondition() {
 
             {/* <!-- Card body START --> */}
             <div class="card-body pt-4 p-0">
-                <ul class="list-group list-group-borderless mb-0">
-                    <h6>Cab Category</h6>
-                    <li class="list-group-item h6 fw-light d-flex mb-0">
-                        <i class="bi bi-arrow-right me-2"></i>All passengers coming to the state by road must show a COVID negative report (RT-PCR) not more than 72 hours old or a valid vaccination certificate. (Travel period should commence after 14 days from the 2nd dose)
-                    </li>
-                    <h6>Cab Category</h6>
-                    <li class="list-group-item h6 fw-light d-flex mb-0">
-                        <i class="bi bi-arrow-right me-2"></i>Dependent on so extremely delivered by. Yet no jokes worse her why. Bed one supposing breakfast day fulfilled off depending questions.
-                    </li>
-                    <li class="list-group-item h6 fw-light d-flex mb-0">
-                        <i class="bi bi-arrow-right me-2"></i>Whatever boy her exertion his extended. Ecstatic followed handsome drawings entirely Mrs one yet outweigh.
-                    </li>
-                    <li class="list-group-item h6 fw-light d-flex mb-0">
-                        <i class="bi bi-arrow-right me-2"></i>Meant balls it if up doubt small purse. Required his you put the outlived answered position. A pleasure exertion if believed provided to.
-                    </li>
-                    <li class="list-group-item h6 fw-light d-flex mb-0">
-                        <i class="bi bi-arrow-right me-2"></i>All led out world this music while asked. Paid mind even sons does he door no. Attended overcame repeated it is perceived Marianne in.
-                    </li>
-                </ul>
+                <div
+                    class="row g-2"
+                >
+                    {
+                        terms.filter(data => data?.filter_option === "Global Guideleine").map((data, key) => (
+                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                <h6>{data?.title}</h6>
+                                <li class="list-group-item h6 fw-light d-flex mb-0">
+                                    <i class="bi bi-arrow-right me-2"></i>{data?.desc}
+                                </li>
+                            </div>
+                        ))
+                    }
+                    {
+                        terms.filter(data => data?.filter_option == cab?.cabCategory).map((data, key) => (
+                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                <h6>{data?.title}</h6>
+                                <li class="list-group-item h6 fw-light d-flex mb-0">
+                                    <i class="bi bi-arrow-right me-2"></i>{data?.desc}
+                                </li>
+                            </div>
+                        ))
+                    }
+                </div>
+
             </div>
             {/* <!-- Card body END --> */}
         </div>

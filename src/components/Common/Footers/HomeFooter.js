@@ -159,7 +159,7 @@ function HomeFooter() {
                   {" "}
                   <a href="https://razorpay.com/">
                     <img
-                      src="assets/images/element/white.png"
+                      src="/assets/images/element/white.png"
                       class="h-30px"
                       alt=""
                     />

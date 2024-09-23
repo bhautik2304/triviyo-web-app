@@ -90,7 +90,9 @@ export default function AddressModel({ open, handleOpen, handleClose }) {
           <CustomTabPanel value={value} index={0}>
             <PickupAddress
               handleClose={handleClose}
-              handelConfirm={() => handleChange(1, 1)}
+              handelConfirm={(data) => {
+                handleChange(1, 1);
+              }}
             />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>

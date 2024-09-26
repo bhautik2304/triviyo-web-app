@@ -20,7 +20,7 @@ export default function SigninLayout({ children }) {
         <meta name="author" content="vttcabs.com" />
 
         {/* <!-- Favicon --> */}
-        <link rel="shortcut icon" href={siteUrl("/img/favicon-32x32.png")} />
+        <link rel="shortcut icon" href={cdnUrl("/img/favicon-32x32.png")} />
 
         {/* <!-- Google Font --> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

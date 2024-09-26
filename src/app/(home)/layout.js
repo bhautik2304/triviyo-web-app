@@ -5,7 +5,7 @@ import { Providers } from "@/redux/Provider";
 import Script from "next/script";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { siteUrl } from "@/util/server";
+import { cdnUrl, siteUrl } from "@/util/server";
 
 export const metadata = {
   title: "VTT Cabs - Reliable Cab and Hotel Booking Services",
@@ -83,7 +83,6 @@ export default function PrivacyPolicyLayout({ children }) {
         <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
 
         {/* <!-- Vendors --> */}
-
         <Script src={cdnUrl("/assets/vendor/sticky-js/sticky.min.js")}></Script>
         <Script
           src={cdnUrl("/assets/vendor/choices/js/choices.min.js")}

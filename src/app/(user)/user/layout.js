@@ -7,6 +7,7 @@ import { Favicon } from "@/layout";
 import ProfileLayout from "@/layout/ProfileLayout";
 import Script from "next/script";
 import { Providers } from "@/redux/Provider";
+import { cdnUrl } from "@/util/server";
 
 export default function UserLayout({ children }) {
   useEffect(() => {

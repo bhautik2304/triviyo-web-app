@@ -34,17 +34,17 @@ export default function SigninLayout({ children }) {
         <link
           rel="stylesheet"
           type="text/css"
-          href={cdnUrl("assets/vendor/font-awesome/css/all.min.css")}
+          href={cdnUrl("/assets/vendor/font-awesome/css/all.min.css")}
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href={cdnUrl("assets/vendor/bootstrap-icons/bootstrap-icons.css")}
+          href={cdnUrl("/assets/vendor/bootstrap-icons/bootstrap-icons.css")}
         />
 
         {/* <!-- Theme CSS --> */}
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
-        <script src={cdnUrl("assets/js/sitethememood.js")}></script>
+        <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+        <script src={cdnUrl("/assets/js/sitethememood.js")}></script>
       </head>
 
       <body>

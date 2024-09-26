@@ -86,7 +86,7 @@ export default function UserLayout({ children }) {
           <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
 
           {/* <!-- Vendors --> */}
-          <Script src={cdnUrl("assets/vendor/aos/aos.js")}></Script>
+          <Script src={cdnUrl("/assets/vendor/aos/aos.js")}></Script>
           <Script
             src={cdnUrl("/assets/vendor/choices/js/choices.min.js")}
           ></Script>
@@ -95,7 +95,7 @@ export default function UserLayout({ children }) {
           ></Script>
 
           {/* <!-- ThemeFunctions --> */}
-          <Script src={cdnUrl("assets/js/functions.js")}></Script>
+          <Script src={cdnUrl("/assets/js/functions.js")}></Script>
         </body>
       </html>
     </>

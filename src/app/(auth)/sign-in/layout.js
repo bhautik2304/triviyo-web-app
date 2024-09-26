@@ -1,4 +1,4 @@
-import { siteUrl } from "@/util/server";
+import { cdnUrl } from "@/util/server";
 import Script from "next/script";
 
 export const metadata = {
@@ -34,17 +34,17 @@ export default function SigninLayout({ children }) {
         <link
           rel="stylesheet"
           type="text/css"
-          href="assets/vendor/font-awesome/css/all.min.css"
+          href={cdnUrl("assets/vendor/font-awesome/css/all.min.css")}
         />
         <link
           rel="stylesheet"
           type="text/css"
-          href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+          href={cdnUrl("assets/vendor/bootstrap-icons/bootstrap-icons.css")}
         />
 
         {/* <!-- Theme CSS --> */}
         <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
-        <script src="assets/js/sitethememood.js"></script>
+        <script src={cdnUrl("assets/js/sitethememood.js")}></script>
       </head>
 
       <body>
@@ -63,15 +63,13 @@ export default function SigninLayout({ children }) {
 
         {/* <!-- Vendors --> */}
 
+        <Script src={cdnUrl("/assets/vendor/sticky-js/sticky.min.js")}></Script>
         <Script
-          src={siteUrl("/assets/vendor/sticky-js/sticky.min.js")}
-        ></Script>
-        <Script
-          src={siteUrl("/assets/vendor/choices/js/choices.min.js")}
+          src={cdnUrl("/assets/vendor/choices/js/choices.min.js")}
         ></Script>
         <Script src="https://cdn.jsdelivr.net/npm/flatpickr"></Script>
         {/* <!-- ThemeFunctions --> */}
-        <Script src={siteUrl("/assets/js/functions.js")}></Script>
+        <Script src={cdnUrl("/assets/js/functions.js")}></Script>
       </body>
     </html>
   );

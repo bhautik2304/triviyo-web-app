@@ -7,5 +7,5 @@ export const siteUrl = (url) => {
 };
 
 export const cdnUrl = (url) => {
-  return `${process.env.NEXT_PUBLIC_CDN_DOMAIN}/${url}`;
+  return `${process.env.NEXT_PUBLIC_APP_DOMAIN}/${url}`;
 };

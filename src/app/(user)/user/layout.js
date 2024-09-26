@@ -48,31 +48,31 @@ export default function UserLayout({ children }) {
           <link
             rel="stylesheet"
             type="text/css"
-            href={cdnUrl("/assets/vendor/font-awesome/css/all.min.css")}
+            href={cdnUrl("assets/vendor/font-awesome/css/all.min.css")}
           />
           <link
             rel="stylesheet"
             type="text/css"
-            href={cdnUrl("/assets/vendor/bootstrap-icons/bootstrap-icons.css")}
+            href={cdnUrl("assets/vendor/bootstrap-icons/bootstrap-icons.css")}
           />
           <link
             rel="stylesheet"
             type="text/css"
-            href={cdnUrl("/assets/vendor/choices/css/choices.min.css")}
+            href={cdnUrl("assets/vendor/choices/css/choices.min.css")}
           />
           <link
             rel="stylesheet"
             type="text/css"
-            href={cdnUrl("/assets/vendor/flatpickr/css/flatpickr.min.css")}
+            href={cdnUrl("assets/vendor/flatpickr/css/flatpickr.min.css")}
           />
 
           {/* <!-- Theme CSS --> */}
           <link
             rel="stylesheet"
             type="text/css"
-            href={cdnUrl("/assets/css/style.css")}
+            href={cdnUrl("assets/css/style.css")}
           />
-          <Script src={cdnUrl("/assets/js/sitethememood.js")}></Script>
+          <Script src={cdnUrl("assets/js/sitethememood.js")}></Script>
         </head>
         <body class="dashboard">
           {/* Layout UI */}
@@ -87,16 +87,16 @@ export default function UserLayout({ children }) {
           <Script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></Script>
 
           {/* <!-- Vendors --> */}
-          <Script src={cdnUrl("/assets/vendor/aos/aos.js")}></Script>
+          <Script src={cdnUrl("assets/vendor/aos/aos.js")}></Script>
           <Script
-            src={cdnUrl("/assets/vendor/choices/js/choices.min.js")}
+            src={cdnUrl("assets/vendor/choices/js/choices.min.js")}
           ></Script>
           <Script
-            src={cdnUrl("/assets/vendor/flatpickr/js/flatpickr.min.js")}
+            src={cdnUrl("assets/vendor/flatpickr/js/flatpickr.min.js")}
           ></Script>
 
           {/* <!-- ThemeFunctions --> */}
-          <Script src={cdnUrl("/assets/js/functions.js")}></Script>
+          <Script src={cdnUrl("assets/js/functions.js")}></Script>
         </body>
       </html>
     </>

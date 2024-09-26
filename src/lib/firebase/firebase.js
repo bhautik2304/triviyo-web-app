@@ -1,18 +1,10 @@
-// Import the functions you need from the SDKs you need
+// Import Firebase SDKs and custom utilities
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import {
-  isBrowser,
-  deviceRegister,
-  isLocalStorageAvailable,
-} from "@/lib/config";
+import { isBrowser, deviceRegister } from "@/lib/config";
 import { localStorageKey } from "@/constant";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase configuration from environment variables
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
@@ -23,63 +15,65 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
+// Variables to store Firebase app and messaging instances
+let app;
+let messaging;
 
-export const app = isBrowser() && initializeApp(firebaseConfig);
-export const messaging = isBrowser() && getMessaging(app);
+// Function to initialize Firebase only on the client side
+function initializeFirebase() {
+  if (isBrowser() && !app) {
+    app = initializeApp(firebaseConfig);
+    messaging = getMessaging(app);
+  }
+}
 
+// Function to request notification permissions and generate FCM token
 export async function requestPermission() {
-  if (isBrowser()) {
-    const token = localStorage.getItem(localStorageKey.fcmTokken);
-    if (token) {
-      deviceRegister(token);
-      onMessage(messaging, (payload) => {
-        console.log("Message received. ", payload);
-        // ...
-        // toast(payload.data.message);
-        // Customize notification here
-        const notificationTitle = payload.notification.title;
-        const notificationOptions = {
-          body: payload.notification.message,
-          icon: payload.notification.image,
-        };
-        new Notification(notificationTitle, notificationOptions);
-        // Show notification using FCM (if needed)
-      });
+  try {
+    if (!isBrowser()) return; // Prevent execution on server-side
+
+    initializeFirebase(); // Ensure Firebase is initialized on the client-side
+
+    const storedToken = localStorage.getItem(localStorageKey.fcmTokken);
+    if (storedToken) {
+      // Token already exists, register the device
+      deviceRegister(storedToken);
+      setupOnMessageListener();
     } else {
-      // window.addEventListener("load", () => {
-      //   navigator.serviceWorker
-      //     .register("/firebase-messaging-sw.js")
-      //     .then((registration) => {
-      //       console.log(
-      //         "Service Worker registered with scope:",
-      //         registration.scope
-      //       );
-      //       // Initialize Firebase and request FCM token here
-      //       initializeFirebaseMessaging(registration);
-      //     })
-      //     .catch((error) => {
-      //       console.error("Service Worker registration failed:", error);
-      //     });
-      //   });
-      Notification.requestPermission()
-        .then(() => {
-          console.log("Notification permission granted.");
-          return getToken(messaging, {
-            vapidKey: process.env.NEXT_PUBLIC_NEXT_VPI_KEY,
-          });
-        })
-        .then((token) => {
-          console.log("FCM Token:", token);
-          deviceRegister(token);
-          // Send the token to your server or save it for later use
-        })
-        .catch((error) => {
-          console.error("Error getting FCM token:", error);
-          deviceRegister(null);
+      // Request notification permissions
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
+        // Generate FCM token
+        const token = await getToken(messaging, {
+          vapidKey: process.env.NEXT_PUBLIC_NEXT_VPI_KEY,
         });
-      // Further code to handle successful token generation
-      // Send this token  to server ( db)
+        console.log("FCM Token:", token);
+        // Register the device with the generated token
+        deviceRegister(token);
+        // Store the token for future use
+        localStorage.setItem(localStorageKey.fcmTokken, token);
+        setupOnMessageListener(); // Set up listener for incoming messages
+      } else {
+        console.error("Notification permission denied.");
+      }
     }
+  } catch (error) {
+    console.error("Error requesting permission for notifications:", error);
+  }
+}
+
+// Function to set up listener for incoming FCM messages
+function setupOnMessageListener() {
+  if (isBrowser() && messaging) {
+    onMessage(messaging, (payload) => {
+      console.log("Message received. ", payload);
+      const notificationTitle = payload.notification.title;
+      const notificationOptions = {
+        body: payload.notification.body,
+        icon: payload.notification.image,
+      };
+      new Notification(notificationTitle, notificationOptions);
+    });
   }
 }

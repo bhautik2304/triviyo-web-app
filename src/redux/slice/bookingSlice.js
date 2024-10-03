@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  payNow: false,
   pickupAddress: {},
   dropAddress: {},
   cabDetaild: {},
@@ -20,6 +21,7 @@ const initialState = {
     pickupLocation: false,
     dropLocation: false,
     validNumber: false,
+    travellerDetaild: false,
   },
   payment: {
     paymentType: "HALF",

@@ -124,7 +124,7 @@ function RoundTrip() {
         ...roundTrip,
         fromCity: origin,
         toCity: destination,
-        stopOvers: [originLatLong, ...stops, destinationLatLong],
+        stopOvers: [origin, ...stops, destination],
         pickupDate: date,
         pickupTime: times,
         stop: stops,

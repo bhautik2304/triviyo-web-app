@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import AddressModel from './Address/AddressModel'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeBookingDetaild } from '@/redux/slice/bookingSlice'
 
-function CustomerDetails() {
+function CustomerDetails({ pickupOpen, setPickupOpen }) {
 
     const [userData, setUserData] = useState({
         name: "",
@@ -10,10 +11,11 @@ function CustomerDetails() {
         email: "",
         number: "",
     })
-    const [pickupOpen, setPickupOpen] = useState(false)
     const [dropOpen, setDropOpen] = useState(false)
 
-    const { user: { authUser }, booking: { pickupAddress, dropAddress } } = useSelector(state => state)
+    const { user: { authUser }, booking: { pickupAddress, dropAddress, travellerDetaild, tripType } } = useSelector(state => state)
+
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setUserData(
@@ -24,7 +26,20 @@ function CustomerDetails() {
                 number: authUser?.number,
             }
         )
+        console.log("run :=");
+
+        dispatch(changeBookingDetaild({ key: "userId", val: authUser?.id }))
     }, [authUser])
+    useEffect(() => {
+        setUserData(
+            {
+                name: travellerDetaild?.name,
+                gender: travellerDetaild?.gender,
+                email: travellerDetaild?.email,
+                number: travellerDetaild?.number,
+            }
+        )
+    }, [travellerDetaild])
 
     return (
         <>
@@ -48,12 +63,16 @@ function CustomerDetails() {
                         </div>
 
                         {/* <!-- Input --> */}
-                        <div class="col-md-6">
-                            <div class="form-control-bg-light">
-                                <label class="form-label">Drop Address</label>
-                                <input type="text" onClick={() => setDropOpen(!dropOpen)} class="form-control form-control-lg" placeholder="Enter drop address" value={dropAddress?.address} />
-                            </div>
-                        </div>
+                        {
+                            tripType != "Hourly Rentals" && (
+                                <div class="col-md-6">
+                                    <div class="form-control-bg-light">
+                                        <label class="form-label">Drop Address</label>
+                                        <input type="text" onClick={() => setDropOpen(!dropOpen)} class="form-control form-control-lg" placeholder="Enter drop address" value={dropAddress?.address} />
+                                    </div>
+                                </div>
+                            )
+                        }
                         <h5 class="mb-0 mt-4">Traveler Information</h5>
 
                         {/* <!-- Radio button --> */}

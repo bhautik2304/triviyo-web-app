@@ -23,6 +23,7 @@ function SignInInput({
             <PhoneInputContry
               value={value}
               // disabled={isTimerActive}
+              focus={false}
               onChange={(e) => onChange(e)}
             />
           </>

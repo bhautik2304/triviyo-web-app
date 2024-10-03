@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import { appRoutes } from "@/constant";
 
 function CabCard({ data }) {
-  const { cabsSearch } = useSelector((state) => state.cab);
+  const {
+    cab: { cabsSearch },
+    booking,
+  } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const router = useRouter();
@@ -16,6 +19,7 @@ function CabCard({ data }) {
     console.log(cabfare);
     const cabDetaildParams = {
       ...cabsSearch,
+      bookinInfo: booking,
       total_km: data?.total_km,
       cabDetaild: {
         id: data?.id,

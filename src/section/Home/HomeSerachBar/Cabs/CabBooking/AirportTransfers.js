@@ -9,7 +9,7 @@ import {
 import { useDispatch } from "react-redux";
 import Autocomplete from "react-google-autocomplete";
 import Link from "next/link";
-import { appRoutes, cabSearchSchima } from "@/constant";
+import { apiRoutes, appRoutes, cabSearchSchima } from "@/constant";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Flatpickr from "react-flatpickr";
@@ -129,10 +129,50 @@ function AirportTransfers() {
         };
       }
       console.log(newOneWay);
+      let searchQry;
+      if (data.trip == tripOption.pickupToAirport) {
+        searchQry = {
+          airport: data.airport,
+          toCity: data.toCity,
+        };
+      } else {
+        searchQry = {
+          airport: data.airport,
+          toCity: data.fromCity,
+        };
+      }
+      const tripType = await axios
+        .post(
+          `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/check-trip-type`,
+          searchQry
+        )
+        .then((e) => e.data);
 
-      dispatch(changeTripData(newOneWay));
+      if (tripType.tripType == "instation") {
+        dispatch(changeTripData(newOneWay));
+        routes.push(`${appRoutes.app.cabs}?qry=${JSON.stringify(newOneWay)}`);
+        return;
+      } else {
+        if (data.trip == tripOption.pickupToAirport) {
+          newOneWay = {
+            ...data,
+            tripType: "One Way",
+            fromCity: data.airport,
+            stopOvers: [data.airport, data.toCity],
+          };
+        } else {
+          newOneWay = {
+            ...data,
+            tripType: "One Way",
+            toCity: data.airport,
+            stopOvers: [data.fromCity, data.airport],
+          };
+        }
+        dispatch(changeTripData(newOneWay));
+        routes.push(`${appRoutes.app.cabs}?qry=${JSON.stringify(newOneWay)}`);
+        return;
+      }
       // Ensure pathname and query are set correctly
-      routes.push(`${appRoutes.app.cabs}?qry=${JSON.stringify(newOneWay)}`);
     } catch (error) {
       console.error("Error navigating:", error);
     }

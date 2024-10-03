@@ -2,7 +2,7 @@
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CabsPayout from "./CabsPayout";
 import CabDetails from "./CabDetails";
 import CustomerDetails from "./CustomerDetails";
@@ -12,6 +12,10 @@ import { api } from "@/lib/api";
 import CabInclusiveOrExclusive from "./CabInclusiveOrExclusive";
 import CabTermsAndCondition from "./CabTermsAndCondition";
 import Signin from "@/section/auth/signin/Signin";
+import {
+  changeBookingDetaild,
+  changePaymentMode,
+} from "@/redux/slice/bookingSlice";
 
 function CabsDetail() {
   const [km, setKm] = useState(0);
@@ -19,6 +23,9 @@ function CabsDetail() {
   const [datas, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [pickupOpen, setPickupOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const qry = useSearchParams();
   const qry_params = JSON.parse(qry.get("qry"));
@@ -26,22 +33,66 @@ function CabsDetail() {
   const { authUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    api.cabs
-      .getCabFare(
-        qry_params,
-        (data) => {
-          console.log(data);
-          setData(data.fare);
-          setLoading(false);
-        },
-        () => {
-          setLoading(true);
-        },
-        () => {
-          setLoading(false);
-        }
-      )
-      .then();
+    api.cabs.getCabFare(
+      qry_params,
+      (data) => {
+        console.log(data);
+        setData(data.fare);
+        console.log({
+          paymentType: "HALF",
+          ammount: data?.fare?.serviceAndTax,
+          fare: data.fare,
+        });
+        dispatch(
+          changePaymentMode({
+            paymentType: "HALF",
+            ammount: data?.fare?.serviceAndTax,
+            fare: data.fare,
+          })
+        );
+        dispatch(
+          changeBookingDetaild({
+            key: "totleKm",
+            val: data.fare?.km,
+          })
+        );
+
+        setLoading(false);
+      },
+      () => {
+        setLoading(true);
+      },
+      () => {
+        setLoading(false);
+      }
+    );
+    console.log("qry_params?.stop", qry_params?.stop);
+    dispatch(
+      changeBookingDetaild({
+        key: "stop",
+        val: qry_params?.stop,
+      })
+    );
+    dispatch(
+      changeBookingDetaild({
+        key: "stopOver",
+        val: qry_params?.stopOvers,
+      })
+    );
+    console.log();
+
+    dispatch(
+      changeBookingDetaild({ key: "cabDetaild", val: qry_params?.cabDetaild })
+    );
+    dispatch(
+      changeBookingDetaild({ key: "pickupTime", val: qry_params?.pickupTime })
+    );
+    dispatch(
+      changeBookingDetaild({ key: "pickupDate", val: qry_params?.pickupDate })
+    );
+    dispatch(
+      changeBookingDetaild({ key: "tripType", val: qry_params?.tripType })
+    );
   }, []);
 
   console.log(qry_params);
@@ -59,11 +110,15 @@ function CabsDetail() {
                   {/* <!-- Title --> */}
                   <ul class="nav nav-divider align-items-center mb-0">
                     <li class="nav-item h6 ">
-                      {`${getCityFromAddress(qry_params?.fromCity?.name)} ${
-                        qry_params?.tripType != "Hourly Rentals"
-                          ? `to ${getCityFromAddress(qry_params?.toCity?.name)}`
-                          : ""
-                      }`}
+                      {qry_params?.tripType != "Airport Transfers"
+                        ? `${getCityFromAddress(qry_params?.fromCity?.name)} ${
+                            qry_params?.tripType != "Hourly Rentals"
+                              ? `to ${getCityFromAddress(
+                                  qry_params?.toCity?.name
+                                )}`
+                              : ""
+                          }`
+                        : ``}
                     </li>
                     <li class="nav-item h6 ">{qry_params?.tripType}</li>
                     <li class="nav-item h6 ">
@@ -146,7 +201,11 @@ function CabsDetail() {
                       </div>
                     </div>
                   )}
-                  <CustomerDetails data={qry_params} />
+                  <CustomerDetails
+                    data={qry_params}
+                    setPickupOpen={setPickupOpen}
+                    pickupOpen={pickupOpen}
+                  />
                   <CabInclusiveOrExclusive
                     data={qry_params?.cabDetaild}
                     faredata={datas}
@@ -159,7 +218,11 @@ function CabsDetail() {
                 </div>
               </div>
               <aside class="col-xl-4">
-                <CabsPayout fareData={datas} loading={loading} />
+                <CabsPayout
+                  fareData={datas}
+                  setPickupOpen={setPickupOpen}
+                  loading={loading}
+                />
               </aside>
             </div>
           </div>

@@ -38,18 +38,11 @@ export default function AirportGmapPlace({
     debounce((query) => {
       setLoading(true);
       axios
-        .get(`https://api.vttcabs.com/api/search-airports?query=${query}`)
+        .get(
+          `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/search-airports?query=${query}`
+        )
         .then((res) => {
-          console.log();
-
-          const airportOptions = res.data.results.map((airport) => ({
-            id: airport.place_id,
-            label: airport.name,
-            latitude: airport.latitude,
-            longitude: airport.longitude,
-            address: airport.address,
-          }));
-          setOptions(airportOptions);
+          setOptions(res.data);
         })
         .catch(() => {
           setOptions([]);

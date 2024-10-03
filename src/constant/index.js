@@ -52,7 +52,8 @@ export const apiRoutes = {
     getFare: apiUrl("cab/get-cab-fare"),
   },
   payment: {
-    createOrder: apiUrl("create-order"),
+    createOrder: apiUrl("create-booking"),
+    updateBookingStatus: apiUrl("booking-status"),
     veryfyPayment: apiUrl("payment/verify"),
   },
 };

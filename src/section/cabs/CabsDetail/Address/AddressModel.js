@@ -16,6 +16,8 @@ import { GmapPlaceSearch } from "@/components";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 import DropAddress from "./DropAddress";
 import PickupAddress from "./PickupAddress";
+import TravellerInformation from "./TravellerInformation";
+import { useSearchParams } from "next/navigation";
 const libraries = ["places"];
 
 const modalStyle = {
@@ -48,6 +50,10 @@ export default function AddressModel({ open, handleOpen, handleClose }) {
 
     setValue(newValue);
   };
+
+  const qry = useSearchParams();
+  const qry_params = JSON.parse(qry.get("qry"));
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
     libraries,
@@ -85,7 +91,11 @@ export default function AddressModel({ open, handleOpen, handleClose }) {
             aria-label="scrollable auto tabs example"
           >
             <Tab label="Set Pickup Location" />
-            <Tab label="Set Drop Location" />
+
+            {qry_params?.tripType != "Hourly Rentals" && (
+              <Tab label="Set Drop Location" />
+            )}
+            <Tab label="Traveler Information" />
           </Tabs>
           <CustomTabPanel value={value} index={0}>
             <PickupAddress
@@ -95,11 +105,19 @@ export default function AddressModel({ open, handleOpen, handleClose }) {
               }}
             />
           </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <DropAddress
-              handleClose={handleClose}
-              handelConfirm={() => handleChange(1, 1)}
-            />
+          {qry_params?.tripType != "Hourly Rentals" && (
+            <CustomTabPanel value={value} index={1}>
+              <DropAddress
+                handleClose={handleClose}
+                handelConfirm={() => handleChange(1, 2)}
+              />
+            </CustomTabPanel>
+          )}
+          <CustomTabPanel
+            value={value}
+            index={qry_params?.tripType != "Hourly Rentals" ? 2 : 1}
+          >
+            <TravellerInformation handleClose={handleClose} />
           </CustomTabPanel>
         </Box>
       </Modal>

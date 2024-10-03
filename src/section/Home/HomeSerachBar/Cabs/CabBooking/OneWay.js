@@ -89,7 +89,7 @@ function OneWay() {
         ...oneWay,
         fromCity: origin,
         toCity: destination,
-        stopOvers: [originLatLong, destinationLatLong],
+        stopOvers: [origin, destination],
         pickupDate: date,
         pickupTime: times,
       };

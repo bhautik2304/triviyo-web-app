@@ -21,10 +21,12 @@ import {
   changeBookingDetaild,
   completePickupLocation,
 } from "@/redux/slice/bookingSlice";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
-async function getCityByLatLng(lat, lng) {
+async function getCityByLatLng(lat, lng, setBackDrop) {
   const url = `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/geo-place-details?lat=${lat}&lng=${lng}`;
-
+  setBackDrop(true);
   try {
     const response = await axios.get(url);
     const addressComponents = response.data.results[0].address_components;
@@ -41,6 +43,7 @@ async function getCityByLatLng(lat, lng) {
         }
       : null;
   } catch (error) {
+    setBackDrop(false);
     // console.error("Error fetching city:", error);
     return null;
   }
@@ -97,6 +100,7 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
     googleMapsApiKey: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
     libraries,
   });
+  const [backDrop, setBackDrop] = useState(false);
   const [data, setData] = useState(pickupAddres);
   const [selectPickupAddress, setSelectPickupAddress] = useState(
     pickupAddres.pickupAddress
@@ -104,6 +108,7 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
   const [pickupLocation, setPickupLocation] = useState(null);
   const [map, setMap] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -140,11 +145,13 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
     });
     const fromCity = await getCityByLatLng(
       qry_params.fromCity.lat,
-      qry_params.fromCity.lng
+      qry_params.fromCity.lng,
+      setBackDrop
     );
     const pickupCity = await getCityByLatLng(
       event.latLng.lat(),
-      event.latLng.lng()
+      event.latLng.lng(),
+      setBackDrop
     );
     // console.log(pickupCity?.long_name);
 
@@ -166,6 +173,8 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
         geo: { lat: event.latLng.lat(), lng: event.latLng.lng() },
         data: pickupCity?.addressComponents,
       });
+      setSuccess(pickupCity.addressComponents.formatted_address);
+      setBackDrop(false);
       return; // console.log("PickupArress Are selected");
     } else {
       setMarkerPosition({ lat: event.latLng.lat(), lng: event.latLng.lng() });
@@ -173,11 +182,10 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
         ...error,
         pickup_city_error: `Please Choose Address in City ${qry_params.fromCity.name}`,
       });
+      setBackDrop(false);
       return; // console.log("Please Choose Address in the From City");
     }
   }, []);
-
-  const {} = useSelector((state) => state);
 
   const selectPickupLocation = () => {
     if (pickupLocation?.geo == null) {
@@ -231,6 +239,17 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
     <>
       {map ? (
         <>
+          <Backdrop
+            sx={(theme) => ({
+              color: "#fff",
+              zIndex: theme.zIndex.drawer + 1,
+              borderRadius: { xs: 5, md: 5, lg: 5 },
+            })}
+            open={backDrop}
+            onClick={handleClose}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
           <Grid container direction="row" spacing={4} alignItems="center">
             <Grid item xs={12} md={8} lg={8}>
               <GmapPlaceSearch
@@ -279,7 +298,9 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
           <Typography sx={{ mt: 1 }} color="red">
             {error?.pickup_city_error}
           </Typography>
-
+          <Typography sx={{ mt: 1 }} color="green">
+            {success}
+          </Typography>
           <Button
             size="large"
             color="error"
@@ -368,7 +389,7 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
               </Typography>
             </Grid>
           </Grid>
-          <Stack alignItems="end" direction="row">
+          <Stack justifyContent="end" direction="row">
             <Button
               sx={{ mt: 2, width: { md: 300, lg: 300, xs: "100%" } }}
               onClick={() => setMap(true)}

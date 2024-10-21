@@ -67,9 +67,17 @@ function CabCard({ data }) {
                   </h4>
                   {/* <!-- Nav divider --> */}
                   <ul class="nav nav-divider h6 fw-normal mb-2">
-                    <li class="nav-item">
+                    {
+                      Number(data?.is_categorie) && (
+                        <></>
+                      ) : (<>
+                        <li class="nav-item">
                       {data?.category?.name?.toUpperCase()}
                     </li>
+                      </>
+                      )
+                    }
+                    
                     <li class="nav-item">AC</li>
                     {cabsSearch?.tripType == "Hourly Rentals" ? (
                       <li class="nav-item">

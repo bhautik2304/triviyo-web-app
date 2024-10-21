@@ -13,7 +13,8 @@ import {
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { GmapPlaceSearch } from "@/components";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
-import axios from "axios";
+import { appAxios } from "@/lib/axios";
+
 import { useParams, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "@mui/material/styles";
@@ -29,7 +30,7 @@ async function getCityByLatLng(lat, lng, setBackDrop) {
   const url = `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/geo-place-details?lat=${lat}&lng=${lng}`;
 
   try {
-    const response = await axios.get(url);
+    const response = await appAxios.get(url);
     const addressComponents = response.data.results[0].address_components;
     // Find city information
     const city = addressComponents.find(
@@ -122,6 +123,12 @@ function DropAddress({ open, handelConfirm, handleClose }) {
   useEffect(() => {
     // setMarkerPosition(qry_params.fromCity);
     setSelectPickupAddress(dropAddress);
+    if (qry_params?.tripOption == "Pickup To Airport") {
+      setMarkerPosition({
+        lat: qry_params?.toDestination?.lat,
+        lng: qry_params?.toDestination?.lng,
+      });
+    }
   }, []);
 
   const onMapClick = useCallback((event) => {
@@ -203,7 +210,7 @@ function DropAddress({ open, handelConfirm, handleClose }) {
       pickupGeoCodinates: pickupLocation.geo,
     });
   };
-  const confirmAddress = () => {
+  const confirmAddress = async () => {
     const errors = {};
 
     if (selectPickupAddress.houseNo == "") {
@@ -221,12 +228,26 @@ function DropAddress({ open, handelConfirm, handleClose }) {
       setError(errors);
     }
 
+    const dropCityName = await getCityByLatLng(
+      markerPosition.lat,
+      markerPosition.lng,
+      setBackDrop
+    );
+
+    const dropLocationData = {
+      ...selectPickupAddress,
+      lat: markerPosition.lat,
+      lng: markerPosition.lng,
+      cityName: dropCityName?.long_name,
+      airportName: "",
+      isAirport: false,
+    };
     setData({
       ...data,
-      pickupAddress: selectPickupAddress,
+      pickupAddress: dropLocationData,
     });
     dispatch(
-      changeBookingDetaild({ key: "dropAddress", val: selectPickupAddress })
+      changeBookingDetaild({ key: "dropAddress", val: dropLocationData })
     );
     dispatch(
       changeBookingDetaild({
@@ -235,8 +256,11 @@ function DropAddress({ open, handelConfirm, handleClose }) {
       })
     );
     dispatch(completeDropLocation());
+
     handelConfirm();
   };
+
+  console.log(qry_params);
 
   return (
     <>

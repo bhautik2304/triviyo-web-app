@@ -1,10 +1,11 @@
-function page() {
+import { MyBooking } from "@/section/user";
 
-    return (
-        <>
-            <h1>mybooking Page</h1>
-        </>
-    )
+function page() {
+  return (
+    <>
+      <MyBooking />
+    </>
+  );
 }
 
-export default page
+export default page;

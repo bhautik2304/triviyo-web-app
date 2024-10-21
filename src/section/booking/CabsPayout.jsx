@@ -17,11 +17,11 @@ import { appAxios } from '@/lib/axios'
 import { setSession } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
 
-function CabsPayout({ fareData, loading, setPickupOpen }) {
+function CabsPayout({ fareData, loading, bookingData, term, included_charges, extra_charges, bookingdata }) {
     const [error, setError] = useState()
+    const [paymentType, setPayment] = useState()
     const [paymentLoading, setPaymentLoading] = useState(false)
     const dispatch = useDispatch()
-    const { paymentType, paymentAmmount } = useSelector(state => state.booking.payment)
     const { user: { authUser }, booking } = useSelector(state => state)
 
     const route = useRouter()
@@ -40,39 +40,16 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
     useEffect(() => {
         loadRazorpayScript()
     }, [])
+    useEffect(() => {
+        setPayment({ paymentType: bookingData?.payment_type, ammount: bookingData?.payment_ammount })
+    }, [bookingData])
 
     const handlePayment = async () => {
         setPaymentLoading(true)
-        if (!booking.payNow) {
-            setPickupOpen(true)
-            setPaymentLoading(false)
-            setError("Complete Traveler Information")
-            return
-        }
-
-        if (!paymentAmmount) {
-            setError("Select Payment Mode")
-            setPaymentLoading(false)
-            return
-        }
-
-        if (!window.Razorpay) {
-            alert("Razorpay SDK failed to load. Are you online?");
-            setPaymentLoading(false)
-            return;
-        }
-
-
         // Call the Laravel API to create an order
         try {
-            let userId;
-            if (authUser) {
-                userId = authUser.id
-            } else {
-                userId = null
-            }
-            const { data } = await appAxios.post(`${apiRoutes.payment.createOrder}`, { booking: { ...booking, userId: userId } });
-            await setSession(data?.customer?.token, data?.customer?.customer_data)
+            const { data } = await appAxios.post(`${apiRoutes.payment.updateOrder}`, { paymentId: bookingData?.id, payment: paymentType });
+
             const options = {
                 key: process.env.NEXT_PUBLIC_RAZORPAY_KEY, // Your Razorpay key
                 amount: data.amount, // Amount in currency subunits
@@ -98,7 +75,6 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
                             payment_status: "payment_successfull"
                         }).then(e => {
                             console.log(e.data.msg);
-                            route.replace(`${appRoutes.app.bookingConfirmation}?booking_id=${data?.booking_id}`)
                         });
                     } else {
                         await appAxios.post(apiRoutes.payment.updateBookingStatus, {
@@ -108,7 +84,6 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
                             payment_status: "payment_faild"
                         }).then(e => {
                             console.log(e.data.msg);
-                            route.replace(`${appRoutes.app.bookingConfirmation}?booking_id=${data?.booking_id}`)
                         });
                         console.log("Payment verification failed");
                     }
@@ -122,7 +97,6 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
                         }).then(e => {
                             setPaymentLoading(false)
                         });
-                        window.location.replace(`${appRoutes.app.bookingConfirmation}?booking_id=${data?.booking_id}`)
                     }
                 },
                 prefill: {
@@ -140,8 +114,7 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
         }
     };
 
-    console.log(booking);
-
+    console.log(bookingData);
 
     return (
         <>
@@ -158,25 +131,25 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span class="h6 fw-light mb-0">Service & Tax</span>
-                            <span class="h6 fw-light mb-0">₹ {!loading ? fareData?.serviceAndTax : 0}</span>
+                            <span class="h6 fw-light mb-0">₹ {!loading ? fareData?.service_and_tax : 0}</span>
                         </li>
                         <li class="list-group-item py-0"><hr class="my-0" /></li>
                         {/* <!-- Divider --> */}
                         <li class="list-group-item d-flex justify-content-between pb-0">
                             <span class="h5 fw-normal mb-0">Total</span>
-                            <span class="h5 fw-normal mb-0">₹ {!loading ? fareData?.totalFare : 0}</span>
+                            <span class="h5 fw-normal mb-0">₹ {!loading ? fareData?.total_fare : 0}</span>
                         </li>
                     </ul>
 
                     <div class="d-grid mt-4 gap-2">
                         <div class="form-check form-check-inline mb-0">
-                            <input class={`form-check-input ${paymentType == "HALF" && "active"}`} type="radio" name="discountOptions" id="discount1" onClick={() => dispatch(changePaymentMode({ paymentType: "HALF", ammount: fareData?.serviceAndTax, fare: fareData }))} value="option1" checked={paymentType == "HALF"} />
-                            <label class="form-check-label h6 fw-normal mb-0" for="discount1">Pay ₹{!loading ? fareData?.serviceAndTax : 0} now (Half Payment)</label>
+                            <input class={`form-check-input ${paymentType?.paymentType == "HALF" && "active"}`} type="radio" name="discountOptions3" id="discount3" onClick={() => setPayment({ paymentType: "HALF", ammount: fareData?.service_and_tax })} value="option2" checked={paymentType?.paymentType == "HALF"} />
+                            <label class="form-check-label h6 fw-normal mb-0" for="discount3">Pay ₹{!loading ? fareData?.service_and_tax : 0} now (Half Payment)</label>
                         </div>
 
                         <div class="form-check form-check-inline mb-0">
-                            <input class={`form-check-input ${paymentType == "FULL" && "active"}`} type="radio" onClick={() => dispatch(changePaymentMode({ paymentType: "FULL", ammount: fareData?.totalFare, fare: fareData }))} name="discountOptions" id="discount2" value="option2" checked={paymentType == "FULL"} />
-                            <label class="form-check-label h6 fw-normal mb-0" for="discount2">Pay ₹{!loading ? fareData?.totalFare : 0} now (Full payment)</label>
+                            <input class={`form-check-input ${paymentType?.paymentType == "FULL" && "active"}`} type="radio" onClick={() => setPayment({ paymentType: "FULL", ammount: fareData?.total_fare })} name="discountOptions3" id="discount4" value="option2" checked={paymentType?.paymentType == "FULL"} />
+                            <label class="form-check-label h6 fw-normal mb-0" for="discount4">Pay ₹{!loading ? fareData?.total_fare : 0} now (Full payment)</label>
                         </div>
 
                         {/* <!-- Button --> */}
@@ -185,7 +158,7 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
                                 paymentLoading ? (
                                     <CircularProgress size="20px" color="inherit" thickness={5} />
                                 ) : (
-                                    booking.payNow ? "Pay Now" : "Complete Trip Details"
+                                    "Pay Now"
                                 )
                             }
                         </button>
@@ -198,8 +171,13 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
                         <SwipeableEdgeDrawer
                             fareData={fareData}
                             loading={loading}
-                            setPickupOpen={setPickupOpen}
+                            paymentType={paymentType}
+                            setPayment={setPayment}
                             handlePayment={handlePayment}
+                            term={term}
+                            bookingdata={bookingdata}
+                            included_charges={included_charges}
+                            extra_charges={extra_charges}
                         />
                     </>
                 )
@@ -211,7 +189,7 @@ function CabsPayout({ fareData, loading, setPickupOpen }) {
 export default CabsPayout
 
 
-const drawerBleeding = 56;
+const drawerBleeding = 106;
 
 const Root = styled('div')(({ theme }) => ({
     height: '100%',
@@ -231,6 +209,7 @@ const StyledBox = styled('div')(({ theme }) => ({
 const Puller = styled('div')(({ theme }) => ({
     width: 30,
     height: 6,
+    marginBottom: 20,
     backgroundColor: grey[300],
     borderRadius: 3,
     position: 'absolute',
@@ -242,32 +221,22 @@ const Puller = styled('div')(({ theme }) => ({
 }));
 
 function SwipeableEdgeDrawer(props) {
-    const { window, fareData, loading, setPickupOpen, handlePayment } = props;
+    const { window, fareData, loading, setPickupOpen, handlePayment, paymentType, setPayment, term, included_charges, extra_charges, bookingdata } = props;
     const [open, setOpen] = React.useState(false);
     const [error, setError] = useState();
     const [paymentLoading, setPaymentLoading] = useState(false);
     const dispatch = useDispatch();
-    const { paymentType, paymentAmmount } = useSelector((state) => state.booking.payment);
+    // const { paymentType, paymentAmmount } = useSelector((state) => state.booking.payment);
     const { user: { authUser }, booking } = useSelector((state) => state);
 
     // Load Razorpay when drawer is open
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
-        if (newOpen) {
-            loadRazorpayScript();
-        }
+        // if (newOpen) {
+        //     loadRazorpayScript();
+        // }
     };
 
-    // Razorpay Script Loader
-    const loadRazorpayScript = () => {
-        return new Promise((resolve) => {
-            const script = document.createElement("script");
-            script.src = "https://checkout.razorpay.com/v1/checkout.js";
-            script.onload = () => resolve(true);
-            script.onerror = () => resolve(false);
-            document.body.appendChild(script);
-        });
-    };
     return (
         <>
             {/* <CssBaseline /> */}
@@ -303,9 +272,39 @@ function SwipeableEdgeDrawer(props) {
                     }}
                 >
                     <Puller />
-                    <Typography sx={{ p: 2, color: 'text.secondary' }}>51 results</Typography>
+                    {
+                        open ? (
+                            <>
+                                <div className='my-5 mx-2' >
+                                    <h5>Fare Breakup</h5>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className='my-4 mx-2' >
+                                    {
+                                        paymentType?.paymentType == "HALF" && (
+                                            <span>Pay rest to the driver ? <a className='link' onClick={() => toggleDrawer()}>Know More</a></span>
+                                        )
+                                    }
+                                    <button disabled={paymentLoading} class="btn btn-dark mb-0 mt-2 w-100" onClick={handlePayment} >
+                                        {
+                                            paymentLoading ? (
+                                                <CircularProgress size="20px" color="inherit" thickness={5} />
+                                            ) : (
+                                                `Pay Now ${paymentType?.ammount}`
+                                            )
+                                        }
+                                    </button>
+                                </div>
+                            </>
+                        )
+                    }
+
+                    {/* <div class="d-grid mt-4 gap-2">
+                    </div> */}
                 </StyledBox>
-                <StyledBox sx={{ px: 2, pb: 2, height: '100%', overflow: 'auto' }}>
+                <StyledBox sx={{ px: 2, pb: 2, mt: 3, height: '100%', overflow: 'auto' }}>
                     <ul class="list-group list-group-borderless mb-0">
                         <li class="list-group-item d-flex justify-content-between">
                             <span class="h6 fw-light mb-0">Base Price</span>
@@ -313,24 +312,123 @@ function SwipeableEdgeDrawer(props) {
                         </li>
                         <li class="list-group-item d-flex justify-content-between">
                             <span class="h6 fw-light mb-0">Service & Tax</span>
-                            <span class="h6 fw-light mb-0">₹ {!loading ? fareData?.serviceAndTax : 0}</span>
+                            <span class="h6 fw-light mb-0">₹ {!loading ? fareData?.service_and_tax : 0}</span>
                         </li>
                         <li class="list-group-item py-0"><hr class="my-0" /></li>
                         {/* <!-- Divider --> */}
                         <li class="list-group-item d-flex justify-content-between pb-0">
                             <span class="h5 fw-normal mb-0">Total</span>
-                            <span class="h5 fw-normal mb-0">₹ {!loading ? fareData?.totalFare : 0}</span>
+                            <span class="h5 fw-normal mb-0">₹ {!loading ? fareData?.total_fare : 0}</span>
                         </li>
                     </ul>
-                    <button disabled={paymentLoading} class="btn btn-dark mb-0 mt-2 w-100" onClick={handlePayment} >
-                        {
-                            paymentLoading ? (
-                                <CircularProgress size="20px" color="inherit" thickness={5} />
-                            ) : (
-                                booking.payNow ? "Pay Now" : "Complete Trip Details"
+                    <div class="d-grid mt-4 gap-2">
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class={`form-check-input ${paymentType?.paymentType == "HALF" && "active"}`} type="radio" name="discountOptions" id="discount1" onClick={() => setPayment({ paymentType: "HALF", ammount: fareData?.service_and_tax })} value="option1" checked={paymentType?.paymentType == "HALF"} />
+                            <label class="form-check-label h6 fw-normal mb-0" for="discount1">Pay ₹{!loading ? fareData?.service_and_tax : 0} now (Half Payment)</label>
+                        </div>
+
+                        <div class="form-check form-check-inline mb-0">
+                            <input class={`form-check-input ${paymentType?.paymentType == "FULL" && "active"}`} type="radio" onClick={() => setPayment({ paymentType: "FULL", ammount: fareData?.total_fare })} name="discountOptions" id="discount2" value="option2" checked={paymentType?.paymentType == "FULL"} />
+                            <label class="form-check-label h6 fw-normal mb-0" for="discount2">Pay ₹{!loading ? fareData?.total_fare : 0} now (Full payment)</label>
+                        </div>
+                        <button disabled={paymentLoading} class="btn btn-dark mb-0 mt-2 w-100" onClick={handlePayment} >
+                            {
+                                paymentLoading ? (
+                                    <CircularProgress size="20px" color="inherit" thickness={5} />
+                                ) : (
+                                    "Pay Now"
+                                )
+                            }
+                        </button>
+                    </div>
+                    <hr />
+                    <div class="row g-3">
+                        {/* <!-- List --> */}
+                        <div class="col-sm-6">
+                            <h6>Included in your price</h6>
+                            <ul class="list-group list-group-borderless mb-0">
+                                {included_charges?.map((data) => (
+                                    <li class="list-group-item mb-0 pb-0">
+                                        <i class="fa-solid fa-check text-success me-1"></i>
+                                        {data?.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        {/* <!-- List --> */}
+                        <div class="col-sm-6">
+                            <h6>Extra charge</h6>
+                            <ul class="list-group list-group-borderless mb-0">
+                                {extra_charges?.map((data) => (
+                                    <li class="list-group-item mb-0 pb-0">
+                                        <i class="fa-solid fa-x text-danger me-1"></i>
+                                        {data?.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card-header border-bottom bg-transparent px-0 pt-4 mb-3">
+                        <h5 class="mb-0">Safety Guidelines</h5>
+                    </div>
+                    <div class="row g-2">
+                        {term
+                            ?.filter(
+                                (data) => data?.filter_option === "Global Guideleine"
                             )
-                        }
-                    </button>
+                            .map((data, key) => (
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <h6>{data?.title}</h6>
+                                    <li class="list-group-item h6 fw-light d-flex mb-0">
+                                        <i class="bi bi-arrow-right me-2"></i>
+                                        {data?.desc}
+                                    </li>
+                                </div>
+                            ))}
+                        {term
+                            ?.filter(
+                                (data) =>
+                                    data?.filter_option == bookingdata?.data?.cab?.category?.name
+                            )
+                            .map((data, key) => (
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <h6>{data?.title}</h6>
+                                    <li class="list-group-item h6 fw-light d-flex mb-0">
+                                        <i class="bi bi-arrow-right me-2"></i>
+                                        {data?.desc}
+                                    </li>
+                                </div>
+                            ))}
+                        {term
+                            ?.filter(
+                                (data) => data?.filter_option == bookingdata?.data?.cab?.name
+                            )
+                            .map((data, key) => (
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <h6>{data?.title}</h6>
+                                    <li class="list-group-item h6 fw-light d-flex mb-0">
+                                        <i class="bi bi-arrow-right me-2"></i>
+                                        {data?.desc}
+                                    </li>
+                                </div>
+                            ))}
+                        {term
+                            ?.filter(
+                                (data) => data?.filter_option == bookingdata?.data?.trip_type
+                            )
+                            .map((data, key) => (
+                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                    <h6>{data?.title}</h6>
+                                    <li class="list-group-item h6 fw-light d-flex mb-0">
+                                        <i class="bi bi-arrow-right me-2"></i>
+                                        {data?.desc}
+                                    </li>
+                                </div>
+                            ))}
+                    </div>
                 </StyledBox>
             </SwipeableDrawer>
         </>

@@ -6,6 +6,7 @@ export const appRoutes = {
   app: {
     cabs: cabsSectionPrefix,
     cabsDetails: `${cabsSectionPrefix}/vtt-cabs-trip-review`,
+    bookingConfirmation: `${cabsSectionPrefix}/trip-confirmation`,
   },
   login: "/sign-in",
   register: "/sign-up",
@@ -41,6 +42,8 @@ export const apiRoutes = {
   user: {
     profileUpload: apiUrl("customer/profile"),
     customer: (id = null) => apiUrl(`customer${id ? "/" + id : ""}`),
+    customerBooking: (id = null) =>
+      apiUrl(`customer-booking${id ? "/" + id : ""}`),
     contactinfogenotp: apiUrl("customer/contactinfogenotp"),
     contactinfogenotpverify: apiUrl("customer/contactinfogenotpverify"),
     changepassword: apiUrl("customer/changepassword"),
@@ -53,8 +56,10 @@ export const apiRoutes = {
   },
   payment: {
     createOrder: apiUrl("create-booking"),
+    updateOrder: apiUrl("update-booking"),
     updateBookingStatus: apiUrl("booking-status"),
     veryfyPayment: apiUrl("payment/verify"),
+    confirmBooking: apiUrl("booking-detail"),
   },
 };
 

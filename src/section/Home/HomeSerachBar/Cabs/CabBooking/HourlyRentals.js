@@ -29,17 +29,17 @@ const oneWay = {
 };
 
 const hourlyOption = [
-  "1 hrs",
-  "2 hrs",
-  "3 hrs",
+  // "1 hrs",
+  // "2 hrs",
+  // "3 hrs",
   "4 hrs",
-  "5 hrs",
-  "6 hrs",
-  "7 hrs",
+  // "5 hrs",
+  // "6 hrs",
+  // "7 hrs",
   "8 hrs",
-  "9 hrs",
-  "10 hrs",
-  "11 hrs",
+  // "9 hrs",
+  // "10 hrs",
+  // "11 hrs",
   "12 hrs",
 ];
 

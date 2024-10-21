@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Box,
   Modal,
@@ -55,7 +55,7 @@ export default function AddressModel({ open, handleOpen, handleClose }) {
   const qry_params = JSON.parse(qry.get("qry"));
 
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyD08DAjY2ESqW0ssWbnSrRGvBN7OlXcEJg",
+    googleMapsApiKey: process.env.MAPS_API_KEY,
     libraries,
   });
   const [pickupLocation, setPickupLocation] = useState(null);
@@ -83,42 +83,50 @@ export default function AddressModel({ open, handleOpen, handleClose }) {
     <div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={modalStyle}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            variant="scrollable"
-            scrollButtons="auto"
-            aria-label="scrollable auto tabs example"
-          >
-            <Tab label="Set Pickup Location" />
+          {qry_params?.tripType == "Airport Transfers" ? (
+            <>
+              <AirportTransfer handleClose={handleClose} />
+            </>
+          ) : (
+            <>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="scrollable auto tabs example"
+              >
+                <Tab label="Set Pickup Location" />
 
-            {qry_params?.tripType != "Hourly Rentals" && (
-              <Tab label="Set Drop Location" />
-            )}
-            <Tab label="Traveler Information" />
-          </Tabs>
-          <CustomTabPanel value={value} index={0}>
-            <PickupAddress
-              handleClose={handleClose}
-              handelConfirm={(data) => {
-                handleChange(1, 1);
-              }}
-            />
-          </CustomTabPanel>
-          {qry_params?.tripType != "Hourly Rentals" && (
-            <CustomTabPanel value={value} index={1}>
-              <DropAddress
-                handleClose={handleClose}
-                handelConfirm={() => handleChange(1, 2)}
-              />
-            </CustomTabPanel>
+                {qry_params?.tripType != "Hourly Rentals" && (
+                  <Tab label="Set Drop Location" />
+                )}
+                <Tab label="Traveler Information" />
+              </Tabs>
+              <CustomTabPanel value={value} index={0}>
+                <PickupAddress
+                  handleClose={handleClose}
+                  handelConfirm={(data) => {
+                    handleChange(1, 1);
+                  }}
+                />
+              </CustomTabPanel>
+              {qry_params?.tripType != "Hourly Rentals" && (
+                <CustomTabPanel value={value} index={1}>
+                  <DropAddress
+                    handleClose={handleClose}
+                    handelConfirm={() => handleChange(1, 2)}
+                  />
+                </CustomTabPanel>
+              )}
+              <CustomTabPanel
+                value={value}
+                index={qry_params?.tripType != "Hourly Rentals" ? 2 : 1}
+              >
+                <TravellerInformation handleClose={handleClose} />
+              </CustomTabPanel>
+            </>
           )}
-          <CustomTabPanel
-            value={value}
-            index={qry_params?.tripType != "Hourly Rentals" ? 2 : 1}
-          >
-            <TravellerInformation handleClose={handleClose} />
-          </CustomTabPanel>
         </Box>
       </Modal>
     </div>
@@ -147,3 +155,57 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
+const AirportTransfer = ({ handleClose }) => {
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    console.log(newValue);
+
+    setValue(newValue);
+  };
+
+  const qry = useSearchParams();
+  const qry_params = JSON.parse(qry.get("qry"));
+
+  return (
+    <>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs example"
+      >
+        {qry_params?.tripOption == "Pickup To Airport" ? (
+          <Tab label="Set Drop Location" />
+        ) : (
+          <Tab label="Set Pickup Location" />
+        )}
+        <Tab label="Traveler Information" />
+      </Tabs>
+      {qry_params?.tripOption == "Pickup To Airport" ? (
+        <CustomTabPanel value={value} index={0}>
+          <DropAddress
+            handleClose={handleClose}
+            handelConfirm={() => handleChange(1, 1)}
+          />
+        </CustomTabPanel>
+      ) : (
+        <CustomTabPanel value={value} index={0}>
+          <PickupAddress
+            handleClose={handleClose}
+            handelConfirm={(data) => {
+              handleChange(1, 1);
+            }}
+          />
+        </CustomTabPanel>
+      )}
+      <CustomTabPanel value={value} index={1}>
+        <TravellerInformation handleClose={handleClose} />
+      </CustomTabPanel>
+    </>
+  );
+};
+const HourlyRental = () => {};
+const RoundTripTransfer = () => {};

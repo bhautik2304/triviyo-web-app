@@ -9,6 +9,7 @@ import { deviceRegister, themeMood } from "@/lib/config";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthUser } from "@/redux/thunk/user";
 import { requestPermission } from "@/lib/firebase/firebase";
+import { fetchUserBooking } from "@/redux/thunk/userBooking";
 
 function HomeHeader() {
   const [auth, setAuth] = useState();
@@ -39,6 +40,10 @@ function HomeHeader() {
   }, []);
   const { authUser } = useSelector((state) => state.user);
   // console.log(authUser);
+
+  useEffect(() => {
+    dispatch(fetchUserBooking(authUser?.id))
+  }, [authUser]);
 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", theme);
@@ -144,9 +149,8 @@ function HomeHeader() {
                     <li className="mb-1">
                       <button
                         type="button"
-                        className={`dropdown-item d-flex align-items-center ${
-                          themeMood("light") ? "active" : ""
-                        }`}
+                        className={`dropdown-item d-flex align-items-center ${themeMood("light") ? "active" : ""
+                          }`}
                         data-bs-theme-value="light"
                         onClick={() => toggleTheme("light")}
                       >
@@ -166,9 +170,8 @@ function HomeHeader() {
                     <li className="mb-1">
                       <button
                         type="button"
-                        className={`dropdown-item d-flex align-items-center ${
-                          themeMood("dark") ? "active" : ""
-                        }`}
+                        className={`dropdown-item d-flex align-items-center ${themeMood("dark") ? "active" : ""
+                          }`}
                         data-bs-theme-value="dark"
                         onClick={() => toggleTheme("dark")}
                       >
@@ -191,9 +194,8 @@ function HomeHeader() {
                       <button
                         type="button"
                         onClick={() => toggleTheme("auto")}
-                        className={`dropdown-item d-flex align-items-center ${
-                          themeMood("auto") ? "active" : ""
-                        }`}
+                        className={`dropdown-item d-flex align-items-center ${themeMood("auto") ? "active" : ""
+                          }`}
                         data-bs-theme-value="auto"
                       >
                         <svg

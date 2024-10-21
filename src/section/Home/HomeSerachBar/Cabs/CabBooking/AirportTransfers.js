@@ -120,11 +120,17 @@ function AirportTransfers() {
       if (data.trip == tripOption.pickupToAirport) {
         newOneWay = {
           ...data,
+          tripOption: data?.trip,
+          toPickup: data.airport,
+          toDestination: data.toCity,
           stopOvers: [data.airport, data.toCity],
         };
       } else {
         newOneWay = {
           ...data,
+          toPickup: data.fromCity,
+          toDestination: data.airport,
+          tripOption: data?.trip,
           stopOvers: [data.fromCity, data.airport],
         };
       }
@@ -150,6 +156,7 @@ function AirportTransfers() {
 
       if (tripType.tripType == "instation") {
         dispatch(changeTripData(newOneWay));
+        // console.log(newOneWay);
         routes.push(`${appRoutes.app.cabs}?qry=${JSON.stringify(newOneWay)}`);
         return;
       } else {
@@ -255,10 +262,10 @@ function AirportTransfers() {
                       origin: false,
                     }));
                     const newLocationData = {
-                      id: place.id,
+                      id: place.place_id,
                       label: place.address,
                       name: place.address,
-                      placeId: place.id,
+                      placeId: place.place_id,
                       lat: place.latitude,
                       lng: place.longitude,
                     };
@@ -349,13 +356,15 @@ function AirportTransfers() {
                       origin: false,
                     }));
                     const newLocationData = {
-                      id: place.id,
+                      id: place.place_id,
                       label: place.address,
                       name: place.address,
-                      placeId: place.id,
+                      placeId: place.place_id,
                       lat: place.latitude,
                       lng: place.longitude,
                     };
+                    console.log(place);
+
                     setData({ ...data, airport: newLocationData });
                     // Update the state immutably
                   }}

@@ -17,6 +17,23 @@ import {
   changePaymentMode,
 } from "@/redux/slice/bookingSlice";
 
+async function getAirportByLatLng(lat, lng) {
+  const url = `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/geo-place-details?lat=${lat}&lng=${lng}`;
+
+  try {
+    const response = await appAxios.get(url);
+    const addressComponents = response.data.results[0].address_components;
+    // Find city information
+    const city = addressComponents.find((component) =>
+      component.types.includes("airport")
+    );
+    return city ? city.long_name : null;
+  } catch (error) {
+    // console.error("Error fetching city:", error);
+    return null;
+  }
+}
+
 function CabsDetail() {
   const [km, setKm] = useState(0);
   const [origin, setorigin] = useState({});
@@ -31,6 +48,35 @@ function CabsDetail() {
   const qry_params = JSON.parse(qry.get("qry"));
 
   const { authUser } = useSelector((state) => state.user);
+
+  const setPickupAndDrop = async () => {
+    if (qry_params?.tripType == "Airport Transfers") {
+      const airportAddressData = await getAirportByLatLng(
+        qry_params?.airport?.lat,
+        qry_params?.airport?.lng
+      );
+      const airportAddress = {
+        houseNo: qry_params?.airport?.label,
+        streetName: qry_params?.airport?.label,
+        address: qry_params?.airport?.label,
+        lat: qry_params?.airport?.lat,
+        lng: qry_params?.airport?.lng,
+        cityName: airportAddressData,
+        airportName: airportAddressData,
+        isAirport: true,
+      };
+
+      if (qry_params?.tripOption == "Pickup To Airport") {
+        dispatch(
+          changeBookingDetaild({ key: "pickupAddress", val: airportAddress })
+        );
+      } else {
+        dispatch(
+          changeBookingDetaild({ key: "dropAddress", val: airportAddress })
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     api.cabs.getCabFare(
@@ -93,6 +139,15 @@ function CabsDetail() {
     dispatch(
       changeBookingDetaild({ key: "tripType", val: qry_params?.tripType })
     );
+    if (qry_params?.tripType == "Airport Transfers") {
+      dispatch(
+        changeBookingDetaild({
+          key: "airportTripType",
+          val: qry_params?.tripOption,
+        })
+      );
+    }
+    setPickupAndDrop();
   }, []);
 
   console.log(qry_params);

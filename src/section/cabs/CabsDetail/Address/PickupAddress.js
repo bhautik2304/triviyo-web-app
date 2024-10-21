@@ -23,12 +23,13 @@ import {
 } from "@/redux/slice/bookingSlice";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
+import { appAxios } from "@/lib/axios";
 
 async function getCityByLatLng(lat, lng, setBackDrop) {
   const url = `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/geo-place-details?lat=${lat}&lng=${lng}`;
   setBackDrop(true);
   try {
-    const response = await axios.get(url);
+    const response = await appAxios.get(url);
     const addressComponents = response.data.results[0].address_components;
     // Find city information
     const city = addressComponents.find(
@@ -121,6 +122,12 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
   useEffect(() => {
     // setMarkerPosition(qry_params.fromCity);
     setSelectPickupAddress(pickupAddress);
+    if (qry_params?.tripOption == "Pickup To Airport") {
+      setMarkerPosition({
+        lat: qry_params?.toPickup?.lat,
+        lng: qry_params?.toPickup?.lng,
+      });
+    }
   }, []);
 
   const onMapClick = useCallback((event) => {
@@ -138,22 +145,41 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
     }
   };
 
+  let fromCity;
+  let pickupCity;
+
   const onMarkerDragEnd = useCallback(async (event) => {
     setError({
       ...error,
       pickup_city_error: "",
     });
-    const fromCity = await getCityByLatLng(
-      qry_params.fromCity.lat,
-      qry_params.fromCity.lng,
-      setBackDrop
-    );
-    const pickupCity = await getCityByLatLng(
-      event.latLng.lat(),
-      event.latLng.lng(),
-      setBackDrop
-    );
-    // console.log(pickupCity?.long_name);
+
+    if (qry_params?.tripType == "Airport Transfers") {
+      fromCity = await getCityByLatLng(
+        qry_params.fromCity.lat,
+        qry_params.fromCity.lng,
+        setBackDrop
+      );
+      pickupCity = await getCityByLatLng(
+        event.latLng.lat(),
+        event.latLng.lng(),
+        setBackDrop
+      );
+      // setBackDrop(false);
+    } else {
+      fromCity = await getCityByLatLng(
+        qry_params.fromCity.lat,
+        qry_params.fromCity.lng,
+        setBackDrop
+      );
+      pickupCity = await getCityByLatLng(
+        event.latLng.lat(),
+        event.latLng.lng(),
+        setBackDrop
+      );
+    }
+    console.log(fromCity);
+    console.log(pickupCity);
 
     if (!fromCity || !pickupCity) {
       // console.log("Couldn't retrieve city information");
@@ -200,7 +226,7 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
       pickupGeoCodinates: pickupLocation.geo,
     });
   };
-  const confirmAddress = () => {
+  const confirmAddress = async () => {
     const errors = {};
 
     if (selectPickupAddress.houseNo == "") {
@@ -218,12 +244,27 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
       setError(errors);
     }
 
+    const pickupCity = await getCityByLatLng(
+      markerPosition.lat,
+      markerPosition.lng,
+      setBackDrop
+    );
+
+    const pickupLocationData = {
+      ...selectPickupAddress,
+      lat: markerPosition.lat,
+      lng: markerPosition.lng,
+      cityName: pickupCity?.long_name,
+      airportName: "",
+      isAirport: false,
+    };
+
     setData({
       ...data,
-      pickupAddress: selectPickupAddress,
+      pickupAddress: pickupLocationData,
     });
     dispatch(
-      changeBookingDetaild({ key: "pickupAddress", val: selectPickupAddress })
+      changeBookingDetaild({ key: "pickupAddress", val: pickupLocationData })
     );
     dispatch(
       changeBookingDetaild({
@@ -234,6 +275,7 @@ function PickupAddress({ open, handelConfirm, handleClose }) {
     dispatch(completePickupLocation());
     handelConfirm();
   };
+  console.log(qry_params);
 
   return (
     <>

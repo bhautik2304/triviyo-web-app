@@ -5,6 +5,7 @@ import ProfileSidebar from "./components/Profile/ProfileSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthUser } from "@/redux/thunk/user";
 import LinearProgress from "@mui/material/LinearProgress";
+import { fetchUserBooking } from "@/redux/thunk/userBooking";
 
 function ProfileLayout({ children }) {
   const dispatch = useDispatch();
@@ -15,6 +16,9 @@ function ProfileLayout({ children }) {
   const { authUser, authStatus, loadingState, progress } = useSelector(
     (state) => state.user
   );
+  useEffect(() => {
+    dispatch(fetchUserBooking(authUser?.id));
+  }, [authUser]);
 
   return (
     <>

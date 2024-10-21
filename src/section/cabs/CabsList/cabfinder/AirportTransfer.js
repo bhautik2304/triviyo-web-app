@@ -161,11 +161,13 @@ function AirportTransfer({ data }) {
       if (datas.trip == tripOption.pickupToAirport) {
         newOneWay = {
           ...datas,
+          tripOption: datas?.trip,
           stopOvers: [datas.airport, datas.toDestination],
         };
       } else {
         newOneWay = {
           ...datas,
+          tripOption: datas?.trip,
           stopOvers: [datas.toPickup, datas.airport],
         };
       }
@@ -177,6 +179,7 @@ function AirportTransfer({ data }) {
         trip: newOneWay?.tripType,
         cabsType: "all",
       };
+
       dispatch(fetchCabs(params));
       routes.push(`${appRoutes.app.cabs}?qry=${JSON.stringify(newOneWay)}`);
       // Ensure pathname and query are set correctly

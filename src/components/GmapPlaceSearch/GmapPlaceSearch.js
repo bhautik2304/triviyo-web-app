@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Stack } from "@mui/material";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
+import { appAxios } from "@/lib/axios";
 
 function debounce(func, wait) {
   let timeout;
@@ -45,7 +46,7 @@ function GmapPlaceSearch({
   const fetchCities = useCallback(
     debounce((query) => {
       setLoading(true);
-      axios
+      appAxios
         .get(
           `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/search-cities?query=${query}`
         )

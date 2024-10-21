@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
+import { appAxios } from "@/lib/axios";
+
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -37,7 +38,7 @@ export default function AirportGmapPlace({
   const fetchAirports = useCallback(
     debounce((query) => {
       setLoading(true);
-      axios
+      appAxios
         .get(
           `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/search-airports?query=${query}`
         )

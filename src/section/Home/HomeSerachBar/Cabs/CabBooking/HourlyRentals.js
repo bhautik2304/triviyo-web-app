@@ -48,8 +48,8 @@ function HourlyRentals() {
   const [originLatLong, setOriginLatLong] = useState(false);
   const [pkg, setPkg] = useState(false);
   const [destinationLatLong, setDestinationLatLong] = useState(false);
-  const [date, setDate] = useState(false);
-  const [times, setTime] = useState(false);
+  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+  const [times, setTime] = useState(moment().format("HH:mm:ss"));
   const [error, setError] = useState({
     origin: false,
     destination: false,
@@ -193,6 +193,7 @@ function HourlyRentals() {
           <div class="form-icon-input form-fs-lg">
             <DateInput
               error={error.date}
+               label="Pickup Date"
               onChange={(data) => {
                 // const date = new Date(data);
                 setError((prevError) => ({
@@ -210,6 +211,7 @@ function HourlyRentals() {
           <div class="form-icon-input form-fs-lg">
             <TimeInput
               error={error.times}
+              label="Pickup Time"
               onChange={(data) => {
                 // const date = new Date(data);
                 setError((prevError) => ({

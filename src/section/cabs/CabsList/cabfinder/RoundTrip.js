@@ -34,6 +34,8 @@ function RoundTrip() {
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState();
   const [time, setTime] = useState();
+  const [returndate, setReturnDate] = useState();
+  const [returntime, setReturnTime] = useState();
   const [stops, setStops] = useState([
     // Initial state with one stop
   ]);
@@ -55,17 +57,30 @@ function RoundTrip() {
     const datesss = moment(qry_params.pickupDate, "DD-MM-YYYY").format(
       "YYYY-MM-DD"
     );
-    const combinedDateTimeString = `${datesss}T${qry_params.pickupTime}`;
-
+    const returndatesss = moment(qry_params.returnDate, "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    const pickupcombinedDateTimeString = `${datesss}T${qry_params.pickupTime}`;
+    const returncombinedDateTimeString = `${returndatesss}T${qry_params.returnTime}`;
+console.log(returncombinedDateTimeString)
     // Parse the combined date and time using moment
-    const formattedDateTime = moment(combinedDateTimeString).format(
+    const pickupformattedDateTime = moment(pickupcombinedDateTimeString).format(
+      "YYYY-MM-DDTHH:mm"
+    );
+    const returnformattedDateTime = moment(returncombinedDateTimeString).format(
       "YYYY-MM-DDTHH:mm"
     );
     const pickupDate = qry_params?.pickupDate
       ? setDate(moment(qry_params.pickupDate))
       : null;
+    const returnDate = qry_params?.returnDate
+      ? setReturnDate(moment(qry_params?.returnDate))
+      : null;
     const pickupTime = qry_params?.pickupTime
-      ? setTime(moment(formattedDateTime))
+      ? setTime(moment(pickupformattedDateTime))
+      : null;
+    const returnTime = qry_params?.returnTime
+      ? setReturnTime(moment(returnformattedDateTime))
       : null;
     setData(qry_params);
     console.log(qry_params);
@@ -150,7 +165,9 @@ function RoundTrip() {
         toCity: data?.toCity,
         stopOvers: [data?.fromCity, ...stops, data?.toCity],
         pickupDate: moment(date).format("YYYY-MM-DD"),
-        pickupTime: moment(time).format("HH:mm:ss"),
+        pickupTime: time,
+        returnDate: moment(returndate).format("YYYY-MM-DD"),
+        returnTime: moment(returntime).format("HH:mm:ss"),
         stop: stops,
       };
       console.log(newOneWay);
@@ -173,7 +190,7 @@ function RoundTrip() {
         <div class="col-xl-12">
           <div class="row g-4">
             {/* <!-- Leaving From --> */}
-            <div class="col-md-3 col-xl-3">
+            <div class="col-md-6 col-xl-6">
               <div class="form-size-lg">
                 <label class="form-label">Pickup</label>
                 <GmapPlaceSearch
@@ -199,7 +216,7 @@ function RoundTrip() {
             </div>
 
             {/* <!-- Going To --> */}
-            <div class="col-md-3 col-xl-3">
+            <div class="col-md-6 col-xl-6">
               <div class="form-size-lg">
                 <label class="form-label">Drop</label>
                 <GmapPlaceSearch
@@ -261,6 +278,8 @@ function RoundTrip() {
                       ...prevError,
                       times: false,
                     }));
+                    console.log(data);
+                    console.log(moment(data).format("HH:mm:ss"));
                     setTime(moment(data).format("HH:mm:ss"));
                   }}
                 />
@@ -269,7 +288,52 @@ function RoundTrip() {
                 </span>
               </div>
             </div>
-            <div class="col-xl-2 d-grid mt-xl-auto">
+            {/* <!-- Date --> */}
+            <div class="col-md-2">
+              <div class="form-icon-input form-fs-lg">
+                <label class="form-label">Return Date</label>
+                <DateInput
+                  error={error.date}
+                  onChange={(data) => {
+                    // const date = new Date(data);
+                    setError((prevError) => ({
+                      ...prevError,
+                      date: false,
+                    }));
+                    setReturnDate(moment(data).format("YYYY-MM-DD"));
+                  }}
+                  value={returndate}
+                />
+                <span className="text-danger">{error.date && error.date}</span>
+              </div>
+            </div>
+
+            {/* <!-- Time --> */}
+            <div class="col-md-2">
+              <div class="form-icon-input form-fs-lg">
+                <label class="form-label">Return Time</label>
+                <TimeInput
+                  value={returntime}
+                  error={error.times}
+                  onChange={(data) => {
+                    // const date = new Date(data);
+                    setError((prevError) => ({
+                      ...prevError,
+                      times: false,
+                    }));
+                      console.log(data);
+                      console.log(moment(data).format("HH:mm:ss"));
+                    setReturnTime(moment(data));
+                  }}
+                />
+                <span className="text-danger">
+                  {error.times && error.times}
+                </span>
+              </div>
+            
+            </div>
+
+            <div class="col-xl-4 d-grid mt-xl-auto">
               <button onClick={searchTrip} class="btn btn-lg btn-primary mb-0">
                 Update
               </button>

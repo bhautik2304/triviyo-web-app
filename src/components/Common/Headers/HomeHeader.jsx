@@ -11,7 +11,7 @@ import { fetchAuthUser } from "@/redux/thunk/user";
 import { requestPermission } from "@/lib/firebase/firebase";
 import { fetchUserBooking } from "@/redux/thunk/userBooking";
 
-function HomeHeader() {
+function HomeHeader({ bg, logo = false }) {
   const [auth, setAuth] = useState();
   const [theme, setTheme] = useState();
   const [authsUser, setAuthUser] = useState();
@@ -57,27 +57,54 @@ function HomeHeader() {
   return (
     <>
       {/* <!-- Header START --> */}
-      <header className="navbar-light header-sticky">
+      <header className="navbar-light header-sticky" style={{
+        backgroundColor: bg || "white"
+      }} >
         {/* <!-- Logo Nav START --> */}
         <nav className="navbar navbar-expand-xl">
           <div className="container">
             {/* <!-- Logo START --> */}
             <a className="navbar-brand" href={appRoutes.home}>
-              <img
-                className="light-mode-item navbar-brand-item"
-                src="/img/logo-light.svg"
-                alt="logo"
-                // width={50}
-                height={50}
-                style={{ height: 60 }}
-              />
-              <img
-                className="dark-mode-item navbar-brand-item"
-                src="/img/logo-dark.svg"
-                alt="logo"
-                height={50}
-                style={{ height: 60 }}
-              />
+              {
+                logo ? (
+                  <>
+                    <img
+                      className="light-mode-item navbar-brand-item"
+                      src={logo}
+                      alt="logo"
+                      // width={50}
+                      height={50}
+                      style={{ height: 60 }}
+                    />
+                    <img
+                      className="dark-mode-item navbar-brand-item"
+                      src={logo}
+                      alt="logo"
+                      height={50}
+                      style={{ height: 60 }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <img
+                      className="light-mode-item navbar-brand-item"
+                      src="/img/logo-light.svg"
+                      alt="logo"
+                      // width={50}
+                      height={50}
+                      style={{ height: 60 }}
+                    />
+                    <img
+                      className="dark-mode-item navbar-brand-item"
+                      src="/img/logo-dark.svg"
+                      alt="logo"
+                      height={50}
+                      style={{ height: 60 }}
+                    />
+                  </>
+
+                )
+              }
             </a>
             {/* <!-- Logo END --> */}
 

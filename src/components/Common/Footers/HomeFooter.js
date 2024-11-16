@@ -1,5 +1,6 @@
 import React from "react";
 import { Logo, Rights } from "@/components";
+import { appRoutes } from "@/constant";
 
 function HomeFooter() {
   return (
@@ -132,7 +133,10 @@ function HomeFooter() {
                   <h5 class="text-white mb-2 mb-md-4">Partner Link</h5>
                   <ul class="nav flex-column text-primary-hover">
                     <li class="nav-item">
-                      <a class="nav-link text-body-secondary" href="#">
+                      <a
+                        class="nav-link text-body-secondary"
+                        href={appRoutes.partner}
+                      >
                         Cab Listing
                       </a>
                     </li>

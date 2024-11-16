@@ -137,6 +137,12 @@ function CabsDetail() {
       changeBookingDetaild({ key: "pickupDate", val: qry_params?.pickupDate })
     );
     dispatch(
+      changeBookingDetaild({ key: "returnTime", val: qry_params?.returnTime })
+    );
+    dispatch(
+      changeBookingDetaild({ key: "returnDate", val: qry_params?.returnDate })
+    );
+    dispatch(
       changeBookingDetaild({ key: "tripType", val: qry_params?.tripType })
     );
     if (qry_params?.tripType == "Airport Transfers") {
@@ -177,11 +183,21 @@ function CabsDetail() {
                     </li>
                     <li class="nav-item h6 ">{qry_params?.tripType}</li>
                     <li class="nav-item h6 ">
+                      Pickup Time{" "}
                       {moment(qry_params?.pickupDate).format("D MMM YYYY")} -{" "}
                       {moment(
                         `${qry_params?.pickupDate}T${qry_params?.pickupTime}`
                       ).format("HH:mm A")}
                     </li>
+                    {qry_params?.tripType == "Round Trip" && (
+                      <li class="nav-item h6 ">
+                        Return Time{" "}
+                        {moment(qry_params?.returnDate).format("D MMM YYYY")} -{" "}
+                        {moment(
+                          `${qry_params?.returnDate}T${qry_params?.returnTime}`
+                        ).format("HH:mm A")}
+                      </li>
+                    )}
                   </ul>
 
                   {/* <!-- Buttons --> */}

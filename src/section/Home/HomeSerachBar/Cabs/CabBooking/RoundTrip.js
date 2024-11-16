@@ -34,8 +34,10 @@ function RoundTrip() {
   const [originLatLong, setOriginLatLong] = useState(false);
   const [destination, setDestination] = useState(false);
   const [destinationLatLong, setDestinationLatLong] = useState(false);
-  const [date, setDate] = useState(false);
-  const [times, setTime] = useState(false);
+  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+  const [times, setTime] = useState(moment().format("HH:mm:ss"));
+  const [returndate, setReturnDate] = useState(moment().format("YYYY-MM-DD"));
+  const [returntimes, setReturnTime] = useState(moment().format("HH:mm:ss"));
   const [stops, setStops] = useState([
     // Initial state with one stop
   ]);
@@ -97,6 +99,20 @@ function RoundTrip() {
       }));
       hasError = true;
     }
+    if (!returndate) {
+      setError((prevError) => ({
+        ...prevError,
+        returndate: "Please Select Return Date",
+      }));
+      hasError = true;
+    }
+    if (!returntimes) {
+      setError((prevError) => ({
+        ...prevError,
+        returntime: "Please Select Return Time",
+      }));
+      hasError = true;
+    }
 
     if (!origin) {
       setError((prevError) => ({
@@ -127,6 +143,8 @@ function RoundTrip() {
         stopOvers: [origin, ...stops, destination],
         pickupDate: date,
         pickupTime: times,
+        returnDate: returndate,
+        returnTime: returntimes,
         stop: stops,
       };
       console.log(newOneWay);
@@ -138,7 +156,6 @@ function RoundTrip() {
       console.error("Error navigating:", error);
     }
   };
-
   return (
     <div
       div
@@ -222,9 +239,10 @@ function RoundTrip() {
           </span>
         </div>
         {/* <!-- Pickup date --> */}
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="form-icon-input form-fs-lg">
             <DateInput
+              label="Pickup Date"
               error={error.date}
               onChange={(data) => {
                 // const date = new Date(data);
@@ -239,10 +257,11 @@ function RoundTrip() {
           </div>
         </div>
         {/* <!-- Pickup time --> */}
-        <div class="col-md-6">
+        <div class="col-md-3">
           <div class="form-icon-input form-fs-lg">
             <TimeInput
-              error={error.times}
+              label="Pickup Time"
+              error={error.returndate}
               onChange={(data) => {
                 // const date = new Date(data);
                 setError((prevError) => ({
@@ -253,6 +272,42 @@ function RoundTrip() {
               }}
             />
             <span className="text-danger">{error.times && error.times}</span>
+          </div>
+        </div>
+        {/* <!-- Pickup time --> */}
+        <div class="col-md-3">
+          <div class="form-icon-input form-fs-lg">
+            <DateInput
+              label="Return Date"
+              error={error.returndate}
+              onChange={(data) => {
+                // const date = new Date(data);
+                setError((prevError) => ({
+                  ...prevError,
+                  returndate: false,
+                }));
+                setReturnDate(moment(data).format("YYYY-MM-DD"));
+              }}
+            />
+            <span className="text-danger">{error.returndate && error.returndate}</span>
+          </div>
+        </div>
+        {/* <!-- Pickup time --> */}
+        <div class="col-md-3">
+          <div class="form-icon-input form-fs-lg">
+            <TimeInput
+              label="Return Time"
+              error={error.returntime}
+              onChange={(data) => {
+                // const date = new Date(data);
+                setError((prevError) => ({
+                  ...prevError,
+                  returntime: false,
+                }));
+                setReturnTime(moment(data).format("HH:mm:ss"));
+              }}
+            />
+            <span className="text-danger">{error.returntime && error.returntime}</span>
           </div>
         </div>
         <div className="col-12 row">

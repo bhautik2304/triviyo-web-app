@@ -30,8 +30,8 @@ const airportTransfer = {
   fromCity: false,
   trip: tripOption.pickupToAirport,
   stopOvers: [],
-  pickupDate: "",
-  pickupTime: "",
+  pickupDate: moment().format("YYYY-MM-DD"),
+  pickupTime: moment().format("HH:mm:ss")
 };
 
 const errorMessage = {
@@ -379,6 +379,7 @@ function AirportTransfers() {
           <div class="form-icon-input form-fs-lg">
             <DateInput
               error={error.date}
+               label="Pickup Date"
               onChange={(date) => {
                 // const date = new Date(data);
                 setError((prevError) => ({
@@ -399,6 +400,7 @@ function AirportTransfers() {
           <div class="form-icon-input form-fs-lg">
             <TimeInput
               error={error.times}
+              label="Pickup Time"
               onChange={(date) => {
                 // const date = new Date(data);
                 setError((prevError) => ({

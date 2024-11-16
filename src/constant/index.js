@@ -9,6 +9,7 @@ export const appRoutes = {
     bookingConfirmation: `${cabsSectionPrefix}/trip-confirmation`,
   },
   login: "/sign-in",
+  partner: "/partner",
   register: "/sign-up",
   profile: {
     home: userProfilePrefix,

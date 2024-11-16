@@ -33,8 +33,8 @@ function OneWay() {
   const [originLatLong, setOriginLatLong] = useState(false);
   const [destination, setDestination] = useState(false);
   const [destinationLatLong, setDestinationLatLong] = useState(false);
-  const [date, setDate] = useState(false);
-  const [times, setTime] = useState(false);
+  const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
+  const [times, setTime] = useState(moment().format("HH:mm:ss"));
   const [error, setError] = useState({
     origin: false,
     destination: false,
@@ -188,6 +188,7 @@ function OneWay() {
             <div class="form-icon-input form-fs-lg">
               <DateInput
                 error={error.date}
+                 label="Pickup Date"
                 onChange={(data) => {
                   // const date = new Date(data);
                   setError((prevError) => ({
@@ -205,6 +206,7 @@ function OneWay() {
             <div class="form-icon-input form-fs-lg">
               <TimeInput
                 error={error.times}
+                label="Pickup Time"
                 onChange={(data) => {
                   // const date = new Date(data);
                   setError((prevError) => ({

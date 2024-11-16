@@ -1,8 +1,9 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import moment from 'moment';
 
 const CustomTimePicker = styled(MobileTimePicker)(({ theme }) => ({
     '& .MuiFormControl-root': {
@@ -15,15 +16,19 @@ const CustomTimePicker = styled(MobileTimePicker)(({ theme }) => ({
     },
 }));
 
-export default function TimeInput({ value, onChange, label }) {
+export default function TimeInput({ value, onChange, label,  disabled=false}) {
 
     return (
-        <CustomTimePicker
-            // disablePast
-            label={label}
-            value={value}
-            onChange={(newValue) => onChange(newValue)}
-            renderInput={(params) => <TextField {...params} fullWidth />}
-        />
+      <CustomTimePicker
+        // disablePast
+        label={label}
+        value={value ? moment(value) : null}
+        onChange={(newValue) => {
+            onChange(newValue)}
+        }
+        renderInput={(params) => (
+          <TextField disabled={disabled} {...params} fullWidth />
+        )}
+      />
     );
 }

@@ -13,8 +13,10 @@ export const checkSession = async () => {
 };
 
 export const setSession = async (tokken, user) => {
+  const users = { ...user, bookings: null };
+
   await setCookie(cookiesKey.authToken, JSON.stringify(tokken));
-  await setCookie(cookiesKey.user, JSON.stringify(user));
+  await setCookie(cookiesKey.user, JSON.stringify(users));
   return true;
 };
 

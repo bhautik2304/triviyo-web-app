@@ -15,20 +15,27 @@ const CustomTimePicker = styled(MobileTimePicker)(({ theme }) => ({
         width: '100%',
     },
 }));
+export default function TimeInput({
+  value,
+  onChange,
+  label,
+  date,
+  disabled = false,
+}) {
+  // Check if the selected date is today
+  const isToday = moment(date).isSame(moment(), "day");
 
-export default function TimeInput({ value, onChange, label,  disabled=false}) {
-
-    return (
-      <CustomTimePicker
-        // disablePast
-        label={label}
-        value={value ? moment(value) : null}
-        onChange={(newValue) => {
-            onChange(newValue)}
-        }
-        renderInput={(params) => (
-          <TextField disabled={disabled} {...params} fullWidth />
-        )}
-      />
-    );
+  return (
+    <CustomTimePicker
+      disablePast={isToday} // Disable past times only if the date is today
+      label={label}
+      value={value ? moment(value) : null}
+      onChange={(newValue) => {
+        onChange(newValue);
+      }}
+      renderInput={(params) => (
+        <TextField disabled={disabled} {...params} fullWidth />
+      )}
+    />
+  );
 }

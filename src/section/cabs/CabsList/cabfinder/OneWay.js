@@ -221,7 +221,7 @@ function OneWay() {
             {/* <!-- Time --> */}
             <div class="col-md-6 col-xl-2">
               <label class="form-label">Pickup time</label>
-              <TimeInput value={time} onChange={(times) => setTime(times)} />
+              <TimeInput date={date} value={time} onChange={(times) => setTime(times)} />
             </div>
           </div>
         </div>

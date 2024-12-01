@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TextField } from "@mui/material";
 import { addStopOver, changeTripData } from "@/redux/slice/CabBookingSlice";
 import moment from "moment";
+import { appAxios } from "@/lib/axios";
 
 const roundTrip = {
   tripType: "Round Trip",
@@ -28,6 +29,33 @@ const roundTrip = {
   returnDate: "",
   dropTime: "",
 };
+
+async function getCityByLatLng(lat, lng) {
+  // setBackDrop(true);
+  const url = `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/geo-place-details?lat=${lat}&lng=${lng}`;
+
+  try {
+    const response = await appAxios.get(url);
+    console.log(response);
+    const addressComponents = response.data.results[0].address_components;
+    // Find city information
+    const city = addressComponents.find(
+      (component) =>
+        component.types.includes("locality") ||
+        component.types.includes("administrative_area_level_2")
+    );
+    return city
+      ? {
+          long_name: city.long_name,
+          addressComponents: response.data.results[0],
+        }
+      : null;
+  } catch (error) {
+    // console.error("Error fetching city:", error);
+    // setBackDrop(false);
+    return null;
+  }
+}
 
 function RoundTrip() {
   const [origin, setOrigin] = useState(false);
@@ -65,10 +93,20 @@ function RoundTrip() {
     setStops(updatedStops);
   };
 
-  const handleSelectPlace = (place, stopId) => {
+  const handleSelectPlace = async (place, stopId) => {
+    const city_name = await getCityByLatLng(
+      place.geometry.location.lat,
+      place.geometry.location.lng
+    );
+
+    console.log(
+      place.geometry.location.lat,
+      place.geometry.location.lng ,city_name
+    );
+    
     const newLocationData = {
       label: place.formatted_address,
-      name: place.formatted_address,
+      name: city_name?.long_name || null,
       placeId: place.place_id,
       id: place.place_id,
       lat: place.geometry.location.lat,
@@ -261,6 +299,7 @@ function RoundTrip() {
           <div class="form-icon-input form-fs-lg">
             <TimeInput
               label="Pickup Time"
+              date={date}
               error={error.returndate}
               onChange={(data) => {
                 // const date = new Date(data);
@@ -289,13 +328,16 @@ function RoundTrip() {
                 setReturnDate(moment(data).format("YYYY-MM-DD"));
               }}
             />
-            <span className="text-danger">{error.returndate && error.returndate}</span>
+            <span className="text-danger">
+              {error.returndate && error.returndate}
+            </span>
           </div>
         </div>
         {/* <!-- Pickup time --> */}
         <div class="col-md-3">
           <div class="form-icon-input form-fs-lg">
             <TimeInput
+              date={returndate}
               label="Return Time"
               error={error.returntime}
               onChange={(data) => {
@@ -307,7 +349,9 @@ function RoundTrip() {
                 setReturnTime(moment(data).format("HH:mm:ss"));
               }}
             />
-            <span className="text-danger">{error.returntime && error.returntime}</span>
+            <span className="text-danger">
+              {error.returntime && error.returntime}
+            </span>
           </div>
         </div>
         <div className="col-12 row">

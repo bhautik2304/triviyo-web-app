@@ -239,6 +239,7 @@ function HourlyRental({ data }) {
               label="Pickup Time"
               error={error.times}
               value={times}
+              date={date}
               onChange={(data) => {
                 // const date = new Date(data);
                 setError((prevError) => ({

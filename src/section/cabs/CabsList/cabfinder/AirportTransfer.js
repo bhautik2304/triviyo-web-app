@@ -407,6 +407,7 @@ function AirportTransfer({ data }) {
           <div class="form-icon-input form-fs-lg">
             <TimeInput
               error={error.times}
+              date={date}
               onChange={(date) => {
                 // const date = new Date(data);
                 setError((prevError) => ({

@@ -272,6 +272,7 @@ console.log(returncombinedDateTimeString)
                 <TimeInput
                   value={time}
                   error={error.times}
+                  date={date}
                   onChange={(data) => {
                     // const date = new Date(data);
                     setError((prevError) => ({
@@ -315,6 +316,7 @@ console.log(returncombinedDateTimeString)
                 <TimeInput
                   value={returntime}
                   error={error.times}
+                  date={returndate}
                   onChange={(data) => {
                     // const date = new Date(data);
                     setError((prevError) => ({

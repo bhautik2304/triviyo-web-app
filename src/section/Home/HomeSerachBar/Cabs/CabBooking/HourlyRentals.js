@@ -212,6 +212,7 @@ function HourlyRentals() {
             <TimeInput
               error={error.times}
               label="Pickup Time"
+              date={date}
               onChange={(data) => {
                 // const date = new Date(data);
                 setError((prevError) => ({

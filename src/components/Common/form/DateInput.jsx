@@ -18,6 +18,7 @@ const CustomDatePicker = styled(MobileDatePicker)(({ theme }) => ({
         width: '100%', // Ensure the input takes full width
     },
 }));
+
 function DateInput({ value, onChange, label, disabled=false }) {
   return (
     <>

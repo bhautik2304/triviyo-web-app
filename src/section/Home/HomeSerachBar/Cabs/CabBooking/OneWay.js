@@ -188,7 +188,7 @@ function OneWay() {
             <div class="form-icon-input form-fs-lg">
               <DateInput
                 error={error.date}
-                 label="Pickup Date"
+                label="Pickup Date"
                 onChange={(data) => {
                   // const date = new Date(data);
                   setError((prevError) => ({
@@ -205,6 +205,7 @@ function OneWay() {
           <div class="col-md-6">
             <div class="form-icon-input form-fs-lg">
               <TimeInput
+                date={date}
                 error={error.times}
                 label="Pickup Time"
                 onChange={(data) => {

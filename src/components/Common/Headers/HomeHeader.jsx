@@ -57,54 +57,54 @@ function HomeHeader({ bg, logo = false }) {
   return (
     <>
       {/* <!-- Header START --> */}
-      <header className="navbar-light header-sticky" style={{
-        backgroundColor: bg || "white"
-      }} >
+      <header
+        className="navbar-light header-sticky"
+        style={{
+          backgroundColor: bg || "white",
+        }}
+      >
         {/* <!-- Logo Nav START --> */}
         <nav className="navbar navbar-expand-xl">
           <div className="container">
             {/* <!-- Logo START --> */}
-            <a className="navbar-brand" href={appRoutes.home}>
-              {
-                logo ? (
-                  <>
-                    <img
-                      className="light-mode-item navbar-brand-item"
-                      src={logo}
-                      alt="logo"
-                      // width={50}
-                      height={50}
-                      style={{ height: 60 }}
-                    />
-                    <img
-                      className="dark-mode-item navbar-brand-item"
-                      src={logo}
-                      alt="logo"
-                      height={50}
-                      style={{ height: 60 }}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <img
-                      className="light-mode-item navbar-brand-item"
-                      src="/img/logo-light.svg"
-                      alt="logo"
-                      // width={50}
-                      height={50}
-                      style={{ height: 60 }}
-                    />
-                    <img
-                      className="dark-mode-item navbar-brand-item"
-                      src="/img/logo-dark.svg"
-                      alt="logo"
-                      height={50}
-                      style={{ height: 60 }}
-                    />
-                  </>
-
-                )
-              }
+            <a className="navbar-brand" href={appRoutes.partner}>
+              {logo ? (
+                <>
+                  <img
+                    className="light-mode-item navbar-brand-item"
+                    src={logo}
+                    alt="logo"
+                    // width={50}
+                    height={150}
+                    style={{ height: 100 }}
+                  />
+                  <img
+                    className="dark-mode-item navbar-brand-item"
+                    src={logo}
+                    alt="logo"
+                    height={50}
+                    style={{ height: 60 }}
+                  />
+                </>
+              ) : (
+                <>
+                  <img
+                    className="light-mode-item navbar-brand-item"
+                    src="/img/logo-light.svg"
+                    alt="logo"
+                    // width={50}
+                    height={50}
+                    style={{ height: 60 }}
+                  />
+                  <img
+                    className="dark-mode-item navbar-brand-item"
+                    src="/img/logo-dark.svg"
+                    alt="logo"
+                    height={50}
+                    style={{ height: 60 }}
+                  />
+                </>
+              )}
             </a>
             {/* <!-- Logo END --> */}
 
@@ -176,8 +176,9 @@ function HomeHeader({ bg, logo = false }) {
                     <li className="mb-1">
                       <button
                         type="button"
-                        className={`dropdown-item d-flex align-items-center ${themeMood("light") ? "active" : ""
-                          }`}
+                        className={`dropdown-item d-flex align-items-center ${
+                          themeMood("light") ? "active" : ""
+                        }`}
                         data-bs-theme-value="light"
                         onClick={() => toggleTheme("light")}
                       >
@@ -197,8 +198,9 @@ function HomeHeader({ bg, logo = false }) {
                     <li className="mb-1">
                       <button
                         type="button"
-                        className={`dropdown-item d-flex align-items-center ${themeMood("dark") ? "active" : ""
-                          }`}
+                        className={`dropdown-item d-flex align-items-center ${
+                          themeMood("dark") ? "active" : ""
+                        }`}
                         data-bs-theme-value="dark"
                         onClick={() => toggleTheme("dark")}
                       >
@@ -221,8 +223,9 @@ function HomeHeader({ bg, logo = false }) {
                       <button
                         type="button"
                         onClick={() => toggleTheme("auto")}
-                        className={`dropdown-item d-flex align-items-center ${themeMood("auto") ? "active" : ""
-                          }`}
+                        className={`dropdown-item d-flex align-items-center ${
+                          themeMood("auto") ? "active" : ""
+                        }`}
                         data-bs-theme-value="auto"
                       >
                         <svg

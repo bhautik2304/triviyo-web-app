@@ -3,6 +3,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthUser } from "@/redux/thunk/user";
 import LinearProgress from "@mui/material/LinearProgress";
+import { appRoutes } from "@/constant";
 
 function PrifileNavbar() {
   const { loadingState, progress } = useSelector((state) => state.user);
@@ -40,17 +41,17 @@ function PrifileNavbar() {
               <ul class="navbar-nav navbar-nav-scroll">
                 {/* <!-- Nav item Listing --> */}
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href={appRoutes.home}>
                     Cab Booking
                   </a>
                 </li>
 
                 {/* <!-- Nav item Pages --> */}
-                <li class="nav-item ">
+                {/* <li class="nav-item ">
                   <a class="nav-link" href="#">
                     Hotel Booking
                   </a>
-                </li>
+                </li> */}
 
                 {/* <!-- Nav item Account --> */}
                 <li class="nav-item dropdown">

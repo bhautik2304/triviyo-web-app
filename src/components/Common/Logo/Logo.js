@@ -5,7 +5,7 @@ import React from "react";
 function Logo({ classHeight, imgClass, width = 100, ...props }) {
   return (
     <>
-      <Link href={appRoutes.home}>
+      <a href={appRoutes.home}>
         <img
           className="light-mode-item"
           src="/img/logo-light.svg"
@@ -19,7 +19,7 @@ function Logo({ classHeight, imgClass, width = 100, ...props }) {
           alt="logo"
           width={width}
         />
-      </Link>
+      </a>
     </>
   );
 }

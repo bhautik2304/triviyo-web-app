@@ -11,7 +11,7 @@ import { fetchAuthUser } from "@/redux/thunk/user";
 import { requestPermission } from "@/lib/firebase/firebase";
 import { fetchUserBooking } from "@/redux/thunk/userBooking";
 
-function HomeHeader({ bg, logo = false }) {
+function HomeHeader({ bg,link,partner, logo = false }) {
   const [auth, setAuth] = useState();
   const [theme, setTheme] = useState();
   const [authsUser, setAuthUser] = useState();
@@ -42,7 +42,7 @@ function HomeHeader({ bg, logo = false }) {
   // console.log(authUser);
 
   useEffect(() => {
-    dispatch(fetchUserBooking(authUser?.id))
+    // dispatch(fetchUserBooking(authUser?.id))
   }, [authUser]);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function HomeHeader({ bg, logo = false }) {
         <nav className="navbar navbar-expand-xl">
           <div className="container">
             {/* <!-- Logo START --> */}
-            <a className="navbar-brand" href={appRoutes.partner}>
+            <a className="navbar-brand" href={link}>
               {logo ? (
                 <>
                   <img
@@ -114,7 +114,7 @@ function HomeHeader({ bg, logo = false }) {
               <li className="nav-item align-items-center d-none d-sm-flex position-relative me-sm-3">
                 {/* <!-- Icon --> */}
                 <a
-                  href="#"
+                  href={partner ? "https://play.google.com/store/apps/details?id=com.vttvendersapp&pcampaignid=web_share" : "#"}
                   className="icon-md btn btn-light mb-0 p-0 flex-shrink-0"
                 >
                   <i className="bi bi-cloud-download-fill"></i>

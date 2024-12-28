@@ -6,6 +6,7 @@ import Script from "next/script";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { cdnUrl, siteUrl } from "@/util/server";
+import { appRoutes } from "@/constant";
 
 export const metadata = {
   title: "VTT Cabs - Reliable Cab and Hotel Booking Services",
@@ -72,7 +73,7 @@ export default function PrivacyPolicyLayout({ children }) {
       <body data-bs-theme="dark">
         <Providers>
           <NotificationAlert />
-          <HomeLayout heder={true} footer={true}>
+          <HomeLayout heder={true} link={appRoutes.home} footer={true}>
             {children}
           </HomeLayout>
         </Providers>

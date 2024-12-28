@@ -29,24 +29,28 @@ async function getCityByLatLng(lat, lng, setBackDrop) {
   setBackDrop(true);
   const url = `${process.env.NEXT_PUBLIC_API_DOMAIN}/api/geo-place-details?lat=${lat}&lng=${lng}`;
 
-  try {
+ try {
     const response = await appAxios.get(url);
-    const addressComponents = response.data.results[0].address_components;
+    console.log(response.data);
+    const addressComponents = response.data.data.address_components;
     // Find city information
     const city = addressComponents.find(
       (component) =>
         component.types.includes("locality") ||
-        component.types.includes("administrative_area_level_2")
+      component.types.includes("administrative_area_level_2")
     );
+    console.log(city);
     return city
       ? {
           long_name: city.long_name,
-          addressComponents: response.data.results[0],
+          addressComponents: response.data.data.address_components,
+          place_id: response.data.data.place_id,
+          formatted_address: response.data.address,
         }
       : null;
   } catch (error) {
-    // console.error("Error fetching city:", error);
     setBackDrop(false);
+    console.error("Error fetching city:", error); 
     return null;
   }
 }
@@ -174,14 +178,14 @@ function DropAddress({ open, handelConfirm, handleClose }) {
       setMarkerPosition({ lat: event.latLng.lat(), lng: event.latLng.lng() });
       console.log(pickupCity);
       setPickupLocation({
-        id: pickupCity?.addressComponents?.place_id,
-        place_id: pickupCity?.addressComponents?.place_id,
+        id: pickupCity?.place_id,
+        place_id: pickupCity?.place_id,
         pickupCity: pickupCity?.long_name,
-        label: pickupCity?.addressComponents?.formatted_address,
+        label: pickupCity?.formatted_address,
         geo: { lat: event.latLng.lat(), lng: event.latLng.lng() },
         data: pickupCity?.addressComponents,
       });
-      setSuccess(pickupCity.addressComponents.formatted_address);
+      setSuccess(pickupCity.formatted_address);
       setBackDrop(false);
       return; // console.log("PickupArress Are selected");
     } else {

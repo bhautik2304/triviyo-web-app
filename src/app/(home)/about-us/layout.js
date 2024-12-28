@@ -1,4 +1,5 @@
 import { HomeFooter, HomeHeader, NotificationAlert } from "@/components";
+import { appRoutes } from "@/constant";
 import { Favicon } from "@/layout";
 import HomeLayout from "@/layout/HomeLayout";
 import { Providers } from "@/redux/Provider";
@@ -65,7 +66,7 @@ export default function RootLayout({ children }) {
       <body data-bs-theme="dark">
         <Providers>
           <NotificationAlert />
-          <HomeLayout heder={true} footer={true}>
+          <HomeLayout heder={true} link={appRoutes.home} footer={true}>
             {children}
           </HomeLayout>
         </Providers>

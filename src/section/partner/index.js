@@ -1,4 +1,5 @@
 import { HomeFooter, HomeHeader } from "@/components";
+import { appRoutes } from "@/constant";
 import { cdnUrl } from "@/util/server";
 import React from "react";
 
@@ -16,6 +17,8 @@ function Home() {
           }}
         >
           <HomeHeader
+            partner={true}
+            link={appRoutes.partner.home}
             logo={cdnUrl("img/vtt-cabs-partner.svg")}
             bg="transparent"
           />
@@ -31,7 +34,10 @@ function Home() {
                 us for unmatched earning potential.
               </p>
               <div className="text-center my-3">
-                <a className="btn btn-lg-lg btn-sm-sm btn-primary" href="#">
+                <a
+                  className="btn btn-lg-lg btn-sm-sm btn-primary"
+                  href="https://play.google.com/store/apps/details?id=com.vttvendersapp&pcampaignid=web_share"
+                >
                   Register your cab service{" "}
                   <i className="bi bi-arrow-right ps-3"></i>
                 </a>

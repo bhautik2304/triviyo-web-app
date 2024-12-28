@@ -41,6 +41,9 @@ function CabDetails({ data, faredata, loading }) {
                                 <li class="list-group-item d-flex pb-0 mb-0">
                                     <span class="h6 fw-normal mb-0"><i class="bi bi-check-circle me-2"></i>{!loading ? faredata?.fule : ""}  Car</span>
                                 </li>
+                                <li class="list-group-item d-flex pb-0 mb-0">
+                                    <span class="h6 fw-normal mb-0"><i class="bi bi-check-circle me-2"></i>Driver Charges Included</span>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -52,12 +55,7 @@ function CabDetails({ data, faredata, loading }) {
                     <div class="hstack gap-3 flex-wrap">
                         {/* <!-- Item --> */}
                         <h6 class="bg-success bg-opacity-10 text-success fw-light rounded-2 d-inline-block mb-0 py-2 px-4">
-                            Free Cancellation, till 1 hour of Pick up
-                        </h6>
-
-                        {/* <!-- Item --> */}
-                        <h6 class="bg-success bg-opacity-10 text-success fw-light rounded-2 d-inline-block mb-0 py-2 px-4">
-                            Free waiting up to 45 minutes
+                            Free Cancellation, till 6 hour of Pick up, 50% refund till 1 hour of pickup
                         </h6>
                     </div>
                 </div>

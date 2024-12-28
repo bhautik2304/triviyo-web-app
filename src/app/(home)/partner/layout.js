@@ -69,7 +69,7 @@ export default function PartnerLayout({ children }) {
         />
         <Script src={cdnUrl("assets/js/sitethememood.js")}></Script>
       </head>
-      <body data-bs-theme="dark">
+      <body data-bs-theme="light">
         {children}
         {/* <!-- Back to top --> */}
         <div className="back-top"></div>

@@ -135,9 +135,17 @@ function HomeFooter() {
                     <li class="nav-item">
                       <a
                         class="nav-link text-body-secondary"
-                        href={appRoutes.partner}
+                        href={appRoutes.partner.home}
                       >
                         Cab Listing
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link text-body-secondary"
+                        href={appRoutes.partner.cabPartnerPrivacyPolicy}
+                      >
+                        Cab Partner Privacy & Policy
                       </a>
                     </li>
                     <li class="nav-item">

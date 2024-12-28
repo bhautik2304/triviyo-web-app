@@ -9,7 +9,10 @@ export const appRoutes = {
     bookingConfirmation: `${cabsSectionPrefix}/trip-confirmation`,
   },
   login: "/sign-in",
-  partner: "/partner",
+  partner: {
+    home: "/partner",
+    cabPartnerPrivacyPolicy: "/partner/privacy-policy",
+  },
   register: "/sign-up",
   profile: {
     home: userProfilePrefix,
@@ -40,6 +43,7 @@ export const apiRoutes = {
   config: {
     deviceRegister: apiUrl("config/clientregister"),
   },
+  rozerPayKey:(id)=> apiUrl(`credials/rozerpay/${id}`),
   user: {
     profileUpload: apiUrl("customer/profile"),
     customer: (id = null) => apiUrl(`customer${id ? "/" + id : ""}`),

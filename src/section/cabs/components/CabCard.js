@@ -365,6 +365,12 @@ function CabCard({ data }) {
                                     {fare.fule.toUpperCase()} Car
                                   </span>
                                 </li>
+                                <li class="list-group-item d-flex pb-0 mb-0">
+                                  <span class="h6 fw-normal mb-0">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Driver Charges Included
+                                  </span>
+                                </li>
                               </ul>
                             </div>
 

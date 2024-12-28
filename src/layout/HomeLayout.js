@@ -1,10 +1,10 @@
 import { HomeFooter, HomeHeader } from '@/components'
 import React from 'react'
 
-function HomeLayout({ heder, footer, children }) {
+function HomeLayout({ heder, footer, children,link }) {
     return (
         <>
-            {heder && <HomeHeader />}
+            {heder && <HomeHeader link={link} />}
             {children}
             {footer && <HomeFooter />}
         </>

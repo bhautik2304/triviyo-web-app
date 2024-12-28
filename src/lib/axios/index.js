@@ -11,6 +11,7 @@ const parseTokken = tokken ? JSON.parse(tokken) : null
 export const appAxios = axios.create({
     headers: {
         "x-client-pannel": isLocalStorageAvailable() ? localStorage?.getItem(localStorageKey.deviceId) : null,
-        "Authorization": parseTokken
+        "Authorization": parseTokken,
+        "X-app-name":"customer"
     }
 })

@@ -2,7 +2,6 @@ import React from "react";
 import { HomeFooter, HomeHeader } from "@/components";
 import { cdnUrl } from "@/util/server";
 
-
 function PrivacyPolicy() {
   return (
     <>
@@ -185,8 +184,8 @@ function PrivacyPolicy() {
               </thead>
               <tbody>
                 <tr>
-                  <td>Joining Fee</td>
-                  <td>Rs.2000 (Non-refundable)</td>
+                  <td>Subscription Fees</td>
+                  <td>Rs.499/Month (Non-refundable)</td>
                 </tr>
                 <tr>
                   <td>Minimum Wallet Balance Requirement</td>
@@ -242,6 +241,46 @@ function PrivacyPolicy() {
               Vendors are responsible for adhering to VTTCABS operational
               standards and protocols. VTTCABS reserves the right to update
               terms and conditions at any time with prior notice to the vendors.
+            </p>
+          </section>
+          <section class="mb-4">
+            <h2>Data Collection</h2>
+            <p>
+              <strong>Personal Data:</strong> We do not collect, use, or share
+              personal or sensitive user data unless explicitly required for app
+              functionality.
+            </p>
+            <p>
+              <strong>Non-Personal Data:</strong> We may collect anonymized data
+              for analytics to improve the app experience.
+            </p>
+          </section>
+          <section class="mb-4">
+            <h2>Use of Data</h2>
+            <p>
+              Data collected is used solely to provide and improve the app’s
+              services.
+            </p>
+          </section>
+          <section class="mb-4">
+            <h2>Data Sharing</h2>
+            <p>
+              Your data is not shared with third parties except as required by
+              law or for core app functionality.
+            </p>
+          </section>
+          <section class="mb-4">
+            <h2>Retention and Deletion</h2>
+            <p>
+              We retain data only as long as necessary to fulfill its purpose.
+              Users may request data deletion by contacting us.
+            </p>
+          </section>
+          <section class="mb-4">
+            <h2>Security</h2>
+            <p>
+              We employ industry-standard security measures to protect your data
+              from unauthorized access.
             </p>
           </section>
 

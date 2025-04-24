@@ -34,7 +34,7 @@ function CabBookingDetaild({
                 {moment(
                   `${data?.pickup_date} ${data?.pickup_time}`,
                   "YYYY-MM-DD HH:mm"
-                ).format("HH:mm A")}
+                ).format("h:mm A")}
                 .
               </span>
             </div>

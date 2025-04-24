@@ -114,7 +114,7 @@ function GmapPlaceSearch({
           }
         }}
         renderOption={(props, option) => (
-          <Stack {...props} direction="row" sx={{ width: "100%" }}>
+          <Stack {...props} direction="row" sx={{ width: "80%" }}>
             <div className="mx-2">
               <FmdGoodIcon color="error" />
             </div>

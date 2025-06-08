@@ -27,19 +27,19 @@ function CabsPayout({ fareData, loading, bookingData, term, included_charges, ex
     const route = useRouter()
 
     // payment
-    const loadRazorpayScript = () => {
-        return new Promise((resolve) => {
-            const script = document.createElement("script");
-            script.src = "https://checkout.razorpay.com/v1/checkout.js";
-            script.onload = () => resolve(true);
-            script.onerror = () => resolve(false);
-            document.body.appendChild(script);
-        });
-    };
+    // const loadRazorpayScript = () => {
+    //     return new Promise((resolve) => {
+    //         const script = document.createElement("script");
+    //         script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    //         script.onload = () => resolve(true);
+    //         script.onerror = () => resolve(false);
+    //         document.body.appendChild(script);
+    //     });
+    // };
 
-    useEffect(() => {
-        loadRazorpayScript()
-    }, [])
+    // useEffect(() => {
+    //     loadRazorpayScript()
+    // }, [])
     useEffect(() => {
         setPayment({ paymentType: bookingData?.payment_type, ammount: bookingData?.payment_ammount })
     }, [bookingData])
@@ -48,67 +48,67 @@ function CabsPayout({ fareData, loading, bookingData, term, included_charges, ex
         setPaymentLoading(true)
         // Call the Laravel API to create an order
         try {
-            const { data } = await appAxios.post(`${apiRoutes.payment.updateOrder}`, { paymentId: bookingData?.id, payment: paymentType });
+            // const { data } = await appAxios.post(`${apiRoutes.payment.updateOrder}`, { paymentId: bookingData?.id, payment: paymentType });
 
-            const options = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY, // Your Razorpay key
-                amount: data.amount, // Amount in currency subunits
-                currency: data.currency,
-                order_id: data.order_id, // Generated order ID from the backend
-                name: "VTT Cabs private limited",
-                description: "Test Transaction",
-                handler: async function (response) {
-                    // After payment, verify the payment via backend API
-                    const verifyRes = await appAxios.post(`${apiRoutes.payment.veryfyPayment}`, {
-                        razorpay_payment_id: response.razorpay_payment_id,
-                        razorpay_order_id: response.razorpay_order_id,
-                        razorpay_signature: response.razorpay_signature,
-                    });
+            // const options = {
+            //     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY, // Your Razorpay key
+            //     amount: data.amount, // Amount in currency subunits
+            //     currency: data.currency,
+            //     order_id: data.order_id, // Generated order ID from the backend
+            //     name: "trivyo ",
+            //     description: "Test Transaction",
+            //     handler: async function (response) {
+            //         // After payment, verify the payment via backend API
+            //         const verifyRes = await appAxios.post(`${apiRoutes.payment.veryfyPayment}`, {
+            //             razorpay_payment_id: response.razorpay_payment_id,
+            //             razorpay_order_id: response.razorpay_order_id,
+            //             razorpay_signature: response.razorpay_signature,
+            //         });
 
-                    if (verifyRes.data.status === "success") {
-                        console.log("Payment successful");
-                        console.log(response);
-                        await appAxios.post(apiRoutes.payment.updateBookingStatus, {
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature,
-                            payment_status: "payment_successfull"
-                        }).then(e => {
-                            console.log(e.data.msg);
-                        });
-                    } else {
-                        await appAxios.post(apiRoutes.payment.updateBookingStatus, {
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature,
-                            payment_status: "payment_faild"
-                        }).then(e => {
-                            console.log(e.data.msg);
-                        });
-                        console.log("Payment verification failed");
-                    }
-                },
-                modal: {
-                    ondismiss: async function () {
-                        // User canceled the payment, now update your database
-                        await appAxios.post(apiRoutes.payment.updateBookingStatus, {
-                            razorpay_order_id: data.order_id,
-                            payment_status: "payment_faild"
-                        }).then(e => {
-                            setPaymentLoading(false)
-                        });
-                    }
-                },
-                prefill: {
-                    name: booking?.travellerDetaild?.name,
-                    contact: booking?.travellerDetaild?.number,
-                    email: booking?.travellerDetaild?.email,
-                },
-            };
+            //         if (verifyRes.data.status === "success") {
+            //             console.log("Payment successful");
+            //             console.log(response);
+            //             await appAxios.post(apiRoutes.payment.updateBookingStatus, {
+            //                 razorpay_payment_id: response.razorpay_payment_id,
+            //                 razorpay_order_id: response.razorpay_order_id,
+            //                 razorpay_signature: response.razorpay_signature,
+            //                 payment_status: "payment_successfull"
+            //             }).then(e => {
+            //                 console.log(e.data.msg);
+            //             });
+            //         } else {
+            //             await appAxios.post(apiRoutes.payment.updateBookingStatus, {
+            //                 razorpay_payment_id: response.razorpay_payment_id,
+            //                 razorpay_order_id: response.razorpay_order_id,
+            //                 razorpay_signature: response.razorpay_signature,
+            //                 payment_status: "payment_faild"
+            //             }).then(e => {
+            //                 console.log(e.data.msg);
+            //             });
+            //             console.log("Payment verification failed");
+            //         }
+            //     },
+            //     modal: {
+            //         ondismiss: async function () {
+            //             // User canceled the payment, now update your database
+            //             await appAxios.post(apiRoutes.payment.updateBookingStatus, {
+            //                 razorpay_order_id: data.order_id,
+            //                 payment_status: "payment_faild"
+            //             }).then(e => {
+            //                 setPaymentLoading(false)
+            //             });
+            //         }
+            //     },
+            //     prefill: {
+            //         name: booking?.travellerDetaild?.name,
+            //         contact: booking?.travellerDetaild?.number,
+            //         email: booking?.travellerDetaild?.email,
+            //     },
+            // };
 
-            const rzp = new window.Razorpay(options);
-            rzp.open();
-            setPaymentLoading(false)
+            // const rzp = new window.Razorpay(options);
+            // rzp.open();
+            // setPaymentLoading(false)
         } catch (error) {
             setPaymentLoading(false)
         }

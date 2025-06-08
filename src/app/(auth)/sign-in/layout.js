@@ -2,9 +2,9 @@ import { cdnUrl } from "@/util/server";
 import Script from "next/script";
 
 export const metadata = {
-  title: "VTT Cabs - Sign in",
+  title: "trivyo - Sign in",
   description:
-    "Join VTT Cabs today and start enjoying our exclusive services. Sign up now to create your account and stay connected.",
+    "Join trivyo today and start enjoying our exclusive services. Sign up now to create your account and stay connected.",
 };
 
 export default function SigninLayout({ children }) {

@@ -1,6 +1,14 @@
+"use client"
 import SearchTab from "@/section/Home/SearchTab";
+import { useEffect } from "react";
 
 export default function Home() {
+
+  useEffect(() => {
+    alert("This Website is Under Construction")
+  }, [])
+
+
   return (
     <>
       <section class="pt-0">
@@ -18,7 +26,7 @@ export default function Home() {
             <div class="col-md-6 mx-auto text-center pt-7 pb-9">
               <h1 class="text-white">Hotel, cab & tour experience</h1>
               <p class="lead text-white mb-0">
-                Get the best prices on 2,000+ Cabs in India
+                Get the best prices Cabs in Vadodara
               </p>
             </div>
           </div>

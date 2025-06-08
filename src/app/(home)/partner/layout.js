@@ -8,9 +8,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { cdnUrl, siteUrl } from "@/util/server";
 
 export const metadata = {
-  title: "VTT Cabs - Reliable Cab and Hotel Booking Services",
+  title: "trivyo - Reliable Cab and Hotel Booking Services",
   description:
-    "Welcome to VTT Cabs, your trusted partner for hassle-free cab and hotel bookings. With our extensive network of reliable drivers and accommodation providers, we ensure seamless travel experiences for every journey. Whether you need a comfortable ride to your destination or a cozy stay at your favorite hotel, VTT Cabs has got you covered. Book your next trip with us and enjoy convenience, safety, and affordability.",
+    "Welcome to trivyo, your trusted partner for hassle-free cab and hotel bookings. With our extensive network of reliable drivers and accommodation providers, we ensure seamless travel experiences for every journey. Whether you need a comfortable ride to your destination or a cozy stay at your favorite hotel, trivyo has got you covered. Book your next trip with us and enjoy convenience, safety, and affordability.",
 };
 
 export default function PartnerLayout({ children }) {

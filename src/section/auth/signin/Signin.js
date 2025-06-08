@@ -345,7 +345,7 @@ function Signin({ onlyrefresh = false, noCredite }) {
             {" "}
             © All rights reserved. by{" "}
             <a href="https://www.vttcabs.com/" class="text-body">
-              VTT Cabs private limited
+              trivyo 
             </a>
             .{" "}
           </div>

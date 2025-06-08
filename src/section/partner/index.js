@@ -26,7 +26,7 @@ function Home() {
             {/* <!-- Title --> */}
             <div className="col-md-6 mx-auto text-center pt-7 pb-9">
               <h3 className="text-white">
-                Partner with Vtt cabs
+                Partner with trivyo
                 <br /> and grow your business
               </h3>
               <p className="lead text-white mb-0">

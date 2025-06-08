@@ -29,18 +29,18 @@ function HomeFooter() {
               </p>
               <p class="mb-2">
                 <a
-                  href="tel:+918140699993"
+                  href="tel:+919662316522"
                   class="text-body-secondary text-primary-hover"
                 >
-                  <i class="bi bi-telephone me-2"></i>+91 81406 99993
+                  <i class="bi bi-telephone me-2"></i>+91 96623 16522
                 </a>{" "}
               </p>
               <p class="mb-0">
                 <a
-                  href="mailto:contact@vttcabs.com"
+                  href="mailto:contact@trivyo.in"
                   class="text-body-secondary text-primary-hover"
                 >
-                  <i class="bi bi-envelope me-2"></i>contact@vttcabs.com
+                  <i class="bi bi-envelope me-2"></i>contact@trivyo.in
                 </a>
               </p>
             </div>
@@ -56,11 +56,6 @@ function HomeFooter() {
                     <li class="nav-item">
                       <a class="nav-link text-body-secondary" href="#">
                         <i class="fa-solid fa-car me-2"></i>Cabs
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-body-secondary" href="#">
-                        <i class="fa-solid fa-hotel me-2"></i>Hotel
                       </a>
                     </li>
                     {/* <li class="nav-item"><a class="nav-link text-body-secondary" href="#"><i class="fa-solid fa-plane me-2"></i>Flight</a></li>
@@ -135,7 +130,7 @@ function HomeFooter() {
                     <li class="nav-item">
                       <a
                         class="nav-link text-body-secondary"
-                        href={appRoutes.partner.home}
+                        href={"#"}
                       >
                         Cab Listing
                       </a>
@@ -143,14 +138,9 @@ function HomeFooter() {
                     <li class="nav-item">
                       <a
                         class="nav-link text-body-secondary"
-                        href={appRoutes.partner.cabPartnerPrivacyPolicy}
+                        href={"#"}
                       >
                         Cab Partner Privacy & Policy
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link text-body-secondary" href="#">
-                        Hotel Listing
                       </a>
                     </li>
                   </ul>

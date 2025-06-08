@@ -8,8 +8,7 @@ function NotificationAlert() {
         role="alert"
       >
         <p className="text-white m-0">
-          Traveling internationally? Get update information on COVID-19 travel
-          guidance and restrictions
+          This Website is in under construction
           <a href="#" className="btn btn-xs btn-dark ms-2 mb-0">
             Learn more!
           </a>
